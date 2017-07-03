@@ -6,4 +6,7 @@ package com.netease.liverecordlight.constant;
  */
 
 public class Constants {
+    public static final String APP_DISPATCHER_HEADER = "bixinscheme://dispatcher/"; //bixinscheme://dispatcher/login
+    public static final String LOGIN_SCHEME = APP_DISPATCHER_HEADER + "login";
+    public static final String REGISTER_SCHEME = APP_DISPATCHER_HEADER + "register";
 }

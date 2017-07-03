@@ -6,4 +6,5 @@ package com.netease.liverecordlight.constant;
  */
 
 public class RequestCode {
+    public static int SCHEME_DISPATCHER_REQUEST_CODE = 0x1000;
 }

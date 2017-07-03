@@ -39,6 +39,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".biz.base.BaseActivity"/>
+        <activity android:name=".biz.view.HomeActivity"/>
+        <activity android:name=".biz.view.LoginActivity"/>
+        <activity android:name=".biz.view.RegisterActivity"/>
+        <activity android:name=".biz.view.SchemeActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="bixinscheme" android:host="dispatcher" />
+            </intent-filter>
+        </activity>
+
 
         <!-- 【必须】 信鸽receiver广播接收 -->
         <receiver android:name="com.tencent.android.tpush.XGPushReceiver"
