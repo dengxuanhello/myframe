@@ -4,10 +4,15 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.netease.liverecordlight.constant.Config;
 import com.netease.liverecordlight.utils.CrashHandler;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.imsdk.TIMLogLevel;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMSdkConfig;
+
 
 /**
  * Created by bjdengxuan1 on 2017/6/21.
@@ -40,8 +45,16 @@ public class APP extends Application{
                 Log.i("dx","xinge faile"+o+s);
             }
         });
+        initQqImsdk();
     }
     public static APP getApp() {
         return INSTANCE;
+    }
+
+    private void initQqImsdk(){
+        TIMSdkConfig config = new TIMSdkConfig(Config.QQ_IMSDK_SDK_APPID);
+        config.enableLogPrint(true)
+                .setLogLevel(TIMLogLevel.INFO);
+        TIMManager.getInstance().init(this,config);
     }
 }

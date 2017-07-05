@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,12 +13,22 @@ import com.mob.tools.utils.UIHandler;
 import com.netease.liverecordlight.R;
 import com.netease.liverecordlight.biz.base.BaseActivity;
 import com.netease.liverecordlight.biz.presenter.TestPresenter;
+import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMElem;
+import com.tencent.imsdk.TIMElemType;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageListener;
+import com.tencent.imsdk.TIMTextElem;
+import com.tencent.imsdk.TIMValueCallBack;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -28,14 +39,16 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
         View.OnClickListener, PlatformActionListener{
 
     private TestPresenter presenter;
+    private TIMConversation conversation;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.doShare();
+                //presenter.doShare();
                 //authorize(new Wechat());
+                testIMMsg();
             }
         });
     }
@@ -142,5 +155,48 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
     @Override
     public void onClick(View v) {
 
+    }
+
+
+    private void testIMMsg(){
+        String peer = "dengxuan";  //获取与用户 "dengxuan" 的会话
+        conversation = TIMManager.getInstance().getConversation(
+                TIMConversationType.C2C,    //会话类型：单聊
+                peer);
+        TIMMessage timMessage = new TIMMessage();
+        //添加文本内容
+        TIMTextElem elem = new TIMTextElem();
+        elem.setText("a new msg");
+        timMessage.addElement(elem);
+        conversation.sendMessage(timMessage, new TIMValueCallBack<TIMMessage>() {
+            @Override
+            public void onError(int i, String s) {
+                Log.i("dx","send failed:"+s);
+            }
+
+            @Override
+            public void onSuccess(TIMMessage timMessage) {
+                Log.i("dx","send success");
+            }
+        });
+    }
+
+    @Override
+    public boolean onNewMessages(List<TIMMessage> list) {
+        Log.i("dx", String.valueOf(list.size()));
+        for(TIMMessage msg:list){
+            for(int i = 0; i < msg.getElementCount(); ++i) {
+                TIMElem elem = msg.getElement(i);
+                //获取当前元素的类型
+                TIMElemType elemType = elem.getType();
+                if (elemType == TIMElemType.Text) {
+                    //处理文本消息
+                    Log.i("dx msg",((TIMTextElem)elem).getText());
+                } else if (elemType == TIMElemType.Image) {
+                    //处理图片消息
+                }//...处理更多消息
+            }
+        }
+        return false;
     }
 }
