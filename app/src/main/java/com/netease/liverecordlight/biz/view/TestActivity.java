@@ -1,9 +1,16 @@
 package com.netease.liverecordlight.biz.view;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +32,10 @@ import com.tencent.imsdk.TIMValueCallBack;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
+import life.knowledge4.videotrimmer.K4LVideoTrimmer;
+import life.knowledge4.videotrimmer.interfaces.OnK4LVideoListener;
+import life.knowledge4.videotrimmer.interfaces.OnTrimVideoListener;
+import life.knowledge4.videotrimmer.utils.FileUtils;
 
 
 import java.util.HashMap;
@@ -36,10 +47,11 @@ import java.util.List;
  */
 
 public class TestActivity extends BaseActivity implements Handler.Callback,
-        View.OnClickListener, PlatformActionListener{
+        View.OnClickListener, PlatformActionListener, OnTrimVideoListener, OnK4LVideoListener {
 
     private TestPresenter presenter;
     private TIMConversation conversation;
+    private K4LVideoTrimmer k4LVideoTrimmer;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +63,15 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
                 testIMMsg();
             }
         });
+        k4LVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
+        if (k4LVideoTrimmer != null) {
+            k4LVideoTrimmer.setMaxDuration(5);
+            //k4LVideoTrimmer.setVideoURI(Uri.parse("storage/emulated/0/ksy_sv_compose_test/1497947721646.mp4"));
+            k4LVideoTrimmer.setVideoInformationVisibility(true);
+            k4LVideoTrimmer.setOnTrimVideoListener(this);
+            k4LVideoTrimmer.setOnK4LVideoListener(this);
+        }
+        pickFromGallery();
     }
 
     @Override
@@ -198,5 +219,78 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
             }
         }
         return false;
+    }
+
+
+    final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 0x111;
+    final int REQUEST_VIDEO_TRIMMER = 0x112;
+    private void pickFromGallery() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, "Storage read permission is needed to pick files.", REQUEST_STORAGE_READ_ACCESS_PERMISSION);
+        } else {
+            Intent intent = new Intent();
+            intent.setTypeAndNormalize("video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            startActivityForResult(Intent.createChooser(intent, "Select Video"), REQUEST_VIDEO_TRIMMER);
+        }
+    }
+
+    private void requestPermission(final String permission, String rationale, final int requestCode) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("授权");
+            builder.setMessage(rationale);
+            builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(TestActivity.this, new String[]{permission}, requestCode);
+                }
+            });
+            builder.setNegativeButton("cancel", null);
+            builder.show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, requestCode);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_VIDEO_TRIMMER) {
+                final Uri selectedUri = data.getData();
+                if (selectedUri != null) {
+                    ///storage/emulated/0/ksy_sv_compose_test/1497947721646.mp4
+                    String path = FileUtils.getPath(this, selectedUri);
+                    k4LVideoTrimmer.setVideoURI(Uri.parse(path));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onTrimStarted() {
+
+    }
+
+    @Override
+    public void getResult(Uri uri) {
+
+    }
+
+    @Override
+    public void cancelAction() {
+
+    }
+
+    @Override
+    public void onError(String message) {
+
+    }
+
+    @Override
+    public void onVideoPrepared() {
+
     }
 }

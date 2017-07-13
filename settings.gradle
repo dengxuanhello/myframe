@@ -1,1 +1,1 @@
-include ':app', ':thirdparty'/*, ':ui', ':tlslibrary','presentation'*/
+include ':app', ':thirdparty', ':videotrimmer'/*, ':tlslibrary','presentation'*/
