@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:background="@drawable/main_page_item_shape">
     <RelativeLayout
         android:id="@+id/main_page_item_rl"
@@ -12,11 +13,11 @@
             android:id="@+id/main_page_item_img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <Button
+        <ImageView
             android:id="@+id/main_page_item_img_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/button_play"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
     <LinearLayout
@@ -34,7 +35,10 @@
                 android:id="@+id/issues_author_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="扬帆"/>
+                android:gravity="center"
+                android:text="扬帆"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/icon_boy"/>
             <TextView
                 android:id="@+id/issues_author_constellation"
                 android:layout_width="wrap_content"
@@ -68,13 +72,17 @@
                 android:id="@+id/issues_content_like_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="111"/>
+                android:text="111"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/button_like"/>
             <TextView
                 android:id="@+id/issues_content_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="120"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="15dp"
+                android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/button_comments"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

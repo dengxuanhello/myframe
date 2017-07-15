@@ -3,6 +3,7 @@ package com.netease.liverecordlight.biz.view;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -38,6 +39,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         mSettingsPageBtn = (RadioButton) findViewById(R.id.settings_page);
         radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
         radioGroup.setOnCheckedChangeListener(this);
+        setTabSelection(TAB_HOME);
     }
 
     @Override
@@ -56,13 +58,21 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     private void setTabSelection(int type){
+        Fragment fragment = MainPageFrg.newInstance(null);
         switch (type){
             case TAB_HOME:
+                fragment = MainPageFrg.newInstance(null);
                 break;
             case TAB_CHAT:
+
                 break;
             case TAB_SETTING:
                 break;
         }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commitAllowingStateLoss();
+
     }
+
+
+
 }

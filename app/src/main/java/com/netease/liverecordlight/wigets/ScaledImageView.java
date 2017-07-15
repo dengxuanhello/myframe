@@ -12,7 +12,7 @@ import android.widget.ImageView;
 public class ScaledImageView extends ImageView {
     //宽高比3：4
     private int mRatioX=3;
-    private int mRatioY=4;
+    private int mRatioY=3;
 
     public ScaledImageView(Context context) {
         super(context);
