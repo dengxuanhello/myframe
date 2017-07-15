@@ -1,10 +1,18 @@
 package com.netease.liverecordlight.biz.view;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,12 +20,26 @@ import com.mob.tools.utils.UIHandler;
 import com.netease.liverecordlight.R;
 import com.netease.liverecordlight.biz.base.BaseActivity;
 import com.netease.liverecordlight.biz.presenter.TestPresenter;
+import com.tencent.imsdk.TIMConversation;
+import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMElem;
+import com.tencent.imsdk.TIMElemType;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageListener;
+import com.tencent.imsdk.TIMTextElem;
+import com.tencent.imsdk.TIMValueCallBack;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
+import life.knowledge4.videotrimmer.K4LVideoTrimmer;
+import life.knowledge4.videotrimmer.interfaces.OnK4LVideoListener;
+import life.knowledge4.videotrimmer.interfaces.OnTrimVideoListener;
+import life.knowledge4.videotrimmer.utils.FileUtils;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -25,19 +47,31 @@ import java.util.HashMap;
  */
 
 public class TestActivity extends BaseActivity implements Handler.Callback,
-        View.OnClickListener, PlatformActionListener{
+        View.OnClickListener, PlatformActionListener, OnTrimVideoListener, OnK4LVideoListener {
 
     private TestPresenter presenter;
+    private TIMConversation conversation;
+    private K4LVideoTrimmer k4LVideoTrimmer;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.doShare();
+                //presenter.doShare();
                 //authorize(new Wechat());
+                testIMMsg();
             }
         });
+        k4LVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
+        if (k4LVideoTrimmer != null) {
+            k4LVideoTrimmer.setMaxDuration(5);
+            //k4LVideoTrimmer.setVideoURI(Uri.parse("storage/emulated/0/ksy_sv_compose_test/1497947721646.mp4"));
+            k4LVideoTrimmer.setVideoInformationVisibility(true);
+            k4LVideoTrimmer.setOnTrimVideoListener(this);
+            k4LVideoTrimmer.setOnK4LVideoListener(this);
+        }
+        pickFromGallery();
     }
 
     @Override
@@ -141,6 +175,122 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
 
     @Override
     public void onClick(View v) {
+
+    }
+
+
+    private void testIMMsg(){
+        String peer = "dengxuan";  //获取与用户 "dengxuan" 的会话
+        conversation = TIMManager.getInstance().getConversation(
+                TIMConversationType.C2C,    //会话类型：单聊
+                peer);
+        TIMMessage timMessage = new TIMMessage();
+        //添加文本内容
+        TIMTextElem elem = new TIMTextElem();
+        elem.setText("a new msg");
+        timMessage.addElement(elem);
+        conversation.sendMessage(timMessage, new TIMValueCallBack<TIMMessage>() {
+            @Override
+            public void onError(int i, String s) {
+                Log.i("dx","send failed:"+s);
+            }
+
+            @Override
+            public void onSuccess(TIMMessage timMessage) {
+                Log.i("dx","send success");
+            }
+        });
+    }
+
+    @Override
+    public boolean onNewMessages(List<TIMMessage> list) {
+        Log.i("dx", String.valueOf(list.size()));
+        for(TIMMessage msg:list){
+            for(int i = 0; i < msg.getElementCount(); ++i) {
+                TIMElem elem = msg.getElement(i);
+                //获取当前元素的类型
+                TIMElemType elemType = elem.getType();
+                if (elemType == TIMElemType.Text) {
+                    //处理文本消息
+                    Log.i("dx msg",((TIMTextElem)elem).getText());
+                } else if (elemType == TIMElemType.Image) {
+                    //处理图片消息
+                }//...处理更多消息
+            }
+        }
+        return false;
+    }
+
+
+    final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 0x111;
+    final int REQUEST_VIDEO_TRIMMER = 0x112;
+    private void pickFromGallery() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, "Storage read permission is needed to pick files.", REQUEST_STORAGE_READ_ACCESS_PERMISSION);
+        } else {
+            Intent intent = new Intent();
+            intent.setTypeAndNormalize("video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            startActivityForResult(Intent.createChooser(intent, "Select Video"), REQUEST_VIDEO_TRIMMER);
+        }
+    }
+
+    private void requestPermission(final String permission, String rationale, final int requestCode) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("授权");
+            builder.setMessage(rationale);
+            builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ActivityCompat.requestPermissions(TestActivity.this, new String[]{permission}, requestCode);
+                }
+            });
+            builder.setNegativeButton("cancel", null);
+            builder.show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, requestCode);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_VIDEO_TRIMMER) {
+                final Uri selectedUri = data.getData();
+                if (selectedUri != null) {
+                    ///storage/emulated/0/ksy_sv_compose_test/1497947721646.mp4
+                    String path = FileUtils.getPath(this, selectedUri);
+                    k4LVideoTrimmer.setVideoURI(Uri.parse(path));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onTrimStarted() {
+
+    }
+
+    @Override
+    public void getResult(Uri uri) {
+
+    }
+
+    @Override
+    public void cancelAction() {
+
+    }
+
+    @Override
+    public void onError(String message) {
+
+    }
+
+    @Override
+    public void onVideoPrepared() {
 
     }
 }

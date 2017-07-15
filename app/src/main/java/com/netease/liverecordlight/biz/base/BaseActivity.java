@@ -8,9 +8,14 @@ import android.view.View;
 
 import com.netease.liverecordlight.net.NetworkListener;
 import com.netease.liverecordlight.net.NetworkParam;
+import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 /**
  * Created by bjdengxuan1 on 2017/6/23.
@@ -18,7 +23,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class BaseActivity extends FragmentActivity implements
         NetworkListener,ActivityInitInterface,ActivityJumpInterface,
-        PresLayerComInterface,View.OnClickListener,IMvpView{
+        PresLayerComInterface,View.OnClickListener,IMvpView, TIMMessageListener {
 
     private PresLayerComHelper presLayerComHelper;
     public BasePresenter presenter;
@@ -80,7 +85,7 @@ public class BaseActivity extends FragmentActivity implements
 
     @Override
     public void initData() {
-
+        TIMManager.getInstance().addMessageListener(this);
     }
 
     @Override
@@ -147,5 +152,10 @@ public class BaseActivity extends FragmentActivity implements
             presenter.detachView(this);
         }
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onNewMessages(List<TIMMessage> list) {
+        return false;
     }
 }
