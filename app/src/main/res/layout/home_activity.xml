@@ -26,7 +26,7 @@
             android:gravity="center"
             android:checked="true"
             android:button="@null"
-            android:background="@mipmap/ic_launcher"/>
+            android:background="@drawable/tab_home_selecter"/>
         <RadioButton
             android:id="@+id/chat_page"
             android:layout_width="0dp"
@@ -35,7 +35,7 @@
             android:padding="5dp"
             android:gravity="center"
             android:button="@null"
-            android:background="@mipmap/ic_launcher"/>
+            android:background="@drawable/tab_msg_selecter"/>
         <RadioButton
             android:id="@+id/settings_page"
             android:layout_width="0dp"
@@ -44,6 +44,6 @@
             android:padding="5dp"
             android:gravity="center"
             android:button="@null"
-            android:background="@mipmap/ic_launcher"/>
+            android:background="@drawable/tab_mine_selecter"/>
     </RadioGroup>
 </LinearLayout>

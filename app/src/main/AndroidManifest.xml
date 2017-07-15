@@ -34,13 +34,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".biz.view.TestActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".biz.base.BaseActivity"/>
+        <activity android:name=".biz.view.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".biz.base.BaseActivity"/>
-        <activity android:name=".biz.view.HomeActivity"/>
         <activity android:name=".biz.view.LoginActivity"/>
         <activity android:name=".biz.view.RegisterActivity"/>
         <activity android:name=".biz.view.SchemeActivity"
