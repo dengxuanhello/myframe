@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import com.netease.liverecordlight.R;
 import com.netease.liverecordlight.biz.base.BaseActivity;
 import com.netease.liverecordlight.biz.view.frg.MainPageFrg;
+import com.netease.liverecordlight.biz.view.frg.MyselfFrg;
 
 /**
  * Created by dengxuan on 2017/7/2.
@@ -67,10 +68,10 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
                 break;
             case TAB_SETTING:
+                fragment = MyselfFrg.newInstance(null);
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commitAllowingStateLoss();
-
     }
 
 

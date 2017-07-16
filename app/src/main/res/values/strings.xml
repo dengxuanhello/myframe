@@ -11,4 +11,8 @@
     <string name="weibo">微博</string>
     <string name="qq">QQ</string>
     <string name="forget_pwd">忘记密码</string>
+    <string name="edit_self_main_page">编辑个人主页</string>
+    <string name="my_video_moments">我的视频动态</string>
+    <string name="share_to_my_frends">分享比心给朋友</string>
+    <string name="settings">设置</string>
 </resources>
