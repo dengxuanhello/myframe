@@ -22,28 +22,31 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="5dp"
+            android:padding="10dp"
             android:gravity="center"
             android:checked="true"
             android:button="@null"
+            android:textSize="0sp"
             android:drawableBottom="@drawable/tab_home_selecter"/>
         <RadioButton
             android:id="@+id/chat_page"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="5dp"
+            android:padding="10dp"
             android:gravity="center"
             android:button="@null"
+            android:textSize="0sp"
             android:drawableBottom="@drawable/tab_msg_selecter"/>
         <RadioButton
             android:id="@+id/settings_page"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="5dp"
+            android:padding="10dp"
             android:gravity="center"
             android:button="@null"
+            android:textSize="0sp"
             android:drawableBottom="@drawable/tab_mine_selecter"/>
     </RadioGroup>
 </LinearLayout>

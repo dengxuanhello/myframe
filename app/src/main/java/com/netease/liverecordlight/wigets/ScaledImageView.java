@@ -1,6 +1,9 @@
 package com.netease.liverecordlight.wigets;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -20,6 +23,16 @@ public class ScaledImageView extends ImageView {
 
     public ScaledImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        Path clipPath = new Path();
+        int w = this.getWidth();
+        int h = this.getHeight();
+        clipPath.addRoundRect(new RectF(0, 0, w, h), 10.0f, 10.0f, Path.Direction.CW);
+        canvas.clipPath(clipPath);
+        super.onDraw(canvas);
     }
 
     @Override

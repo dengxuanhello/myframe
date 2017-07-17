@@ -3,12 +3,13 @@ package com.netease.liverecordlight.biz.view;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.netease.liverecordlight.R;
 import com.netease.liverecordlight.biz.base.BaseActivity;
+import com.netease.liverecordlight.biz.base.BaseFragment;
+import com.netease.liverecordlight.biz.view.frg.ChatListFrg;
 import com.netease.liverecordlight.biz.view.frg.MainPageFrg;
 import com.netease.liverecordlight.biz.view.frg.MyselfFrg;
 
@@ -20,7 +21,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private final int TAB_HOME = 1;
     private final int TAB_CHAT = 2;
     private final int TAB_SETTING = 3;
-    private MainPageFrg mMainPageFrg;
+    private BaseFragment mCurrentFrg;
     private RadioButton mHomePageBtn;
     private RadioButton mChatPageBtn;
     private RadioButton mSettingsPageBtn;
@@ -59,19 +60,23 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     private void setTabSelection(int type){
-        Fragment fragment = MainPageFrg.newInstance(null);
         switch (type){
             case TAB_HOME:
-                fragment = MainPageFrg.newInstance(null);
+                mCurrentFrg = MainPageFrg.newInstance(null);
                 break;
             case TAB_CHAT:
-
+                mCurrentFrg = ChatListFrg.newInstance(null);
                 break;
             case TAB_SETTING:
-                fragment = MyselfFrg.newInstance(null);
+                mCurrentFrg = MyselfFrg.newInstance(null);
+                break;
+            default:
+                mCurrentFrg = MainPageFrg.newInstance(null);
                 break;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commitAllowingStateLoss();
+        if(mCurrentFrg != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mCurrentFrg).commitAllowingStateLoss();
+        }
     }
 
 

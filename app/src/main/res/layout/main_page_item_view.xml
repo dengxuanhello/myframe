@@ -8,11 +8,13 @@
         android:id="@+id/main_page_item_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/main_page_item_shape"
         android:gravity="center">
         <com.netease.liverecordlight.wigets.ScaledImageView
             android:id="@+id/main_page_item_img"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_page_item_shape"/>
         <ImageView
             android:id="@+id/main_page_item_img_btn"
             android:layout_width="wrap_content"

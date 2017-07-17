@@ -12,7 +12,7 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:gravity="center_horizontal">
-        <android.support.v4.widget.CircleImageView
+        <ImageView
             android:id="@+id/user_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
