@@ -5,17 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.netease.liverecordlight.QQIM.ui.ConversationFragment">
-
     <com.tencent.qcloud.ui.TemplateTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="@string/home_conversation_tab"/>
+        app:titleText="@string/home_msg_tab"/>
     <ListView
         android:id="@+id/msg_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </ListView>
-
-
 </LinearLayout>

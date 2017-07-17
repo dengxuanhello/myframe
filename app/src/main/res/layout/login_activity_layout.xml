@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal">
+    <EditText
+        android:id="@+id/user_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="20dp"
+        android:hint="@string/input_user_account"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:id="@+id/user_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/input_user_pwd"
+        android:padding="20dp"/>
+
+    <Button
+        android:id="@+id/user_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/white"
+        android:text="@string/user_login"
+        android:background="@drawable/login_btn_bg_selector"/>
+    <Button
+        android:id="@+id/user_regist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/lignt_red"
+        android:text="@string/user_register"
+        android:background="@drawable/login_btn_bg_selector"/>
+</LinearLayout>

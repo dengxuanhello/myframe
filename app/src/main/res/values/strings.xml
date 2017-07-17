@@ -31,6 +31,7 @@
     <string name="conversation_del">删除会话</string>
     <string name="conversation_draft">[草稿]</string>
     <string name="home_conversation_tab">会话</string>
+    <string name="home_msg_tab">消息</string>
     <string name="chat_typing">对方正在输入…</string>
     <string name="chat_content_bad">内容含有敏感词</string>
     <string name="chat_audio_too_short">录音过短，请重试</string>

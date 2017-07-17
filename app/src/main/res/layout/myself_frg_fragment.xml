@@ -12,7 +12,7 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:gravity="center_horizontal">
-        <ImageView
+        <com.tencent.qcloud.ui.CircleImageView
             android:id="@+id/user_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
