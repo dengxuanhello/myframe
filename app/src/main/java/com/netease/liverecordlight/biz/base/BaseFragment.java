@@ -6,9 +6,9 @@ import android.support.v4.app.Fragment;
 
 import com.netease.liverecordlight.net.NetworkListener;
 import com.netease.liverecordlight.net.NetworkParam;
-import com.tencent.imsdk.TIMManager;
+/*import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
-import com.tencent.imsdk.TIMMessageListener;
+import com.tencent.imsdk.TIMMessageListener;*/
 
 import java.util.List;
 
@@ -16,12 +16,12 @@ import java.util.List;
  * Created by dengxuan on 2017/7/2.
  */
 
-public class BaseFragment extends Fragment implements NetworkListener, TIMMessageListener {
+public class BaseFragment extends Fragment implements NetworkListener/*, TIMMessageListener */{
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TIMManager.getInstance().addMessageListener(this);
+        //TIMManager.getInstance().addMessageListener(this);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class BaseFragment extends Fragment implements NetworkListener, TIMMessag
 
     }
 
-    @Override
+   /* @Override
     public boolean onNewMessages(List<TIMMessage> list) {
         return false;
-    }
+    }*/
 }

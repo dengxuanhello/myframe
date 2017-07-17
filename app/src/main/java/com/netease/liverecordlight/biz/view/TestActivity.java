@@ -20,7 +20,7 @@ import com.mob.tools.utils.UIHandler;
 import com.netease.liverecordlight.R;
 import com.netease.liverecordlight.biz.base.BaseActivity;
 import com.netease.liverecordlight.biz.presenter.TestPresenter;
-import com.tencent.imsdk.TIMConversation;
+/*import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
@@ -28,7 +28,7 @@ import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageListener;
 import com.tencent.imsdk.TIMTextElem;
-import com.tencent.imsdk.TIMValueCallBack;
+import com.tencent.imsdk.TIMValueCallBack;*/
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -50,7 +50,7 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
         View.OnClickListener, PlatformActionListener, OnTrimVideoListener, OnK4LVideoListener {
 
     private TestPresenter presenter;
-    private TIMConversation conversation;
+    //private TIMConversation conversation;
     private K4LVideoTrimmer k4LVideoTrimmer;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,9 +58,9 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //presenter.doShare();
+                presenter.doShare();
                 //authorize(new Wechat());
-                testIMMsg();
+                //testIMMsg();
             }
         });
         k4LVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
@@ -71,7 +71,7 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
             k4LVideoTrimmer.setOnTrimVideoListener(this);
             k4LVideoTrimmer.setOnK4LVideoListener(this);
         }
-        pickFromGallery();
+        //pickFromGallery();
     }
 
     @Override
@@ -179,7 +179,7 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
     }
 
 
-    private void testIMMsg(){
+    /*private void testIMMsg(){
         String peer = "dengxuan";  //获取与用户 "dengxuan" 的会话
         conversation = TIMManager.getInstance().getConversation(
                 TIMConversationType.C2C,    //会话类型：单聊
@@ -219,7 +219,7 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
             }
         }
         return false;
-    }
+    }*/
 
 
     final int REQUEST_STORAGE_READ_ACCESS_PERMISSION = 0x111;
