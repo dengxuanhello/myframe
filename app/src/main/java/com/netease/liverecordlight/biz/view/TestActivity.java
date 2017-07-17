@@ -20,7 +20,9 @@ import com.mob.tools.utils.UIHandler;
 import com.netease.liverecordlight.R;
 import com.netease.liverecordlight.biz.base.BaseActivity;
 import com.netease.liverecordlight.biz.presenter.TestPresenter;
-/*import com.tencent.imsdk.TIMConversation;
+import com.netease.liverecordlight.constant.Config;
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
@@ -28,7 +30,8 @@ import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageListener;
 import com.tencent.imsdk.TIMTextElem;
-import com.tencent.imsdk.TIMValueCallBack;*/
+import com.tencent.imsdk.TIMValueCallBack;
+import com.tencent.qcloud.presentation.business.LoginBusiness;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -50,27 +53,38 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
         View.OnClickListener, PlatformActionListener, OnTrimVideoListener, OnK4LVideoListener {
 
     private TestPresenter presenter;
-    //private TIMConversation conversation;
+    private TIMConversation conversation;
     private K4LVideoTrimmer k4LVideoTrimmer;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LoginBusiness.loginIm("dengxuan", Config.QQ_SDK_SIG, new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+                Log.i("dx",s);
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.i("dx","login success");
+            }
+        });
         findViewById(R.id.test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.doShare();
+                //presenter.doShare();
                 //authorize(new Wechat());
-                //testIMMsg();
+                testIMMsg();
             }
         });
-        k4LVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
+       /* k4LVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
         if (k4LVideoTrimmer != null) {
             k4LVideoTrimmer.setMaxDuration(5);
             //k4LVideoTrimmer.setVideoURI(Uri.parse("storage/emulated/0/ksy_sv_compose_test/1497947721646.mp4"));
             k4LVideoTrimmer.setVideoInformationVisibility(true);
             k4LVideoTrimmer.setOnTrimVideoListener(this);
             k4LVideoTrimmer.setOnK4LVideoListener(this);
-        }
+        }*/
         //pickFromGallery();
     }
 
@@ -179,8 +193,8 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
     }
 
 
-    /*private void testIMMsg(){
-        String peer = "dengxuan";  //获取与用户 "dengxuan" 的会话
+    private void testIMMsg(){
+        String peer = "dengxuan1";  //获取与用户 "dengxuan" 的会话
         conversation = TIMManager.getInstance().getConversation(
                 TIMConversationType.C2C,    //会话类型：单聊
                 peer);
@@ -202,7 +216,7 @@ public class TestActivity extends BaseActivity implements Handler.Callback,
         });
     }
 
-    @Override
+    /*@Override
     public boolean onNewMessages(List<TIMMessage> list) {
         Log.i("dx", String.valueOf(list.size()));
         for(TIMMessage msg:list){

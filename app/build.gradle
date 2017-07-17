@@ -33,4 +33,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.google.android.exoplayer:exoplayer:r2.4.3'
+    compile project(':presentation')
+    compile project(':sdk')
+    compile project(':tlslibrary')
+    compile project(':ui')
 }

@@ -34,17 +34,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".biz.view.TestActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".biz.base.BaseActivity"/>
-        <activity android:name=".biz.view.HomeActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>-->
+        </activity>
+        <activity android:name=".biz.base.BaseActivity"/>
+        <activity android:name=".biz.view.HomeActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".biz.view.LoginActivity"/>
         <activity android:name=".biz.view.RegisterActivity"/>
@@ -57,7 +58,12 @@
                 <data android:scheme="bixinscheme" android:host="dispatcher" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".QQIM.ui.ChatActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
 
         <!-- 【必须】 信鸽receiver广播接收 -->
         <receiver android:name="com.tencent.android.tpush.XGPushReceiver"

@@ -8,10 +8,10 @@
         android:layout_height="wrap_content"
         android:text="TEST"
         />
-    <life.knowledge4.videotrimmer.K4LVideoTrimmer
+    <!--<life.knowledge4.videotrimmer.K4LVideoTrimmer
         android:id="@+id/timeLine"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone"/>-->
 
 </LinearLayout>

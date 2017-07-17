@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.netease.liverecordlight.QQIM.ui.ConversationFragment;
 import com.netease.liverecordlight.R;
 import com.netease.liverecordlight.biz.base.BaseActivity;
 import com.netease.liverecordlight.biz.base.BaseFragment;
@@ -65,7 +66,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 mCurrentFrg = MainPageFrg.newInstance(null);
                 break;
             case TAB_CHAT:
-                mCurrentFrg = ChatListFrg.newInstance(null);
+                mCurrentFrg =  ConversationFragment.newInstance(null);
                 break;
             case TAB_SETTING:
                 mCurrentFrg = MyselfFrg.newInstance(null);
