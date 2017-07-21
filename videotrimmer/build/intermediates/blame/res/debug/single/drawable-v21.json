@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "D:\\workspace\\lightlive\\myframe\\videotrimmer\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\black_button_background.xml",
+        "source": "D:\\workspace\\lightlive\\myframe\\videotrimmer\\src\\main\\res\\drawable-v21\\black_button_background.xml"
+    },
+    {
+        "merged": "D:\\workspace\\lightlive\\myframe\\videotrimmer\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_btn_colored_material.xml",
+        "source": "C:\\Users\\dengxuan\\.android\\build-cache\\c7d68a0ab94b0308aa85f49a2262862ae9a24e54\\output\\res\\drawable-v21\\abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "D:\\workspace\\lightlive\\myframe\\videotrimmer\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\play_button.xml",
+        "source": "D:\\workspace\\lightlive\\myframe\\videotrimmer\\src\\main\\res\\drawable-v21\\play_button.xml"
+    },
+    {
+        "merged": "D:\\workspace\\lightlive\\myframe\\videotrimmer\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_edit_text_material.xml",
+        "source": "C:\\Users\\dengxuan\\.android\\build-cache\\c7d68a0ab94b0308aa85f49a2262862ae9a24e54\\output\\res\\drawable-v21\\abc_edit_text_material.xml"
+    },
+    {
+        "merged": "D:\\workspace\\lightlive\\myframe\\videotrimmer\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\abc_action_bar_item_background_material.xml",
+        "source": "C:\\Users\\dengxuan\\.android\\build-cache\\c7d68a0ab94b0308aa85f49a2262862ae9a24e54\\output\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+    }
+]
