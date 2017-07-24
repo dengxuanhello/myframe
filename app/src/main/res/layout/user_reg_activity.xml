@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+    <!--<TextView
         android:id="@+id/topHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,36 +20,85 @@
     <com.netease.liverecordlight.wigets.UserRegItemView
         android:id="@+id/reg_pwd_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"/>-->
+    <EditText
+        android:id="@+id/user_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="20dp"
+        android:hint="@string/input_user_phone"
+        android:layout_marginTop="50dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+        <EditText
+            android:id="@+id/user_verify_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="@string/input_user_verify_code"/>
+        <TextView
+            android:id="@+id/get_verify_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/get_verify_code"
+            android:padding="5dp"
+            android:textColor="@color/lignt_red"
+            android:background="@drawable/regist_btn_bg_shape"/>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/user_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/input_user_pwd"
+        android:padding="20dp"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@null"
+        android:background="@drawable/login_btn_bg_shape"
         android:text="@string/register"
-        android:layout_marginTop="30dp"/>
+        android:textColor="@color/white"
+        android:layout_margin="20dp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/third_login"
-        android:gravity="center"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"/>
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/background_gray1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/third_login"
+            android:layout_margin="5dp"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/background_gray1"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_marginBottom="15dp">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,7 +108,8 @@
             <ImageView
                 android:id="@+id/weixin_login_img"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_weixinlogo"/>
             <TextView
                 android:id="@+id/weixin_login_text"
                 android:layout_width="wrap_content"
@@ -75,7 +125,8 @@
             <ImageView
                 android:id="@+id/weibo_login_img"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_weibologo"/>
             <TextView
                 android:id="@+id/weibo_login_text"
                 android:layout_width="wrap_content"
@@ -91,7 +142,8 @@
             <ImageView
                 android:id="@+id/qq_login_img"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_qqlogo"/>
             <TextView
                 android:id="@+id/qq_login_text"
                 android:layout_width="wrap_content"

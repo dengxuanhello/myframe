@@ -1,6 +1,7 @@
 package com.netease.liverecordlight.net;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.netease.liverecordlight.net.requestParam.BaseParam;
 
@@ -52,6 +53,7 @@ public class RequestUtils {
         }
         Request request = new Request.Builder().url(url).post(body).build();
         httpClient.newCall(request).enqueue(callback);
+        Log.i("network",url+body.toString());
     }
 
     public static void startPostRequest(NetworkParam networkParam){

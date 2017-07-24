@@ -59,7 +59,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
-        <meta-data android:name="Mob-AppKey" android:value="1f050a4197792"/>
-        <meta-data android:name="Mob-AppSecret" android:value="3d85cf51b536a32dabd6e056b70383ad"/>
+        <meta-data android:name="Mob-AppKey" android:value="1ee814be41540"/>
+        <meta-data android:name="Mob-AppSecret" android:value="736fe22fb502f99a767122beb9cc366a"/>
     </application>
 </manifest>
