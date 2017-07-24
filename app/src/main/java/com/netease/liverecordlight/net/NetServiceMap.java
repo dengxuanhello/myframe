@@ -5,6 +5,7 @@ import com.netease.liverecordlight.net.responseResult.GetPKeyResult;
 import com.netease.liverecordlight.net.responseResult.LoginResult;
 
 /**
+ * 所有的后端Api在此申明
  * Created by dengxuan on 2017/7/22.
  */
 
@@ -13,7 +14,7 @@ public enum NetServiceMap{
     LoginServiceMap("publicKey", GetPKeyResult.class),
     GetPKeyServiceMap("login", LoginResult.class);
 
-    private static final String HOSTPATH = "";
+    private static final String HOSTPATH = "http://139.199.20.201/";
     private String hostPath;
     private String hostApi;
     private Class<? extends BaseResult> resultType;
@@ -26,5 +27,17 @@ public enum NetServiceMap{
         this.hostPath = hostPath;
         this.hostApi = hostApi;
         this.resultType = cls;
+    }
+
+    public String getApi(){
+        return hostApi;
+    }
+
+    public String getHostPath(){
+        return hostPath;
+    }
+
+    public Class getResultClz(){
+        return resultType;
     }
 }

@@ -20,7 +20,7 @@ import okhttp3.Response;
 
 public class NetworkParam{
 
-    public String hostPath;
+    //public String hostPath;
     public boolean block;
     public boolean cancelAble;
     public BaseParam param;
@@ -31,6 +31,7 @@ public class NetworkParam{
     public Callback callback;
     public NetworkListener networkListener;
     public String originResponseBody;
+    public NetServiceMap key;
 
     public NetworkParam(){}
 

@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="line">#aaaaaa</color>
-    <color name="common_bg">#f6f6f6</color>
+    <color name="common_bg">#f2efef</color>
     <color name="white">#ffffff</color>
-    <color name="lignt_red">#ee0000</color>
+    <color name="lignt_red">#df4040</color>
 </resources>

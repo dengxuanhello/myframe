@@ -7,5 +7,25 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="BigTitleStyle">
+        <item name="android:color">#5c5c5c</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="BigContentStyle">
+        <item name="android:color">#5e5958</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="CommonContentStyle">
+        <item name="android:color">#949494</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="SmallContentStyle">
+        <item name="android:color">#b7b7b7</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+    <style name="DividingLine">
+        <item name="android:color">#f2efef</item>
+    </style>
 
 </resources>

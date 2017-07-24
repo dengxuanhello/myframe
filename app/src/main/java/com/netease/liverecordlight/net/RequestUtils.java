@@ -39,28 +39,31 @@ public class RequestUtils {
         }
     }
 
-    /*public static NetworkParam getRequest(BaseParam param, IServiceMap serviceMap){
-        NetworkParam networkParam = new NetworkParam();
-        networkParam.param = param;
-        networkParam.key = serviceMap;
-        networkParam.handler = new Handler(Looper.getMainLooper());
-        return networkParam;
-    }*/
-
-    public static void startPostRequest(String url, RequestBody body,Callback callback){
-        if(httpClient == null){
-            httpClient = new OkHttpClient();
-        }
-        Request request = new Request.Builder().url(url).post(body).build();
-        httpClient.newCall(request).enqueue(callback);
-        Log.i("network",url+body.toString());
+    public static void startRequest(String url, Callback callback){
+        startRequest(url,null,callback);
     }
 
-    public static void startPostRequest(NetworkParam networkParam){
+    public static void startRequest(String url, RequestBody body, Callback callback){
         if(httpClient == null){
             httpClient = new OkHttpClient();
         }
-        if(networkParam == null || TextUtils.isEmpty(networkParam.hostPath)){
+        Request request;
+        if(body != null){
+            request = new Request.Builder().url(url).post(body).build();
+            Log.i("network",url+body.toString());
+        }else {
+            request = new Request.Builder().url(url).build();
+            Log.i("network",url);
+        }
+        httpClient.newCall(request).enqueue(callback);
+
+    }
+
+    public static void startRequest(NetworkParam networkParam){
+        if(httpClient == null){
+            httpClient = new OkHttpClient();
+        }
+        if(networkParam == null || networkParam.key == null){
             throw new IllegalArgumentException("request url must not be empty");
         }
         Map<String,String> params = getRequestBodyFromBaseParam(networkParam.param);
@@ -68,7 +71,10 @@ public class RequestUtils {
         for (String key : params.keySet()) {
             builder.add(key, params.get(key));
         }
-        startPostRequest(networkParam.hostPath,builder.build(),networkParam.callback);
+        String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi();
+        if(!TextUtils.isEmpty(requestUrl)) {
+            startRequest(requestUrl, builder.build(), networkParam.callback);
+        }
     }
 
     public static void uploadFile(String url, String pathName, String fileName, Callback callback) {

@@ -2,6 +2,7 @@ package com.netease.liverecordlight.biz.view.presenter;
 
 import com.netease.liverecordlight.biz.base.BasePresenter;
 import com.netease.liverecordlight.biz.view.LoginActivity;
+import com.netease.liverecordlight.net.NetServiceMap;
 import com.netease.liverecordlight.net.NetworkParam;
 import com.netease.liverecordlight.net.RequestUtils;
 import com.netease.liverecordlight.net.requestParam.GetPKeyParam;
@@ -16,8 +17,8 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
         GetPKeyParam param = new GetPKeyParam();
         param.phone = phone;
         NetworkParam networkParam = new NetworkParam(this.mvpView);
-        networkParam.hostPath = "http://http://139.199.20.201//publicKey";
-        RequestUtils.startPostRequest(networkParam);
+        networkParam.key = NetServiceMap.LoginServiceMap;
+        RequestUtils.startRequest(networkParam);
     }
 
     public void doLogin(){

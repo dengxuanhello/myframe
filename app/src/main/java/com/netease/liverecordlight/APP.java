@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.netease.liverecordlight.QQIM.utils.Foreground;
 import com.netease.liverecordlight.constant.Config;
+import com.netease.liverecordlight.net.RequestUtils;
 import com.netease.liverecordlight.utils.CrashHandler;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
@@ -48,6 +49,7 @@ public class APP extends Application{
         INSTANCE = this;
         CrashHandler mCustomCrashHandler = CrashHandler.getInstance();
         mCustomCrashHandler.setCustomCrashHanler(getApplicationContext());
+        RequestUtils.initOkhttp();
         //注册信鸽服务
         // 开启logcat输出，方便debug，发布时请关闭
         XGPushConfig.enableDebug(this, true);

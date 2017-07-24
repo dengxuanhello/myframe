@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity {
         }else if(v.equals(mRegistBtn)){
             goRegist();
         }else if(v.equals(mForgetPwdTv)){
-
+            VideoPlayActivity.startVideoPlay(this,VideoPlayActivity.TEST_RUL);
         }else if(v.equals(mWXThirdLogin)){
             authorizeWx();
         }else if(v.equals(mWBThirdLogin)){
