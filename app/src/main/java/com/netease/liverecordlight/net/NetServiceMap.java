@@ -11,8 +11,10 @@ import com.netease.liverecordlight.net.responseResult.LoginResult;
 
 public enum NetServiceMap{
 
-    LoginServiceMap("publicKey", GetPKeyResult.class),
-    GetPKeyServiceMap("login", LoginResult.class);
+    GetPKeyServiceMap("publicKey", GetPKeyResult.class),
+    LoginServiceMap("login", LoginResult.class),
+    MonentList("moment/list", BaseResult.class);
+
 
     private static final String HOSTPATH = "http://139.199.20.201/";
     private String hostPath;
@@ -37,7 +39,7 @@ public enum NetServiceMap{
         return hostPath;
     }
 
-    public Class getResultClz(){
+    public Class<? extends BaseResult> getResultClz(){
         return resultType;
     }
 }

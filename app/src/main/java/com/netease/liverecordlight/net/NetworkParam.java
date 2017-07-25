@@ -2,6 +2,7 @@ package com.netease.liverecordlight.net;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -20,11 +21,10 @@ import okhttp3.Response;
 
 public class NetworkParam{
 
-    //public String hostPath;
+
     public boolean block;
     public boolean cancelAble;
     public BaseParam param;
-    public Class<? extends BaseResult> resultClass;
     public BaseResult baseResult;
    // public Handler handler;
     public String progressMessage;
@@ -33,7 +33,7 @@ public class NetworkParam{
     public String originResponseBody;
     public NetServiceMap key;
 
-    public NetworkParam(){}
+    private NetworkParam(){}
 
     public NetworkParam(final NetworkListener listener){
         this.networkListener = listener;
@@ -49,14 +49,15 @@ public class NetworkParam{
             public void onResponse(Call call, Response response) throws IOException {
                 if(response != null && response.body() != null){
                     originResponseBody = response.body().string();
-                    if(!TextUtils.isEmpty(originResponseBody)) {
+                    if(!TextUtils.isEmpty(originResponseBody) && key != null) {
+                        Log.i("network",originResponseBody);
                         try {
-                            baseResult = new Gson().fromJson(originResponseBody, resultClass);
-                            if (networkListener != null) {
-                                networkListener.onMsgSearchComplete(NetworkParam.this);
-                            }
+                            baseResult = new Gson().fromJson(originResponseBody, key.getResultClz());
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
+                        }
+                        if (networkListener != null) {
+                            networkListener.onMsgSearchComplete(NetworkParam.this);
                         }
                     }
                 }

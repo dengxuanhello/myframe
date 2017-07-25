@@ -39,14 +39,26 @@ public class RequestUtils {
         }
     }
 
+    public static void startGetRequest(NetworkParam networkParam){
+        if(networkParam == null || networkParam.key == null){
+            throw new IllegalArgumentException("request url must not be empty");
+        }
+        String getParams="";
+        if(networkParam.param!=null) {
+            getParams = assembleGetParam(networkParam.param);
+        }
+        String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi()+getParams;
+        if(!TextUtils.isEmpty(requestUrl)) {
+            startRequest(requestUrl, networkParam.callback);
+        }
+    }
+
     public static void startRequest(String url, Callback callback){
         startRequest(url,null,callback);
     }
 
     public static void startRequest(String url, RequestBody body, Callback callback){
-        if(httpClient == null){
-            httpClient = new OkHttpClient();
-        }
+        initOkhttp();
         Request request;
         if(body != null){
             request = new Request.Builder().url(url).post(body).build();
@@ -56,13 +68,10 @@ public class RequestUtils {
             Log.i("network",url);
         }
         httpClient.newCall(request).enqueue(callback);
-
     }
 
     public static void startRequest(NetworkParam networkParam){
-        if(httpClient == null){
-            httpClient = new OkHttpClient();
-        }
+        initOkhttp();
         if(networkParam == null || networkParam.key == null){
             throw new IllegalArgumentException("request url must not be empty");
         }
@@ -78,9 +87,7 @@ public class RequestUtils {
     }
 
     public static void uploadFile(String url, String pathName, String fileName, Callback callback) {
-        if(httpClient == null){
-            httpClient = new OkHttpClient();
-        }
+        initOkhttp();
         //判断文件类型
         MediaType MEDIA_TYPE = MediaType.parse(judgeType(pathName));
         //创建文件参数
@@ -97,9 +104,7 @@ public class RequestUtils {
     }
 
     public static void downLoadFile(String url, final String fileDir, final String fileName,final NetProgress progressListener){
-        if(httpClient == null){
-            httpClient = new OkHttpClient();
-        }
+        initOkhttp();
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -163,13 +168,39 @@ public class RequestUtils {
             for(Field f:clz.getDeclaredFields()){
                 f.setAccessible(true);
                 String name = f.getName();
+                if(name.startsWith("$")||"serialVersionUID".equals(name)){
+                    continue;
+                }
                 try {
-                    map.put(name ,f.get(name).toString());
+                    map.put(name ,f.get(param).toString());
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
         }
         return map;
+    }
+
+    private static String assembleGetParam(BaseParam param){
+        StringBuilder builder = new StringBuilder("?");
+        if(param != null){
+            Class<?> clz = param.getClass();
+            for(Field f:clz.getDeclaredFields()){
+                f.setAccessible(true);
+                String name = f.getName();
+                if(name.startsWith("$")||"serialVersionUID".equals(name)){
+                    continue;
+                }
+                try {
+                    builder.append(name).append("=").append(f.get(param).toString()).append("&");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(builder.toString().length()>0){
+            return builder.toString().substring(0,builder.toString().length()-1);
+        }
+        return builder.toString();
     }
 }

@@ -41,6 +41,7 @@
         </activity>
         <activity android:name=".biz.base.BaseActivity"/>
         <activity android:name=".biz.view.VideoPlayActivity"/>
+        <activity android:name=".biz.view.VideoRecorderActivity"/>
         <activity android:name=".biz.view.HomeActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>

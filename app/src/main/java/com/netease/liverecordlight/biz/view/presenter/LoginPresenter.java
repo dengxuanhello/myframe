@@ -14,19 +14,22 @@ import com.netease.liverecordlight.net.requestParam.GetPKeyParam;
 public class LoginPresenter extends BasePresenter<LoginActivity>{
 
     private void getPKey(String phone){
-        GetPKeyParam param = new GetPKeyParam();
-        param.phone = phone;
-        NetworkParam networkParam = new NetworkParam(this.mvpView);
-        networkParam.key = NetServiceMap.LoginServiceMap;
-        RequestUtils.startRequest(networkParam);
+        NetworkParam param = new NetworkParam(mvpView);
+        param.key = NetServiceMap.GetPKeyServiceMap;
+        GetPKeyParam getPKeyParam = new GetPKeyParam();
+        getPKeyParam.phone = phone;
+        param.param = getPKeyParam;
+        RequestUtils.startGetRequest(param);
     }
 
-    public void doLogin(){
-
+    public void doLogin(String phone){
+        getPKey(phone);
     }
 
     public void onMsgSearchComplete(NetworkParam param) {
+        if(param!=null && param.key == NetServiceMap.GetPKeyServiceMap){
 
+        }
     }
 
 }

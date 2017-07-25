@@ -2,6 +2,7 @@ package com.netease.liverecordlight.biz.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,15 +104,17 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         if(v.equals(mLoginBtn)){
-            presenter.doLogin();
+            if(!TextUtils.isEmpty(mAccountEt.getText())) {
+                presenter.doLogin(mAccountEt.getText().toString());
+            }
         }else if(v.equals(mRegistBtn)){
             goRegist();
         }else if(v.equals(mForgetPwdTv)){
-            VideoPlayActivity.startVideoPlay(this,VideoPlayActivity.TEST_RUL);
+            //VideoPlayActivity.startVideoPlay(this,VideoPlayActivity.TEST_RUL);
         }else if(v.equals(mWXThirdLogin)){
             authorizeWx();
         }else if(v.equals(mWBThirdLogin)){
-
+            //VideoRecorderActivity.startVideoRecordActivity(this);
         }else if(v.equals(mQQThirdLogin)){
 
         }
