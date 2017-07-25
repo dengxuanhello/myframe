@@ -1,11 +1,10 @@
 package com.netease.liverecordlight;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.netease.liverecordlight.QQIM.utils.Foreground;
+import com.mob.MobApplication;
 import com.netease.liverecordlight.constant.Config;
 import com.netease.liverecordlight.net.RequestUtils;
 import com.netease.liverecordlight.utils.CrashHandler;
@@ -13,28 +12,15 @@ import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
 import com.tencent.imsdk.TIMCallBack;
-import com.tencent.imsdk.TIMGroupReceiveMessageOpt;
-import com.tencent.imsdk.TIMLogLevel;
-import com.tencent.imsdk.TIMManager;
-import com.tencent.imsdk.TIMOfflinePushListener;
-import com.tencent.imsdk.TIMOfflinePushNotification;
-import com.tencent.imsdk.TIMSdkConfig;
-import com.tencent.qalsdk.sdk.MsfSdkUtils;
 import com.tencent.qcloud.presentation.business.InitBusiness;
 import com.tencent.qcloud.presentation.business.LoginBusiness;
 import com.tencent.qcloud.presentation.event.MessageEvent;
-/*
-import com.tencent.imsdk.TIMLogLevel;
-import com.tencent.imsdk.TIMManager;
-import com.tencent.imsdk.TIMSdkConfig;
-*/
-
 
 /**
  * Created by bjdengxuan1 on 2017/6/21.
  */
 
-public class APP extends Application{
+public class APP extends MobApplication {
     private static APP INSTANCE;
 
     @Override
@@ -69,7 +55,7 @@ public class APP extends Application{
             }
         });
         //initQqImsdk();
-        initQQImSDK2();
+        initQQImSDK();
     }
     public static APP getApp() {
         return INSTANCE;
@@ -78,17 +64,9 @@ public class APP extends Application{
         return INSTANCE;
     }
 
-    /*private void initQqImsdk(){
-        TIMSdkConfig config = new TIMSdkConfig(Config.QQ_IMSDK_SDK_APPID);
-        config.enableLogPrint(true)
-                .setLogLevel(TIMLogLevel.INFO);
-        TIMManager.getInstance().init(this,config);
-    }*/
-
-    private void initQQImSDK2(){
+    private void initQQImSDK(){
         //初始化IMSDK
         InitBusiness.start(getApplicationContext(),3);
-
         LoginBusiness.loginIm("dengxuan1", Config.QQ_SDK_SIG, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
