@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context="com.netease.liverecordlight.QQIM.ui.ImageViewActivity">
+    tools:context="com.dsgly.bixin.QQIM.ui.ImageViewActivity">
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"

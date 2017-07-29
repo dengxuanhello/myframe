@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.netease.liverecordlight.QQIM.ui.ChatActivity">
+    tools:context="com.dsgly.bixin.QQIM.ui.ChatActivity">
     <com.tencent.qcloud.ui.TemplateTitle
         android:id="@+id/chat_title"
         android:layout_width="match_parent"

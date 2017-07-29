@@ -9,15 +9,15 @@
         android:padding="10dp"
         android:text="@string/register"
         android:gravity="center"/>
-    <com.netease.liverecordlight.wigets.UserRegItemView
+    <com.dsgly.bixin.wigets.UserRegItemView
         android:id="@+id/reg_phone_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <com.netease.liverecordlight.wigets.UserRegItemView
+    <com.dsgly.bixin.wigets.UserRegItemView
         android:id="@+id/reg_verify_code_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <com.netease.liverecordlight.wigets.UserRegItemView
+    <com.dsgly.bixin.wigets.UserRegItemView
         android:id="@+id/reg_pwd_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>-->

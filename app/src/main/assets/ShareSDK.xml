@@ -93,8 +93,8 @@
     <Wechat
         Id="4"
         SortId="4"
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        AppId="wxab4b893296532627"
+        AppSecret="5e90fe95ee377cf3b75d3c5a6c662fd4"
         userName="gh_afb25ac019c9"
         path="/page/API/pages/share/share"
         BypassApproval="false"

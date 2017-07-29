@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/main_page_item_shape"
         android:gravity="center">
-        <com.netease.liverecordlight.wigets.ScaledImageView
+        <com.dsgly.bixin.wigets.ScaledImageView
             android:id="@+id/main_page_item_img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
