@@ -71,6 +71,7 @@ public class LoginActivity extends BaseActivity {
         }else if(v.equals(mRegistBtn)){
             presenter.goRegist();
         }else if(v.equals(mForgetPwdTv)){
+            presenter.showShare();
             //VideoPlayActivity.startVideoPlay(this,VideoPlayActivity.TEST_RUL);
         }else if(v.equals(mWXThirdLogin)){
             presenter.authorizeThirdParty(Wechat.NAME);

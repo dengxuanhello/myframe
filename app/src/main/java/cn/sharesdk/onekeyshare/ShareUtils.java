@@ -1,8 +1,9 @@
-package com.dx.thirdparty;
+package cn.sharesdk.onekeyshare;
 
 import android.content.Context;
 
-import cn.sharesdk.onekeyshare.OnekeyShare;
+import com.dsgly.bixin.R;
+
 
 /**
  * Created by bjdengxuan1 on 2017/6/27.
