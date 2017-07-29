@@ -42,11 +42,12 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
     }
 
     public void authorizeThirdParty(String name) {
+        mvpView.showToast("正在跳转...");
         Platform thirdAuth = ShareSDK.getPlatform(name);
         thirdAuth.setPlatformActionListener(new PlatformActionListener() {
             @Override
             public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-
+                Log.i("dx",hashMap.size()+"");
             }
 
             @Override
@@ -59,7 +60,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
                 Log.i("dx",i+"");
             }
         });
-        thirdAuth.authorize();
+        thirdAuth.showUser(null);
     }
 
     public void onMsgSearchComplete(NetworkParam param) {

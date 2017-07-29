@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 /**
  * Created by bjdengxuan1 on 2017/6/29.
@@ -18,7 +19,7 @@ public class PresLayerComHelper implements PresLayerComInterface {
 
     @Override
     public void showToast(String msg) {
-
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override
