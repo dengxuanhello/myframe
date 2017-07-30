@@ -2,25 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<TextView
-        android:id="@+id/topHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/register"
-        android:gravity="center"/>
-    <com.dsgly.bixin.wigets.UserRegItemView
-        android:id="@+id/reg_phone_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <com.dsgly.bixin.wigets.UserRegItemView
-        android:id="@+id/reg_verify_code_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <com.dsgly.bixin.wigets.UserRegItemView
-        android:id="@+id/reg_pwd_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>-->
     <EditText
         android:id="@+id/user_account"
         android:layout_width="match_parent"
@@ -58,6 +39,7 @@
         android:hint="@string/input_user_pwd"
         android:padding="20dp"/>
     <Button
+        android:id="@+id/btn_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"

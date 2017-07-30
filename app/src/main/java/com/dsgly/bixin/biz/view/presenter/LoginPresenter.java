@@ -1,16 +1,24 @@
 package com.dsgly.bixin.biz.view.presenter;
 
 import android.content.Intent;
+import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BasePresenter;
+import com.dsgly.bixin.biz.view.HomeActivity;
 import com.dsgly.bixin.biz.view.LoginActivity;
 import com.dsgly.bixin.biz.view.RegisterActivity;
 import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.requestParam.GetPKeyParam;
+import com.dsgly.bixin.net.requestParam.LoginParam;
+import com.dsgly.bixin.net.responseResult.LoginResult;
+import com.dsgly.bixin.utils.RSAUtils;
+
 import java.util.HashMap;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -22,23 +30,18 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 public class LoginPresenter extends BasePresenter<LoginActivity>{
 
-    private void getPKey(String phone){
-        NetworkParam param = new NetworkParam(mvpView);
-        param.key = NetServiceMap.GetPKeyServiceMap;
-        GetPKeyParam getPKeyParam = new GetPKeyParam();
-        getPKeyParam.phone = phone;
-        param.param = getPKeyParam;
-        RequestUtils.startGetRequest(param);
-    }
-
     public void doLogin(String phone){
-        getPKey(phone);
+        getPKey(phone,mvpView);
     }
 
     public void goRegist(){
         Intent intent = new Intent();
         intent.setClass(mvpView,RegisterActivity.class);
         mvpView.startActivity(intent);
+    }
+
+    public void goHomePage(){
+
     }
 
     public void authorizeThirdParty(String name) {
@@ -67,8 +70,33 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
     }
 
     public void onMsgSearchComplete(NetworkParam param) {
-        if(param!=null && param.key == NetServiceMap.GetPKeyServiceMap){
-
+        if(param == null){
+            return;
+        }
+        if(param.key == NetServiceMap.GetPKeyServiceMap){
+            String pkey = param.originResponseBody;
+            LoginParam loginParam = new LoginParam();
+            loginParam.phone = "13521763794";
+            pkey = pkey.replace("\r","").replace("\n","").replace("\t","");
+            loginParam.password = RSAUtils.encrypt(pkey,System.currentTimeMillis() + mvpView.mPwdEt.getText().toString());
+            loginParam.appVersion = "1.0.0";
+            loginParam.phoneModel = Build.MODEL;
+            NetworkParam networkParam = new NetworkParam(mvpView);
+            networkParam.key = NetServiceMap.LoginServiceMap;
+            networkParam.param = loginParam;
+            RequestUtils.startRequest(networkParam);
+        }else if(param.key == NetServiceMap.LoginServiceMap){
+            LoginResult result = (LoginResult) param.baseResult;
+            if(result == null){
+                return;
+            }
+            if("200".equals(result.code)) {
+                //TODO save userdata
+                mvpView.showToast("登陆成功");
+                HomeActivity.startHomeActivity(mvpView);
+            }else {
+                mvpView.showToast(result.msg);
+            }
         }
     }
 

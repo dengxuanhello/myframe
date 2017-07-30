@@ -19,9 +19,9 @@ import cn.sharesdk.wechat.friends.Wechat;
  */
 
 public class LoginActivity extends BaseActivity {
-    private EditText mAccountEt;
-    private EditText mPwdEt;
-    private Button mLoginBtn;
+    public EditText mAccountEt;
+    public EditText mPwdEt;
+    public Button mLoginBtn;
     private Button mRegistBtn;
     private TextView mForgetPwdTv;
     private ImageView mWXThirdLogin;
@@ -48,6 +48,7 @@ public class LoginActivity extends BaseActivity {
         mWXThirdLogin.setOnClickListener(this);
         mWBThirdLogin.setOnClickListener(this);
         mQQThirdLogin.setOnClickListener(this);
+        mAccountEt.setText("13521763794");
     }
 
     @Override
@@ -65,8 +66,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void onClick(View v) {
         if(v.equals(mLoginBtn)){
-            if(!TextUtils.isEmpty(mAccountEt.getText())) {
+            if(!TextUtils.isEmpty(mAccountEt.getText())
+                    &&!TextUtils.isEmpty(mPwdEt.getText())) {
                 presenter.doLogin(mAccountEt.getText().toString());
+            }else {
+                showToast("输入用户名和密码");
             }
         }else if(v.equals(mRegistBtn)){
             presenter.goRegist();

@@ -12,7 +12,6 @@ public class MainPageDataResult extends BaseResult {
     private static final long serialVersionUID = 1L;
     public ArrayList<MomentData> data;
     public String cursor;
-    public String msg;
     public String pageNo;
     public String pageSize;
     public String totalCount;

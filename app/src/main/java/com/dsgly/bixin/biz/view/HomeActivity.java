@@ -1,5 +1,7 @@
 package com.dsgly.bixin.biz.view;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -26,6 +28,14 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private RadioButton mChatPageBtn;
     private RadioButton mSettingsPageBtn;
     private RadioGroup radioGroup;
+
+    public static void startHomeActivity(Context context){
+        if(context != null) {
+            Intent intent = new Intent();
+            intent.setClass(context, HomeActivity.class);
+            context.startActivity(intent);
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

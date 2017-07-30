@@ -3,6 +3,7 @@ package com.dsgly.bixin.net;
 import com.dsgly.bixin.net.responseResult.BaseResult;
 import com.dsgly.bixin.net.responseResult.GetPKeyResult;
 import com.dsgly.bixin.net.responseResult.LoginResult;
+import com.dsgly.bixin.net.responseResult.RegistResult;
 
 /**
  * 所有的后端Api在此申明
@@ -13,6 +14,11 @@ public enum NetServiceMap{
 
     GetPKeyServiceMap("publicKey", GetPKeyResult.class),
     LoginServiceMap("login", LoginResult.class),
+    RegistServiceMap("signIn",RegistResult.class),
+    SendVCodeMap("sendCode",BaseResult.class),
+    GetServerTime("serverTime",BaseResult.class),
+    LogOut("logOut",BaseResult.class),
+    ThirdPartyLogin("thirdPartyLogin",BaseResult.class),
     MonentList("moment/list", BaseResult.class);
 
 

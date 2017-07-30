@@ -30,7 +30,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.dsgly.bixin.biz.view.TestActivity">
@@ -41,6 +41,13 @@
         </activity>
         <activity android:name="com.dsgly.bixin.biz.base.BaseActivity"/>
         <activity android:name="com.dsgly.bixin.biz.view.VideoPlayActivity"/>
+        <activity android:name=".biz.base.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity android:name="com.dsgly.bixin.biz.view.VideoRecorderActivity"/>
         <activity android:name="com.dsgly.bixin.biz.view.HomeActivity"
             android:screenOrientation="portrait">
@@ -51,10 +58,7 @@
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.LoginActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.RegisterActivity"/>
         <activity android:name="com.dsgly.bixin.biz.view.SchemeActivity"

@@ -49,6 +49,9 @@ public class RequestUtils {
         }
         String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi()+getParams;
         if(!TextUtils.isEmpty(requestUrl)) {
+            if(networkParam.block){
+                networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
+            }
             startRequest(requestUrl, networkParam.callback);
         }
     }
@@ -61,7 +64,7 @@ public class RequestUtils {
         initOkhttp();
         Request request;
         if(body != null){
-            request = new Request.Builder().url(url).post(body).build();
+            request = new Request.Builder().url(url).post(body).addHeader("token-param",createRandom(false,16)).build();
             Log.i("network",url+body.toString());
         }else {
             request = new Request.Builder().url(url).build();
@@ -82,6 +85,9 @@ public class RequestUtils {
         }
         String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi();
         if(!TextUtils.isEmpty(requestUrl)) {
+            if(networkParam.block){
+                networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
+            }
             startRequest(requestUrl, builder.build(), networkParam.callback);
         }
     }
@@ -172,7 +178,9 @@ public class RequestUtils {
                     continue;
                 }
                 try {
-                    map.put(name ,f.get(param).toString());
+                    if(f.get(param)!=null) {
+                        map.put(name, f.get(param).toString());
+                    }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -192,7 +200,9 @@ public class RequestUtils {
                     continue;
                 }
                 try {
-                    builder.append(name).append("=").append(f.get(param).toString()).append("&");
+                    if(f.get(param)!=null) {
+                        builder.append(name).append("=").append(f.get(param).toString()).append("&");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -202,5 +212,30 @@ public class RequestUtils {
             return builder.toString().substring(0,builder.toString().length()-1);
         }
         return builder.toString();
+    }
+
+    public static String createRandom(boolean numberFlag, int length){
+        String retStr = "";
+        String strTable = numberFlag ? "1234567890" : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        int len = strTable.length();
+        boolean bDone = true;
+        do {
+            retStr = "";
+            int count = 0;
+            for (int i = 0; i < length; i++) {
+                double dblR = Math.random() * len;
+                int intR = (int) Math.floor(dblR);
+                char c = strTable.charAt(intR);
+                if (('0' <= c) && (c <= '9')) {
+                    count++;
+                }
+                retStr += strTable.charAt(intR);
+            }
+            if (count >= 2) {
+                bDone = false;
+            }
+        } while (bDone);
+
+        return retStr.replace("\n","");
     }
 }

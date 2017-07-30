@@ -1,5 +1,6 @@
 package com.dsgly.bixin.biz.base;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import com.dsgly.bixin.net.NetworkListener;
 import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.wigets.ProgressHUD;
 /*import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageListener;*/
@@ -25,6 +27,7 @@ public class BaseActivity extends FragmentActivity implements
 
     private PresLayerComHelper presLayerComHelper;
     public BasePresenter presenter;
+    private ProgressHUD progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,18 +50,25 @@ public class BaseActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onNetStart(NetworkParam param) {
-
+    public void onNetStart(final NetworkParam param) {
+        if(param != null && !this.isFinishing()) {
+            progressDialog = ProgressHUD.show(this, param.progressMessage, param.cancelAble, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    onNetCancel(param);
+                }
+            });
+        }
     }
 
     @Override
     public void onNetEnd(NetworkParam param) {
-
+        closeProgressDialog();
     }
 
     @Override
     public void onNetError(NetworkParam param) {
-
+        closeProgressDialog();
     }
 
     @Override
@@ -150,6 +160,12 @@ public class BaseActivity extends FragmentActivity implements
             presenter.detachView(this);
         }
         super.onDestroy();
+    }
+
+    public void closeProgressDialog(){
+        if(progressDialog != null && !this.isFinishing()){
+            progressDialog.dismiss();
+        }
     }
 
     /*@Override
