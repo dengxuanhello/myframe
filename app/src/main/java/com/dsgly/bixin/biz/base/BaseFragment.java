@@ -1,11 +1,13 @@
 package com.dsgly.bixin.biz.base;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.dsgly.bixin.net.NetworkListener;
 import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.wigets.ProgressHUD;
 /*import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMMessageListener;*/
@@ -15,7 +17,7 @@ import com.tencent.imsdk.TIMMessageListener;*/
  */
 
 public class BaseFragment extends Fragment implements NetworkListener/*, TIMMessageListener */{
-
+    private ProgressHUD progressDialog;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -24,17 +26,17 @@ public class BaseFragment extends Fragment implements NetworkListener/*, TIMMess
 
     @Override
     public void onNetStart(NetworkParam param) {
-
+        showProgress(param);
     }
 
     @Override
     public void onNetEnd(NetworkParam param) {
-
+        closeProgressDialog();
     }
 
     @Override
     public void onNetError(NetworkParam param) {
-
+        closeProgressDialog();
     }
 
     @Override
@@ -45,6 +47,25 @@ public class BaseFragment extends Fragment implements NetworkListener/*, TIMMess
     @Override
     public void onMsgSearchComplete(NetworkParam param) {
 
+    }
+
+    private void showProgress(final NetworkParam param){
+        if(getActivity() != null && param != null && !getActivity().isFinishing()) {
+            progressDialog = ProgressHUD.show(getActivity(), param.progressMessage, param.cancelAble, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    onNetCancel(param);
+                }
+            });
+        }
+    }
+
+    public void closeProgressDialog(){
+        if(getActivity() != null && progressDialog != null && !getActivity().isFinishing()){
+            if(progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
     }
 
    /* @Override

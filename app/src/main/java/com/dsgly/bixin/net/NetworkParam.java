@@ -13,6 +13,7 @@ import com.dsgly.bixin.net.requestParam.BaseParam;
 import com.dsgly.bixin.net.responseResult.BaseResult;
 
 import java.io.IOException;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,7 +40,7 @@ public class NetworkParam{
     public NetworkListener networkListener;
     public String originResponseBody;
     public NetServiceMap key;
-
+    public Map<String,String> headers;
     private NetworkParam(){}
 
     Handler handler = new Handler(Looper.getMainLooper()){

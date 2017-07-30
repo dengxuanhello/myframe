@@ -14,6 +14,7 @@ import java.net.FileNameMap;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -44,7 +45,7 @@ public class RequestUtils {
             throw new IllegalArgumentException("request url must not be empty");
         }
         String getParams="";
-        if(networkParam.param!=null) {
+        if(networkParam.param != null) {
             getParams = assembleGetParam(networkParam.param);
         }
         String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi()+getParams;
@@ -52,16 +53,12 @@ public class RequestUtils {
             if(networkParam.block){
                 networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
             }
-            startRequest(requestUrl, networkParam.callback);
+            startRequest(requestUrl,null,networkParam.callback,networkParam.headers);
         }
     }
 
-    public static void startRequest(String url, Callback callback){
-        startRequest(url,null,callback);
-    }
-
-    public static void startRequest(String url, RequestBody body, Callback callback){
-        initOkhttp();
+    /*public static void startRequest(String url, RequestBody body, Callback callback){
+        *//*initOkhttp();
         Request request;
         if(body != null){
             request = new Request.Builder().url(url).post(body).addHeader("token-param",createRandom(false,16)).build();
@@ -70,6 +67,28 @@ public class RequestUtils {
             request = new Request.Builder().url(url).build();
             Log.i("network",url);
         }
+        httpClient.newCall(request).enqueue(callback);*//*
+        startRequest(url,body,callback,null);
+    }*/
+
+    public static void startRequest(String url, RequestBody body, Callback callback,Map<String,String> headers){
+        initOkhttp();
+        Request request;
+        Request.Builder builder;
+        if(body != null){
+            builder = new Request.Builder().url(url).post(body);
+            Log.i("network",url+body.toString());
+        }else {
+            builder = new Request.Builder().url(url);
+            Log.i("network",url);
+        }
+        if(headers != null){
+            Set<String> keyset = headers.keySet();
+            for(String key : keyset){
+                builder.addHeader(key,headers.get(key));
+            }
+        }
+        request = builder.build();
         httpClient.newCall(request).enqueue(callback);
     }
 
@@ -88,7 +107,7 @@ public class RequestUtils {
             if(networkParam.block){
                 networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
             }
-            startRequest(requestUrl, builder.build(), networkParam.callback);
+            startRequest(requestUrl, builder.build(), networkParam.callback,networkParam.headers);
         }
     }
 
@@ -212,30 +231,5 @@ public class RequestUtils {
             return builder.toString().substring(0,builder.toString().length()-1);
         }
         return builder.toString();
-    }
-
-    public static String createRandom(boolean numberFlag, int length){
-        String retStr = "";
-        String strTable = numberFlag ? "1234567890" : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        int len = strTable.length();
-        boolean bDone = true;
-        do {
-            retStr = "";
-            int count = 0;
-            for (int i = 0; i < length; i++) {
-                double dblR = Math.random() * len;
-                int intR = (int) Math.floor(dblR);
-                char c = strTable.charAt(intR);
-                if (('0' <= c) && (c <= '9')) {
-                    count++;
-                }
-                retStr += strTable.charAt(intR);
-            }
-            if (count >= 2) {
-                bDone = false;
-            }
-        } while (bDone);
-
-        return retStr.replace("\n","");
     }
 }

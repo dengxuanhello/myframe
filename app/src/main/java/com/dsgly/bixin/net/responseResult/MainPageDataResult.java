@@ -32,103 +32,23 @@ public class MainPageDataResult extends BaseResult {
         public String userId;
         public String videoPath;
         public String videoPathOrigin;
-
     }
 
-    private String previewPic; //url
-    private String authorName;     // 作者姓名
-    private String authorConstellation;// 作者星座
-    private String content;// 发布内容
-    private String gmtCreated;// 发布时间
-    private String gmtModified;//"2017-07-26T11:38:09.324Z",
-    private String starNum;// 点赞数
-    private String commentNum;// 评论数
-    private String gender;//0 未知 1男 2女
-    private String hasStared;
-    private String id;
-    private String userId;
-    private String videoPath;
-    private String videoPathOrigin;
-
-    public static ArrayList<MainPageDataResult> getTestData(){
-        ArrayList<MainPageDataResult> list = new ArrayList<MainPageDataResult>();
+    public static ArrayList<MomentData> getTestData(){
+        ArrayList<MomentData> list = new ArrayList<MomentData>();
         for (int i=0;i<10;i++){
-            MainPageDataResult result = new MainPageDataResult();
-            result.setPreviewPic("");
-            result.setAuthorName("邓选"+i);
-            result.setGender(String.valueOf(i%2+1));
+            MomentData result = new MomentData();
+            result.previewPic=("");
+            result.authorName = ("邓选"+i);
+            result.gender = (String.valueOf(i%2+1));
             Log.e("dx",String.valueOf(i%2));
-            result.setAuthorConstellation("双子座");
-            result.setContent("今天的天气真好");
-            result.setGmtCreated("2017-06-15 17:20");
-            result.setStarNum("66");
-            result.setCommentNum("16");
+            result.authorConstellation = ("双子座");
+            result.content = ("今天的天气真好");
+            result.gmtCreated = ("2017-06-15 17:20");
+            result.starNum = ("66");
+            result.commentNum = ("16");
             list.add(result);
         }
         return list;
-    }
-
-    public String getPreviewPic() {
-        return previewPic;
-    }
-
-    public void setPreviewPic(String previewPic) {
-        this.previewPic = previewPic;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getAuthorConstellation() {
-        return authorConstellation;
-    }
-
-    public void setAuthorConstellation(String authorConstellation) {
-        this.authorConstellation = authorConstellation;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getGmtCreated() {
-        return gmtCreated;
-    }
-
-    public void setGmtCreated(String gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
-
-    public String getStarNum() {
-        return starNum;
-    }
-
-    public void setStarNum(String starNum) {
-        this.starNum = starNum;
-    }
-
-    public String getCommentNum() {
-        return commentNum;
-    }
-
-    public void setCommentNum(String commentNum) {
-        this.commentNum = commentNum;
     }
 }

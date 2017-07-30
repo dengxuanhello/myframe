@@ -12,7 +12,10 @@ import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.requestParam.RegistParam;
 import com.dsgly.bixin.net.requestParam.SendVcodeParam;
 import com.dsgly.bixin.net.responseResult.RegistResult;
+import com.dsgly.bixin.utils.CommonUtils;
 import com.dsgly.bixin.utils.RSAUtils;
+
+import java.util.HashMap;
 
 /**
  * Created by dengxuan on 2017/7/29.
@@ -49,6 +52,8 @@ public class RegisterPresenter extends BasePresenter<RegisterActivity> {
             NetworkParam networkParam = new NetworkParam(mvpView);
             networkParam.key = NetServiceMap.RegistServiceMap;
             networkParam.param = registParam;
+            networkParam.headers = new HashMap<String, String>();
+            networkParam.headers.put(LoginPresenter.TOKEN_PARAM, CommonUtils.createRandom(false,16));
             RequestUtils.startRequest(networkParam);
         }else if(param.key == NetServiceMap.SendVCodeMap){
             if(param.baseResult == null){

@@ -22,10 +22,10 @@ import java.util.List;
 
 public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<MainPageDataResult> mMainPageDataList;
+    private List<MainPageDataResult.MomentData> mMainPageDataList;
     private Context mContext;
 
-    public MainPageAdapter(List<MainPageDataResult> list,Context context){
+    public MainPageAdapter(List<MainPageDataResult.MomentData> list,Context context){
         this.mMainPageDataList = list;
         this.mContext = context;
     }
@@ -39,20 +39,20 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        MainPageDataResult result = mMainPageDataList.get(position);
+        MainPageDataResult.MomentData result = mMainPageDataList.get(position);
         if(holder instanceof MainPageViewItemHolder){
             ((MainPageViewItemHolder) holder).scaledImageView.setBackgroundResource(R.drawable.test);
-            ((MainPageViewItemHolder) holder).authorName.setText(result.getAuthorName());
-            if(!TextUtils.isEmpty(result.getGender())&&!"0".equals(result.getGender())) {
-                ((MainPageViewItemHolder) holder).authorName.setCompoundDrawables(null, null, getDrawableByType("1".equals(result.getGender()) ? R.drawable.icon_boy : R.drawable.icon_girl), null);
+            ((MainPageViewItemHolder) holder).authorName.setText(result.authorName);
+            if(!TextUtils.isEmpty(result.gender)&&!"0".equals(result.gender)) {
+                ((MainPageViewItemHolder) holder).authorName.setCompoundDrawables(null, null, getDrawableByType("1".equals(result.gender) ? R.drawable.icon_boy : R.drawable.icon_girl), null);
             }else {
                 ((MainPageViewItemHolder) holder).authorName.setCompoundDrawables(null, null, null, null);
             }
-            ((MainPageViewItemHolder) holder).authorConstellation.setText(result.getAuthorConstellation());
-            ((MainPageViewItemHolder) holder).issuesCommentNum.setText(result.getCommentNum());
-            ((MainPageViewItemHolder) holder).issuesContent.setText(result.getContent());
-            ((MainPageViewItemHolder) holder).issuesContentTime.setText(result.getGmtCreated());
-            ((MainPageViewItemHolder) holder).issuesLikeNum.setText(result.getStarNum());
+            ((MainPageViewItemHolder) holder).authorConstellation.setText(result.authorConstellation);
+            ((MainPageViewItemHolder) holder).issuesCommentNum.setText(result.commentNum);
+            ((MainPageViewItemHolder) holder).issuesContent.setText(result.content);
+            ((MainPageViewItemHolder) holder).issuesContentTime.setText(result.gmtCreated);
+            ((MainPageViewItemHolder) holder).issuesLikeNum.setText(result.starNum);
             ((MainPageViewItemHolder) holder).issuesLikeNum.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,5 +95,9 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             issuesLikeNum = (TextView) itemView.findViewById(R.id.issues_content_like_num);
             issuesCommentNum = (TextView) itemView.findViewById(R.id.issues_content_comment_num);
         }
+    }
+
+    public void setMainPageDataList(List<MainPageDataResult.MomentData> mMainPageDataList) {
+        this.mMainPageDataList = mMainPageDataList;
     }
 }

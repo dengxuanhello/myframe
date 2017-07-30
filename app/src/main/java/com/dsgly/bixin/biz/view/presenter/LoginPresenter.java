@@ -12,9 +12,10 @@ import com.dsgly.bixin.biz.view.RegisterActivity;
 import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
-import com.dsgly.bixin.net.requestParam.GetPKeyParam;
 import com.dsgly.bixin.net.requestParam.LoginParam;
 import com.dsgly.bixin.net.responseResult.LoginResult;
+import com.dsgly.bixin.utils.AESUtils;
+import com.dsgly.bixin.utils.CommonUtils;
 import com.dsgly.bixin.utils.RSAUtils;
 
 import java.util.HashMap;
@@ -29,6 +30,8 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
  */
 
 public class LoginPresenter extends BasePresenter<LoginActivity>{
+
+    public static final String TOKEN_PARAM = "token-param";
 
     public void doLogin(String phone){
         getPKey(phone,mvpView);
@@ -84,6 +87,8 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
             NetworkParam networkParam = new NetworkParam(mvpView);
             networkParam.key = NetServiceMap.LoginServiceMap;
             networkParam.param = loginParam;
+            networkParam.headers = new HashMap<String, String>();
+            networkParam.headers.put(TOKEN_PARAM, CommonUtils.createRandom(false,16));
             RequestUtils.startRequest(networkParam);
         }else if(param.key == NetServiceMap.LoginServiceMap){
             LoginResult result = (LoginResult) param.baseResult;
@@ -93,11 +98,20 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
             if("200".equals(result.code)) {
                 //TODO save userdata
                 mvpView.showToast("登陆成功");
-                HomeActivity.startHomeActivity(mvpView);
+                Log.i("dx","1"+AESUtils.AESDncode(param.headers.get(TOKEN_PARAM),result.data.token));
+                goMainPage();
+                //HomeActivity.startHomeActivity(mvpView);
             }else {
                 mvpView.showToast(result.msg);
             }
         }
+    }
+
+    private void goMainPage(){
+        Intent intent = new Intent();
+        intent.setClass(mvpView, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        mvpView.startActivity(intent);
     }
 
     public void showShare() {

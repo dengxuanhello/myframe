@@ -3,6 +3,7 @@ package com.dsgly.bixin.net;
 import com.dsgly.bixin.net.responseResult.BaseResult;
 import com.dsgly.bixin.net.responseResult.GetPKeyResult;
 import com.dsgly.bixin.net.responseResult.LoginResult;
+import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.net.responseResult.RegistResult;
 
 /**
@@ -19,7 +20,7 @@ public enum NetServiceMap{
     GetServerTime("serverTime",BaseResult.class),
     LogOut("logOut",BaseResult.class),
     ThirdPartyLogin("thirdPartyLogin",BaseResult.class),
-    MonentList("moment/list", BaseResult.class);
+    MonentList("moment/list", MainPageDataResult.class);
 
 
     private static final String HOSTPATH = "http://139.199.20.201/";

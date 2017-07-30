@@ -164,7 +164,9 @@ public class BaseActivity extends FragmentActivity implements
 
     public void closeProgressDialog(){
         if(progressDialog != null && !this.isFinishing()){
-            progressDialog.dismiss();
+            if(progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 

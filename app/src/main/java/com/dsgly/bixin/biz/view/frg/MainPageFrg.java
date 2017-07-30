@@ -11,8 +11,12 @@ import android.view.ViewGroup;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.adapter.MainPageAdapter;
+import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.net.RequestUtils;
+import com.dsgly.bixin.net.requestParam.MainPageDataParam;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
+import com.dsgly.bixin.utils.ArrayUtils;
 
 import java.util.List;
 
@@ -24,7 +28,7 @@ import java.util.List;
 public class MainPageFrg extends BaseFragment {
 
     private RecyclerView mListview;
-    private List<MainPageDataResult> mMainPageDataList;
+    private List<MainPageDataResult.MomentData> mMainPageDataList;
     private MainPageAdapter mMainPageAdapter;
 
     public static MainPageFrg newInstance(Bundle bundle){
@@ -43,6 +47,7 @@ public class MainPageFrg extends BaseFragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         manager.setStackFromEnd(true);
         mListview.setLayoutManager(manager);
+
         return mainPage;
     }
 
@@ -53,14 +58,37 @@ public class MainPageFrg extends BaseFragment {
         mMainPageAdapter = new MainPageAdapter(mMainPageDataList,getContext());
         mListview.setAdapter(mMainPageAdapter);
         mMainPageAdapter.notifyDataSetChanged();
+
+        requestMainPageData();
     }
 
     @Override
     public void onMsgSearchComplete(NetworkParam param) {
         super.onMsgSearchComplete(param);
-        //mMainPageDataList = param.baseResult.data
-        mMainPageAdapter = new MainPageAdapter(mMainPageDataList,getContext());
-        mListview.setAdapter(mMainPageAdapter);
-
+        if(param == null){
+            return;
+        }
+        if(param.key == NetServiceMap.MonentList){
+            MainPageDataResult result = (MainPageDataResult) param.baseResult;
+            if(result != null && !ArrayUtils.isEmpty(result.data)){
+                mMainPageDataList = result.data;
+                mMainPageAdapter.setMainPageDataList(mMainPageDataList);
+                mMainPageAdapter.notifyDataSetChanged();
+            }
+        }
     }
+
+    private void requestMainPageData(){
+        MainPageDataParam mainPageDataParam = new MainPageDataParam();
+        mainPageDataParam.cursor = "1";
+        mainPageDataParam.pageSize = "20";
+
+        NetworkParam networkParam = new NetworkParam(this);
+        networkParam.param = mainPageDataParam;
+        networkParam.key = NetServiceMap.MonentList;
+
+        RequestUtils.startGetRequest(networkParam);
+    }
+
+
 }
