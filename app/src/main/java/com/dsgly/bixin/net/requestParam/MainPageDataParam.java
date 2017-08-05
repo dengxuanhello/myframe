@@ -7,4 +7,5 @@ package com.dsgly.bixin.net.requestParam;
 public class MainPageDataParam extends BaseParam {
     public String cursor;
     public String pageSize;
+    public String meId;
 }

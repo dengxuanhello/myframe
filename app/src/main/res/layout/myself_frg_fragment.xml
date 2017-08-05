@@ -45,6 +45,7 @@
             android:paddingRight="20dp"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/my_video_moments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -57,7 +58,6 @@
             android:padding="10dp"
             android:src="@drawable/list_my_video_dynamic"/>
         <TextView
-            android:id="@+id/my_video_moments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/my_video_moments"
@@ -65,6 +65,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/share_to_my_frends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -77,13 +78,13 @@
             android:padding="10dp"
             android:src="@drawable/list_share_it_with_friends"/>
         <TextView
-            android:id="@+id/share_to_my_frends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="@string/share_to_my_frends"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/my_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -96,7 +97,6 @@
             android:padding="10dp"
             android:src="@drawable/list_set"/>
         <TextView
-            android:id="@+id/my_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

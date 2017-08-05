@@ -58,7 +58,14 @@
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.LoginActivity"
             android:screenOrientation="portrait">
-
+        </activity>
+        <activity android:name="com.dsgly.bixin.biz.view.SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.dsgly.bixin.biz.view.BindPhoneActivity"
+            android:screenOrientation="portrait">
+        </activity>UpdatePwdActivity
+        <activity android:name="com.dsgly.bixin.biz.view.UpdatePwdActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.RegisterActivity"/>
         <activity android:name="com.dsgly.bixin.biz.view.SchemeActivity"

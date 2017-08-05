@@ -7,9 +7,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.dsgly.bixin.R;
+import com.dsgly.bixin.biz.view.HomeActivity;
 import com.dsgly.bixin.biz.view.LoginActivity;
 import com.dsgly.bixin.constant.Config;
 import com.dsgly.bixin.net.RequestUtils;
+import com.dsgly.bixin.net.responseResult.UserInfo;
+import com.dsgly.bixin.utils.UCUtils;
 import com.tencent.android.tpush.XGIOperateCallback;
 import com.tencent.android.tpush.XGPushConfig;
 import com.tencent.android.tpush.XGPushManager;
@@ -68,7 +71,7 @@ public class SplashActivity extends BaseActivity{
     private void initQQImSDK(){
         //初始化IMSDK
         InitBusiness.start(getApplicationContext(),3);
-        LoginBusiness.loginIm("dengxuan1", Config.QQ_SDK_SIG, new TIMCallBack() {
+        /*LoginBusiness.loginIm("dengxuan1", Config.QQ_SDK_SIG, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
                 Log.i("dx",s);
@@ -79,7 +82,7 @@ public class SplashActivity extends BaseActivity{
                 Log.i("dx","login success");
                 MessageEvent.getInstance();
             }
-        });
+        });*/
 
         /*Foreground.init(this);
         TIMSdkConfig config = new TIMSdkConfig(Config.QQ_IMSDK_SDK_APPID);
@@ -101,7 +104,13 @@ public class SplashActivity extends BaseActivity{
 
     private void disPatchLogic(){
         Intent intent = new Intent();
-        intent.setClass(this, LoginActivity.class);
+        UserInfo userInfo = UCUtils.getInstance().getUserInfo();
+        if(userInfo != null){
+            intent.setClass(this, HomeActivity.class);
+            UCUtils.getInstance().loginQqIM(userInfo.userId);
+        }else {
+            intent.setClass(this, LoginActivity.class);
+        }
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

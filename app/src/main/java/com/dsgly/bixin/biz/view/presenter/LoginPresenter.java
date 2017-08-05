@@ -13,10 +13,12 @@ import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.requestParam.LoginParam;
+import com.dsgly.bixin.net.responseResult.GetUserInfoResult;
 import com.dsgly.bixin.net.responseResult.LoginResult;
 import com.dsgly.bixin.utils.AESUtils;
 import com.dsgly.bixin.utils.CommonUtils;
 import com.dsgly.bixin.utils.RSAUtils;
+import com.dsgly.bixin.utils.UCUtils;
 
 import java.util.HashMap;
 
@@ -97,14 +99,29 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
             }
             if("200".equals(result.code)) {
                 //TODO save userdata
-                mvpView.showToast("登陆成功");
-                Log.i("dx","1"+AESUtils.AESDncode(param.headers.get(TOKEN_PARAM),result.data.token));
-                goMainPage();
+                UCUtils.mid = result.data.meId;
+                //mvpView.showToast();
+                //goMainPage();
+                getUserInfo();
                 //HomeActivity.startHomeActivity(mvpView);
             }else {
                 mvpView.showToast(result.msg);
             }
+        }else if(param.key == NetServiceMap.USER){
+            if(param.baseResult!= null && param.baseResult instanceof GetUserInfoResult) {
+                GetUserInfoResult result = (GetUserInfoResult) param.baseResult;
+                UCUtils.getInstance().saveUserinfo(result.data);
+                UCUtils.getInstance().loginQqIM(result.data.userId);
+                goMainPage();
+            }
         }
+    }
+
+    private void getUserInfo(){
+        NetworkParam networkParam = new NetworkParam(mvpView);
+        networkParam.key = NetServiceMap.USER;
+        networkParam.progressMessage = "登陆成功,正在获取用户信息";
+        RequestUtils.startGetRequest(networkParam);
     }
 
     private void goMainPage(){
@@ -140,4 +157,6 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
         // 启动分享GUI
         oks.show(mvpView);
     }
+
+
 }

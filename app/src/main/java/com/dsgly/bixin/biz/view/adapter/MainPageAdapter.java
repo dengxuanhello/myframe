@@ -1,7 +1,9 @@
 package com.dsgly.bixin.biz.view.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.icu.util.Freezable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.wigets.ScaledImageView;
@@ -39,10 +42,20 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        MainPageDataResult.MomentData result = mMainPageDataList.get(position);
+        final MainPageDataResult.MomentData result = mMainPageDataList.get(position);
         if(holder instanceof MainPageViewItemHolder){
-            ((MainPageViewItemHolder) holder).scaledImageView.setBackgroundResource(R.drawable.test);
-            ((MainPageViewItemHolder) holder).authorName.setText(result.authorName);
+            //((MainPageViewItemHolder) holder).scaledImageView.setBackgroundResource(R.drawable.test);
+            Glide.with(mContext).load(result.previewPic).into(((MainPageViewItemHolder) holder).scaledImageView);
+            ((MainPageViewItemHolder) holder).scaledImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onViewClickedListener!=null){
+                        onViewClickedListener.onImageViewClicked(result);
+                    }
+                }
+            });
+            //((MainPageViewItemHolder) holder).authorName.setText(result.authorName);
+            ((MainPageViewItemHolder) holder).authorName.setText(result.userId);
             if(!TextUtils.isEmpty(result.gender)&&!"0".equals(result.gender)) {
                 ((MainPageViewItemHolder) holder).authorName.setCompoundDrawables(null, null, getDrawableByType("1".equals(result.gender) ? R.drawable.icon_boy : R.drawable.icon_girl), null);
             }else {
@@ -53,10 +66,11 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ((MainPageViewItemHolder) holder).issuesContent.setText(result.content);
             ((MainPageViewItemHolder) holder).issuesContentTime.setText(result.gmtCreated);
             ((MainPageViewItemHolder) holder).issuesLikeNum.setText(result.starNum);
+            ((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType("1".equals(result.hasStared)?R.drawable.button_like_pre:R.drawable.button_like),null,null,null);
             ((MainPageViewItemHolder) holder).issuesLikeNum.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType(R.drawable.button_like_pre),null,null,null);
+                    ((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType("0".equals(result.hasStared)?R.drawable.button_like_pre:R.drawable.button_like),null,null,null);
                 }
             });
         }
@@ -99,5 +113,20 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setMainPageDataList(List<MainPageDataResult.MomentData> mMainPageDataList) {
         this.mMainPageDataList = mMainPageDataList;
+    }
+
+    public interface ViewClickedListener{
+        void onImageViewClicked(MainPageDataResult.MomentData result);
+        void onNameClicked(MainPageDataResult.MomentData result);
+        void onStarClicked(MainPageDataResult.MomentData result);
+        void onCommentClicked(MainPageDataResult.MomentData result);
+        void onWholeItemClicked(MainPageDataResult.MomentData result);
+    }
+
+
+    private ViewClickedListener onViewClickedListener;
+
+    public void setOnViewClickedListener(ViewClickedListener listener){
+        this.onViewClickedListener = listener;
     }
 }
