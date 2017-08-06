@@ -67,6 +67,9 @@
         <activity android:name="com.dsgly.bixin.biz.view.UpdatePwdActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.dsgly.bixin.biz.view.CompleteProfileActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name="com.dsgly.bixin.biz.view.RegisterActivity"/>
         <activity android:name="com.dsgly.bixin.biz.view.SchemeActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"

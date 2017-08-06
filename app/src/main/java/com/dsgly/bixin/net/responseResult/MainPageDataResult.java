@@ -41,7 +41,6 @@ public class MainPageDataResult extends BaseResult {
             result.previewPic=("");
             result.authorName = ("邓选"+i);
             result.gender = (String.valueOf(i%2+1));
-            Log.e("dx",String.valueOf(i%2));
             result.authorConstellation = ("双子座");
             result.content = ("今天的天气真好");
             result.gmtCreated = ("2017-06-15 17:20");

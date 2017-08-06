@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
+import com.dsgly.bixin.biz.view.CompleteProfileActivity;
 import com.dsgly.bixin.biz.view.SettingActivity;
 import com.dsgly.bixin.biz.view.adapter.MainPageAdapter;
 import com.dsgly.bixin.net.responseResult.UserInfo;
@@ -81,6 +82,8 @@ public class MyselfFrg extends BaseFragment implements View.OnClickListener {
             SettingActivity.startSettingActivity(getActivity());
         }else if(v.equals(shareToMyFrends)){
             showShare();
+        }else if(v.equals(editSelfMainPage)){
+            CompleteProfileActivity.startCompleteProfileActivity(getActivity());
         }
     }
     public void showShare() {
