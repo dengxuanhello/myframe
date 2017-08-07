@@ -61,7 +61,7 @@ public class TrimVideoUtils {
 
         File file = new File(filePath);
         file.getParentFile().mkdirs();
-        Log.d(TAG, "Generated file path " + filePath);
+        Log.i("dx", "Generated file path " + filePath);
         genVideoUsingMp4Parser(src, file, startMs, endMs, callback);
     }
 

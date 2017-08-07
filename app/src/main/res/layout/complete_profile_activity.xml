@@ -59,6 +59,7 @@
                 android:gravity="center"
                 android:text="身高"/>
             <TextView
+                android:id="@+id/height_choose_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -72,11 +73,12 @@
                 android:padding="5dp"
                 android:gravity="center"
                 android:text="毕业院校"/>
-            <TextView
+            <EditText
+                android:id="@+id/gratuated_school"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:text="请选择"
+                android:hint="请填写"
                 android:textSize="18sp"
                 android:gravity="center"
                 android:padding="10dp"/>
@@ -87,6 +89,7 @@
                 android:gravity="center"
                 android:text="设置头像"/>
             <LinearLayout
+                android:id="@+id/choose_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -129,7 +132,7 @@
                 android:minHeight="80dp"
                 android:padding="10dp"/>
             <Button
-                android:id="@+id/user_login"
+                android:id="@+id/complete_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"

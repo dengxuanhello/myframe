@@ -1,46 +1,54 @@
 package com.dsgly.bixin.biz.view;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.view.MotionEvent;
+import android.text.TextUtils;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseActivity;
 import com.dsgly.bixin.utils.MediaUtils;
-import com.dsgly.bixin.wigets.SendView;
-import com.dsgly.bixin.wigets.VideoProgressBar;
 
-import java.util.UUID;
-
+/**
+ * Created by dengxuan on 2017/8/6.
+ */
 
 public class VideoRecorderActivity extends BaseActivity {
-
+    public static final String CHOOSED_VIDEO_PATH = "choosed_video_path";
+    public static final int EDIT_VIDEO_REQUEST_CODE = 0x100;
     private MediaUtils mediaUtils;
-    private boolean isCancel;
-    private VideoProgressBar progressBar;
-    private int mProgress;
-    private TextView btnInfo , btn;
-    private TextView view;
-    private SendView send;
-    private RelativeLayout recordLayout, switchLayout;
+    private int mProgress = 0;
+    private ImageView startRecordbtn;
+    private RelativeLayout recordLayout;
+    private TextView timeTv;
+    private RelativeLayout importVideo;
+    private RelativeLayout fullScreenRecord;
+    private RelativeLayout deleteVideo;
+    private RelativeLayout completeRecord;
+    private TextView editVideo;
 
-    public static void startVideoRecordActivity(Context context){
+    public static void startVideoRecordActivity(Context context,int requestCode){
         if(context != null) {
             Intent intent = new Intent();
             intent.setClass(context, VideoRecorderActivity.class);
-            context.startActivity(intent);
+            if(context instanceof Activity){
+                ((Activity)context).startActivityForResult(intent,requestCode);
+            }else {
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -49,187 +57,173 @@ public class VideoRecorderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_record);
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.main_surface_view);
-        // setting
+        timeTv = (TextView) findViewById(R.id.time_tv);
+        importVideo = (RelativeLayout) findViewById(R.id.btn_import);
+        importVideo.setOnClickListener(this);
+        fullScreenRecord = (RelativeLayout) findViewById(R.id.full_screen_record);
+        fullScreenRecord.setOnClickListener(this);
+        deleteVideo = (RelativeLayout) findViewById(R.id.btn_delete);
+        deleteVideo.setOnClickListener(this);
+        completeRecord = (RelativeLayout) findViewById(R.id.complete_record);
+        completeRecord.setOnClickListener(this);
+        editVideo = (TextView) findViewById(R.id.edit_video);
+        editVideo.setOnClickListener(this);
         mediaUtils = new MediaUtils(this);
         mediaUtils.setRecorderType(MediaUtils.MEDIA_VIDEO);
         mediaUtils.setTargetDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES));
-        mediaUtils.setTargetName(UUID.randomUUID() + ".mp4");
+        mediaUtils.setTargetName("bixin_"+System.currentTimeMillis() + ".mp4");
         mediaUtils.setSurfaceView(surfaceView);
-        // btn
-        send = (SendView) findViewById(R.id.view_send);
-//        view = (TextView) findViewById(R.id.view);
-        btnInfo = (TextView) findViewById(R.id.tv_info);
-        btn = (TextView) findViewById(R.id.main_press_control);
-        btn.setOnTouchListener(btnTouch);
+        startRecordbtn = (ImageView) findViewById(R.id.main_press_control);
+        startRecordbtn.setTag("record");
+        startRecordbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if("record".equals(startRecordbtn.getTag())) {
+                    startRecord();
+                }else {
+                    stopRecord();
+                }
+            }
+        });
         findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mediaUtils!=null){
+                    mediaUtils.releaseMediaRecorder();
+                    mediaUtils.releaseCamera();
+                }
                 finish();
             }
         });
-        send.backLayout.setOnClickListener(backClick);
-        send.selectLayout.setOnClickListener(selectClick);
         recordLayout = (RelativeLayout) findViewById(R.id.record_layout);
-        switchLayout = (RelativeLayout) findViewById(R.id.btn_switch);
-        switchLayout.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_switch_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaUtils.switchCamera();
+                if(mediaUtils != null) {
+                    mediaUtils.switchCamera();
+                }
             }
         });
-        // progress
-        progressBar = (VideoProgressBar) findViewById(R.id.main_progress_bar);
-        progressBar.setOnProgressEndListener(listener);
-        progressBar.setCancel(true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        progressBar.setCancel(true);
     }
 
-    View.OnTouchListener btnTouch = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            boolean ret = false;
-            float downY = 0;
-            int action = event.getAction();
+    @Override
+    public void onBackPressed() {
+        if(mediaUtils!=null){
+            mediaUtils.releaseMediaRecorder();
+            mediaUtils.releaseCamera();
+        }
+        super.onBackPressed();
+    }
 
-            switch (v.getId()) {
-                case R.id.main_press_control: {
-                    switch (action) {
-                        case MotionEvent.ACTION_DOWN:
-                            mediaUtils.record();
-                            startView();
-                            ret = true;
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            if (!isCancel) {
-                                if (mProgress == 0) {
-                                    stopView(false);
-                                    break;
-                                }
-                                if (mProgress < 10) {
-                                    //时间太短不保存
-                                    mediaUtils.stopRecordUnSave();
-                                    Toast.makeText(VideoRecorderActivity.this, "时间太短", Toast.LENGTH_SHORT).show();
-                                    stopView(false);
-                                    break;
-                                }
-                                //停止录制
-                                mediaUtils.stopRecordSave();
-                                stopView(true);
-                            } else {
-                                //现在是取消状态,不保存
-                                mediaUtils.stopRecordUnSave();
-                                Toast.makeText(VideoRecorderActivity.this, "取消保存", Toast.LENGTH_SHORT).show();
-                                stopView(false);
-                            }
-                            ret = false;
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            float currentY = event.getY();
-                            isCancel = downY - currentY > 10;
-                            moveView();
-                            break;
-                    }
-                }
+    @Override
+    protected void onDestroy() {
+        if(mediaUtils!=null){
+            mediaUtils.releaseMediaRecorder();
+            mediaUtils.releaseCamera();
+        }
+        super.onDestroy();
+    }
 
+    @Override
+    public void onClick(View v) {
+        if(v.equals(deleteVideo)){
+
+        }else if(v.equals(completeRecord)){
+            if(!TextUtils.isEmpty(mediaUtils.getTargetFilePath())){
+                backForResult(mediaUtils.getTargetFilePath());
             }
-            return ret;
-        }
-    };
+        }else if(v.equals(importVideo)){
 
-    VideoProgressBar.OnProgressEndListener listener = new VideoProgressBar.OnProgressEndListener() {
-        @Override
-        public void onProgressEndListener() {
-            progressBar.setCancel(true);
-            mediaUtils.stopRecordSave();
+        }else if(v.equals(fullScreenRecord)){
+
+        }else if(v.equals(editVideo)){
+            VideoEditActivity.startVideoEditActivity(this,mediaUtils.getTargetFilePath(),EDIT_VIDEO_REQUEST_CODE);
         }
-    };
+    }
 
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    progressBar.setProgress(mProgress);
                     if (mediaUtils.isRecording()) {
                         mProgress = mProgress + 1;
-                        sendMessageDelayed(handler.obtainMessage(0), 100);
+                        timeTv.setText("00:"+parseTimeToString(mProgress*1000));
+                        sendMessageDelayed(handler.obtainMessage(0), 1000);
                     }
                     break;
             }
         }
     };
 
-    private void startView(){
-        startAnim();
-        mProgress = 0;
-        handler.removeMessages(0);
-        handler.sendMessage(handler.obtainMessage(0));
+    /**
+     * @param startTime :毫秒
+     */
+    private String parseTimeToString(long startTime) {
+        if (startTime <= 1000) {
+            return "00:01";
+        } else {
+            String formatTime = "%s:%s";
+            long second = startTime / 1000;
+            if (second < 60) {
+                return String.format(formatTime, "00", formatLongString(second));
+            } else {
+                long minite = second / 60;
+                long secondMin = second % 60;
+                return String.format(formatTime, formatLongString(minite), formatLongString(secondMin));
+            }
+        }
     }
 
-    private void moveView(){
-        if(isCancel){
-            btnInfo.setText("松手取消");
+    private String formatLongString(long time) {
+        String result = String.valueOf(time);
+        if (result.length() == 1) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
+    private void backForResult(String path){
+        Intent intent = new Intent();
+        intent.putExtra(CHOOSED_VIDEO_PATH,path);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
+    private void startRecord(){
+        mProgress = 0;
+        mediaUtils.record();
+        handler.sendEmptyMessage(0);
+        startRecordbtn.setTag("stop");
+        timeTv.setText("");
+        timeTv.setVisibility(View.VISIBLE);
+        importVideo.setVisibility(View.GONE);
+        fullScreenRecord.setVisibility(View.GONE);
+        editVideo.setVisibility(View.GONE);
+        deleteVideo.setVisibility(View.GONE);
+        completeRecord.setVisibility(View.GONE);
+    }
+
+    private void stopRecord(){
+        mediaUtils.stopRecordSave();
+        startRecordbtn.setTag("record");
+        editVideo.setVisibility(View.VISIBLE);
+        deleteVideo.setVisibility(View.VISIBLE);
+        completeRecord.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == EDIT_VIDEO_REQUEST_CODE){
+            setResult(resultCode,data);
+            finish();
         }else {
-            btnInfo.setText("上滑取消");
+            super.onActivityResult(requestCode,resultCode,data);
         }
     }
-
-    private void stopView(boolean isSave){
-        stopAnim();
-        progressBar.setCancel(true);
-        mProgress = 0;
-        handler.removeMessages(0);
-        btnInfo.setText("双击放大");
-        if(isSave) {
-            recordLayout.setVisibility(View.GONE);
-            send.startAnim();
-        }
-    }
-
-    private void startAnim(){
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(
-                ObjectAnimator.ofFloat(btn,"scaleX",1,0.5f),
-                ObjectAnimator.ofFloat(btn,"scaleY",1,0.5f),
-                ObjectAnimator.ofFloat(progressBar,"scaleX",1,1.3f),
-                ObjectAnimator.ofFloat(progressBar,"scaleY",1,1.3f)
-        );
-        set.setDuration(250).start();
-    }
-
-    private void stopAnim(){
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(
-                ObjectAnimator.ofFloat(btn,"scaleX",0.5f,1f),
-                ObjectAnimator.ofFloat(btn,"scaleY",0.5f,1f),
-                ObjectAnimator.ofFloat(progressBar,"scaleX",1.3f,1f),
-                ObjectAnimator.ofFloat(progressBar,"scaleY",1.3f,1f)
-        );
-        set.setDuration(250).start();
-    }
-
-    private View.OnClickListener backClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            send.stopAnim();
-            recordLayout.setVisibility(View.VISIBLE);
-            mediaUtils.deleteTargetFile();
-        }
-    };
-
-    private View.OnClickListener selectClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String path = mediaUtils.getTargetFilePath();
-            Toast.makeText(VideoRecorderActivity.this, "文件以保存至：" + path, Toast.LENGTH_SHORT).show();
-            send.stopAnim();
-            recordLayout.setVisibility(View.VISIBLE);
-        }
-    };
-
 }

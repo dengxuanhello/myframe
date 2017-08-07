@@ -13,14 +13,14 @@
         android:layout_height="180dp"
         android:layout_alignParentBottom="true">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/tv_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:textSize="12dp"
             android:textColor="#ffffff"
-            android:text="双击放大"/>
+            android:text="双击放大"/>-->
 
         <com.dsgly.bixin.wigets.SendView
             android:id="@+id/view_send"
@@ -34,60 +34,132 @@
 
 
             <RelativeLayout
-                android:id="@+id/btn_switch"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/btn_import"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="50dp">
-
-                <android.support.v7.widget.AppCompatTextView
+                <ImageView
+                    android:id="@+id/import_video"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="切换"
+                    android:padding="5dp"
                     android:layout_centerInParent="true"
-                    android:textSize="14sp"
-                    android:textColor="#ffffff"/>
-
+                    android:src="@drawable/button_import_video"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/import_video"
+                    android:layout_marginTop="15dp"
+                    android:text="导入视频"/>
             </RelativeLayout>
-
-            <com.dsgly.bixin.wigets.VideoProgressBar
+            <RelativeLayout
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="50dp"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/delete_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/button_delete"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/delete_iv"
+                    android:layout_marginTop="15dp"
+                    android:text="删除"/>
+            </RelativeLayout>
+            <!--<com.dsgly.bixin.wigets.VideoProgressBar
                 android:id="@+id/main_progress_bar"
                 android:layout_width="85dp"
                 android:layout_height="85dp"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true" />-->
 
-            <TextView
+            <ImageView
                 android:id="@+id/main_press_control"
                 android:layout_width="68dp"
                 android:layout_height="68dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/video_btn_bg"
+                android:background="@drawable/button_video_recording"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="#ffffff"
                 android:textSize="16sp" />
-
+            <TextView
+                android:id="@+id/time_tv"
+                android:layout_centerInParent="true"
+                android:layout_above="@+id/main_press_control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="00:00:00"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/edit_video"
+                android:layout_alignParentRight="true"
+                android:layout_above="@+id/main_press_control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="15dp"
+                android:padding="6dp"
+                android:background="@drawable/px_choice_guide_bg"
+                android:text="编辑"
+                android:visibility="gone"/>
             <RelativeLayout
-                android:id="@+id/btn_close"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/full_screen_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="50dp">
-
+                android:layout_marginRight="50dp"
+                android:visibility="gone">
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_close_white_24dp"
-                    android:layout_centerInParent="true" />
-
+                    android:id="@+id/full_screen_record_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/button_full_screen"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/full_screen_record_iv"
+                    android:layout_marginTop="15dp"
+                    android:text="全屏录制"/>
             </RelativeLayout>
-
+            <RelativeLayout
+                android:id="@+id/complete_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="50dp"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+                <ImageView
+                    android:id="@+id/complete_record_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/button_complete"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/complete_record_iv"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center"
+                    android:text="完成"/>
+            </RelativeLayout>
         </RelativeLayout>
-
-
-
 
         <View
             android:layout_width="match_parent"
@@ -96,5 +168,18 @@
 
     </RelativeLayout>
 
-
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_close_white_24dp" />
+    <ImageView
+        android:id="@+id/btn_switch_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/button_flip_the_lens"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:padding="5dp" />
 </RelativeLayout>

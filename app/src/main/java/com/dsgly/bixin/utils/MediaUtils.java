@@ -63,7 +63,10 @@ public class MediaUtils implements SurfaceHolder.Callback {
     }
 
     public String getTargetFilePath() {
-        return targetFile.getPath();
+        if(targetFile != null){
+            return targetFile.getAbsolutePath();
+        }
+        return null;
     }
 
     public boolean deleteTargetFile() {
@@ -145,9 +148,9 @@ public class MediaUtils implements SurfaceHolder.Callback {
                 mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
                 mMediaRecorder.setProfile(profile);
                 // 实际视屏录制后的方向
-                if(cameraPosition == 0){
+                if (cameraPosition == 0) {
                     mMediaRecorder.setOrientationHint(270);
-                }else {
+                } else {
                     mMediaRecorder.setOrientationHint(or);
                 }
 
@@ -157,22 +160,23 @@ public class MediaUtils implements SurfaceHolder.Callback {
                 mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
             }
             targetFile = new File(targetDir, targetName);
+            Log.i("dx", targetFile.getAbsolutePath());
             mMediaRecorder.setOutputFile(targetFile.getPath());
 
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("MediaRecorder", "Exception prepareRecord: ");
+            Log.i("dx", "Exception prepareRecord: " + e.getMessage());
             releaseMediaRecorder();
             return false;
         }
         try {
             mMediaRecorder.prepare();
         } catch (IllegalStateException e) {
-            Log.d("MediaRecorder", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
+            Log.i("dx", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
             releaseMediaRecorder();
             return false;
         } catch (IOException e) {
-            Log.d("MediaRecorder", "IOException preparing MediaRecorder: " + e.getMessage());
+            Log.i("dx", "IOException preparing MediaRecorder: " + e.getMessage());
             releaseMediaRecorder();
             return false;
         }
@@ -257,7 +261,7 @@ public class MediaUtils implements SurfaceHolder.Callback {
         }
     }
 
-    private void releaseMediaRecorder() {
+    public void releaseMediaRecorder() {
         if (mMediaRecorder != null) {
             // clear recorder configuration
             mMediaRecorder.reset();
@@ -270,7 +274,7 @@ public class MediaUtils implements SurfaceHolder.Callback {
         }
     }
 
-    private void releaseCamera() {
+    public void releaseCamera() {
         if (mCamera != null) {
             // release the camera for other applications
             mCamera.release();

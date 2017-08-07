@@ -33,10 +33,10 @@ public class BaseActivity extends FragmentActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presLayerComHelper = new PresLayerComHelper(this);
+        createPresenter();
         initViews();
         initListeners();
         initData();
-        createPresenter();
         EventBus.getDefault().register(this);
     }
 
@@ -168,6 +168,15 @@ public class BaseActivity extends FragmentActivity implements
                 progressDialog.dismiss();
             }
         }
+    }
+
+    public void showProgressDialog(String msg){
+        progressDialog = ProgressHUD.show(this, msg, true, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+            }
+        });
     }
 
     /*@Override

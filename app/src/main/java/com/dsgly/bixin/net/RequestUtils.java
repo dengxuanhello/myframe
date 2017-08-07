@@ -111,15 +111,15 @@ public class RequestUtils {
         }
     }
 
-    public static void uploadFile(String url, String pathName, String fileName, Callback callback) {
+    public static void uploadFile(String url, String fileName, Callback callback) {
         initOkhttp();
         //判断文件类型
-        MediaType MEDIA_TYPE = MediaType.parse(judgeType(pathName));
+        MediaType MEDIA_TYPE = MediaType.parse(judgeType(fileName));
         //创建文件参数
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(MEDIA_TYPE.type(), fileName,
-                        RequestBody.create(MEDIA_TYPE, new File(pathName)));
+                        RequestBody.create(MEDIA_TYPE, new File(fileName)));
         //发出请求参数
         Request request = new Request.Builder()
                 .url(url)

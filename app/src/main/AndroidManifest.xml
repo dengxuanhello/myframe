@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- 【必须】 信鸽SDK所需权限   -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -69,6 +70,16 @@
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.CompleteProfileActivity"
             android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.dsgly.bixin.biz.view.VideoEditActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.RegisterActivity"/>
         <activity android:name="com.dsgly.bixin.biz.view.SchemeActivity"

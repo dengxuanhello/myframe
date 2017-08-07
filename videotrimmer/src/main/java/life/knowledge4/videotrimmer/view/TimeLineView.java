@@ -71,13 +71,13 @@ public class TimeLineView extends View {
     protected void onSizeChanged(final int w, int h, final int oldW, int oldH) {
         super.onSizeChanged(w, h, oldW, oldH);
 
-        if (w != oldW) {
+        if (w != oldW && w!=0) {
             getBitmap(w);
         }
     }
 
     private void getBitmap(final int viewWidth) {
-        if(mVideoUri == null){
+        if(mVideoUri == null || viewWidth ==0){
             return;
         }
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0L, "") {
@@ -97,7 +97,9 @@ public class TimeLineView extends View {
                                                final int thumbHeight = mHeightView;
 
                                                int numThumbs = (int) Math.ceil(((float) viewWidth) / thumbWidth);
-
+                                               if(numThumbs == 0){
+                                                   numThumbs = 10;
+                                               }
                                                final long interval = videoLengthInMs / numThumbs;
 
                                                for (int i = 0; i < numThumbs; ++i) {

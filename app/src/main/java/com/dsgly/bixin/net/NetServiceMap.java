@@ -26,6 +26,7 @@ public enum NetServiceMap{
     USERBINDPHONE("user/bindPhone",BaseResult.class),
     PHONE("user/phone",GetPhoneResult.class),
     ChangePwd("user/changePassword",BaseResult.class),
+    UploadVideo("user/uploadVideo",BaseResult.class),
     MonentList("moment/list", MainPageDataResult.class);
 
 
