@@ -12,8 +12,9 @@ import com.bumptech.glide.Glide;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.CompleteProfileActivity;
+import com.dsgly.bixin.biz.view.MyVideoMomentsActivity;
+import com.dsgly.bixin.biz.view.SelfMainPageActivity;
 import com.dsgly.bixin.biz.view.SettingActivity;
-import com.dsgly.bixin.biz.view.adapter.MainPageAdapter;
 import com.dsgly.bixin.net.responseResult.UserInfo;
 import com.dsgly.bixin.utils.UCUtils;
 import com.tencent.qcloud.ui.CircleImageView;
@@ -84,6 +85,10 @@ public class MyselfFrg extends BaseFragment implements View.OnClickListener {
             showShare();
         }else if(v.equals(editSelfMainPage)){
             CompleteProfileActivity.startCompleteProfileActivity(getActivity());
+        }else if(v.equals(avatar)){
+            SelfMainPageActivity.startSelfMainPageActivity(getActivity());
+        }else if(v.equals(myVideoMoments)){
+            MyVideoMomentsActivity.startMyVideoMomentsActivity(getActivity());
         }
     }
     public void showShare() {

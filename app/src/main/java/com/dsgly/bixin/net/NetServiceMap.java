@@ -1,6 +1,8 @@
 package com.dsgly.bixin.net;
 
 import com.dsgly.bixin.net.responseResult.BaseResult;
+import com.dsgly.bixin.net.responseResult.CommentsResult;
+import com.dsgly.bixin.net.responseResult.GalleryResult;
 import com.dsgly.bixin.net.responseResult.GetPKeyResult;
 import com.dsgly.bixin.net.responseResult.GetPhoneResult;
 import com.dsgly.bixin.net.responseResult.GetUserInfoResult;
@@ -22,11 +24,16 @@ public enum NetServiceMap{
     GetServerTime("serverTime",BaseResult.class),
     LogOut("logOut",BaseResult.class),
     ThirdPartyLogin("thirdPartyLogin",BaseResult.class),
-    USER("user", GetUserInfoResult.class),
+    GetUSER("user", GetUserInfoResult.class),
+    UpdateUSER("user", BaseResult.class),
     USERBINDPHONE("user/bindPhone",BaseResult.class),
     PHONE("user/phone",GetPhoneResult.class),
     ChangePwd("user/changePassword",BaseResult.class),
     UploadVideo("user/uploadVideo",BaseResult.class),
+    GetUserMoments("moment/userId",MainPageDataResult.class),
+    GetUserGallery("user/gallery",GalleryResult.class),
+    UploadUserGallery("user/gallery/uploadPic",BaseResult.class),
+    GetMomentComments("moment/commentList",CommentsResult.class),
     MonentList("moment/list", MainPageDataResult.class);
 
 

@@ -38,6 +38,7 @@ dependencies {
     compile project(':sdk')
     compile project(':tlslibrary')
     compile project(':ui')
+    compile project(':multi-image-selector')
     compile 'com.android.support:multidex:1.0.0'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'

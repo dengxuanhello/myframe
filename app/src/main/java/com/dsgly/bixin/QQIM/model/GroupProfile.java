@@ -46,7 +46,7 @@ public class GroupProfile implements ProfileSummary {
      */
     @Override
     public int getAvatarRes() {
-        return R.drawable.head_group;
+        return R.drawable.head_me;
     }
 
     /**

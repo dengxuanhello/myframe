@@ -60,6 +60,10 @@ public class NetworkParam{
                         if (networkListener != null) {
                             networkListener.onMsgSearchComplete(NetworkParam.this);
                         }
+                    }else {
+                        if (networkListener != null) {
+                            networkListener.onNetError(NetworkParam.this);
+                        }
                     }
                     break;
                 case NET_SHOW_PROGRESS:

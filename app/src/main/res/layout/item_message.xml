@@ -26,7 +26,8 @@
                 android:id="@+id/leftAvatar"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/head_other"
+                android:scaleType="fitXY"
+                android:src="@drawable/head_me"
                 android:layout_alignParentLeft="true"/>
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -102,6 +102,11 @@
                     android:layout_height="wrap_content"
                     android:scaleType="centerInside"
                     android:src="@drawable/button_upload_photos" />
+                <com.tencent.qcloud.ui.CircleImageView
+                    android:id="@+id/cicleImageV"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:visibility="gone"/>
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"
@@ -110,6 +115,7 @@
                 android:gravity="center"
                 android:text="个人介绍"/>
             <EditText
+                android:id="@+id/self_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -124,6 +130,7 @@
                 android:gravity="center"
                 android:text="喜欢的男生是什么样子？"/>
             <EditText
+                android:id="@+id/idealPartnerDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"

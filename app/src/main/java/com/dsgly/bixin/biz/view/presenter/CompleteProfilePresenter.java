@@ -9,6 +9,12 @@ import android.widget.DatePicker;
 
 import com.dsgly.bixin.biz.base.BasePresenter;
 import com.dsgly.bixin.biz.view.CompleteProfileActivity;
+import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
+import com.dsgly.bixin.net.NetServiceMap;
+import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.net.RequestUtils;
+import com.dsgly.bixin.net.responseResult.UserInfo;
+import com.dsgly.bixin.utils.UCUtils;
 
 
 /**
@@ -46,9 +52,35 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
         builder.show();
     }
 
+    public void onMsgSearchComplete(NetworkParam param) {
+        if(param == null){
+            return;
+        }
+        if(param.key == NetServiceMap.UpdateUSER){
+            if(param.baseResult!=null && "200".equals(param.baseResult.code)){
+                CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(mvpView);
+            }else {
+                mvpView.showToast(param.baseResult == null?"更新失败":param.baseResult.msg);
+            }
+        }
+    }
+
     public void choosePic(){
         Intent albumIntent = new Intent(Intent.ACTION_PICK, null);
         albumIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         mvpView.startActivityForResult(albumIntent, CompleteProfileActivity.REQUEST_ALBUM_CODE);
+    }
+
+    public void updateUserInfo(){
+        UserInfo userInfo = UCUtils.getInstance().getUserInfo();
+        userInfo.height = mvpView.mHeightTextView.getText().toString();
+        userInfo.college = mvpView.mSchoolView.getText().toString();
+        userInfo.description = mvpView.mDescView.getText().toString();
+        userInfo.idealPartnerDescription = mvpView.mIdealPartnerView.getText().toString();
+
+        NetworkParam param = new NetworkParam(mvpView);
+        param.key = NetServiceMap.UpdateUSER;
+        param.param = userInfo;
+        RequestUtils.startRequest(param);
     }
 }

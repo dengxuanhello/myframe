@@ -1,13 +1,15 @@
 package com.dsgly.bixin.net.responseResult;
 
+import com.dsgly.bixin.net.requestParam.BaseParam;
+
 import java.io.Serializable;
 
 /**
  * Created by dengxuan on 2017/8/1.
  */
 
-public class UserInfo implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class UserInfo extends BaseParam {
+    //private static final long serialVersionUID = 1L;
     public String birthDay;
     public String birthMonth;
     public String birthYear;

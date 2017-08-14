@@ -2,7 +2,6 @@ package com.dsgly.bixin.biz.view.presenter;
 
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.util.Log;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BasePresenter;
@@ -15,7 +14,6 @@ import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.requestParam.LoginParam;
 import com.dsgly.bixin.net.responseResult.GetUserInfoResult;
 import com.dsgly.bixin.net.responseResult.LoginResult;
-import com.dsgly.bixin.utils.AESUtils;
 import com.dsgly.bixin.utils.CommonUtils;
 import com.dsgly.bixin.utils.RSAUtils;
 import com.dsgly.bixin.utils.UCUtils;
@@ -107,7 +105,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
             }else {
                 mvpView.showToast(result.msg);
             }
-        }else if(param.key == NetServiceMap.USER){
+        }else if(param.key == NetServiceMap.GetUSER){
             if(param.baseResult!= null && param.baseResult instanceof GetUserInfoResult) {
                 GetUserInfoResult result = (GetUserInfoResult) param.baseResult;
                 UCUtils.getInstance().saveUserinfo(result.data);
@@ -119,7 +117,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
 
     private void getUserInfo(){
         NetworkParam networkParam = new NetworkParam(mvpView);
-        networkParam.key = NetServiceMap.USER;
+        networkParam.key = NetServiceMap.GetUSER;
         networkParam.progressMessage = "登陆成功,正在获取用户信息";
         RequestUtils.startGetRequest(networkParam);
     }

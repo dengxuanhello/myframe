@@ -30,7 +30,7 @@ public class GroupMemberProfile implements ProfileSummary,Serializable {
      */
     @Override
     public int getAvatarRes() {
-        return R.drawable.head_other;
+        return R.drawable.head_me;
     }
 
     /**

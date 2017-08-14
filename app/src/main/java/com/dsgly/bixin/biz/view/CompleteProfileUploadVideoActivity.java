@@ -4,9 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,14 +15,24 @@ import android.widget.ImageView;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseActivity;
 import com.dsgly.bixin.biz.view.presenter.CompleteProfileUploadVideoPresenetr;
+import com.dsgly.bixin.net.responseResult.GalleryResult;
+import com.dsgly.bixin.wigets.PicGridView;
+import com.dsgly.bixin.wigets.PicGridViewAdapter;
+import com.dsgly.bixin.wigets.WrapHeightLayoutManager;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import me.nereo.multi_image_selector.MultiImageSelector;
+import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
 /**
  * Created by dengxuan on 2017/8/6.
  */
 
-public class CompleteProfileUploadVideoActivity extends BaseActivity {
+public class CompleteProfileUploadVideoActivity extends BaseActivity implements PicGridViewAdapter.OnItemChooseListener {
     public static int REQUEST_CODE_FOR_VIDEO = 0x10;
     public static int REQUEST_CODE_FOR_PIC = 0x11;
     private CompleteProfileUploadVideoPresenetr presenter;
@@ -32,6 +43,9 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity {
     public ImageView backBtn;
     public ImageView playBtn;
     public String videoUrl;
+    public PicGridView photosView;
+    public PicGridViewAdapter mPicGridViewAdapter;
+    public List<GalleryResult.GalleryInfo> galleryInfoList;
     public static void startCompleteProfileUploadVideoActivity(Context context){
         if(context != null) {
             Intent intent = new Intent();
@@ -59,6 +73,18 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity {
         moreBtn.setOnClickListener(this);
         playBtn = (ImageView) findViewById(R.id.main_page_item_img_btn);
         playBtn.setOnClickListener(this);
+        photosView = (PicGridView) findViewById(R.id.photos);
+        photosView.setLayoutManager(new GridLayoutManager(this, 3));
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        galleryInfoList = new ArrayList<GalleryResult.GalleryInfo>();
+        galleryInfoList.add(new GalleryResult.GalleryInfo("add"));
+        mPicGridViewAdapter = new PicGridViewAdapter(galleryInfoList,this);
+        mPicGridViewAdapter.setItemChooseListener(this);
+        photosView.setAdapter(mPicGridViewAdapter);
     }
 
     @Override
@@ -110,9 +136,32 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity {
             }
         }else if(requestCode == REQUEST_CODE_FOR_PIC){
             if(resultCode == RESULT_OK){
-                Uri uri = data.getData();
-
+                ArrayList<String> stringArrayListExtra = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                if(stringArrayListExtra!=null && stringArrayListExtra.size()>0){
+                    galleryInfoList.clear();
+                }
+                for(String s : stringArrayListExtra){
+                    Log.i("dx",s);
+                    GalleryResult.GalleryInfo galleryInfo = new GalleryResult.GalleryInfo(s);
+                    galleryInfo.picThumb = s;
+                    galleryInfo.picOrigin = s;
+                    galleryInfoList.add(galleryInfo);
+                    mPicGridViewAdapter.setDataList(galleryInfoList);
+                    mPicGridViewAdapter.notifyDataSetChanged();
+                    photosView.requestLayout();
+                }
             }
+        }
+    }
+
+    @Override
+    public void onItemChoosed(GalleryResult.GalleryInfo data) {
+        if(data == null){
+            return;
+        }
+        if("add".equals(data.pic)){
+            MultiImageSelector.create(this)
+                    .start(this, REQUEST_CODE_FOR_PIC);
         }
     }
 }

@@ -44,6 +44,14 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final MainPageDataResult.MomentData result = mMainPageDataList.get(position);
         if(holder instanceof MainPageViewItemHolder){
+            ((MainPageViewItemHolder) holder).rootView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onViewClickedListener!=null){
+                        onViewClickedListener.onWholeItemClicked(result);
+                    }
+                }
+            });
             //((MainPageViewItemHolder) holder).scaledImageView.setBackgroundResource(R.drawable.test);
             Glide.with(mContext).load(result.previewPic).into(((MainPageViewItemHolder) holder).scaledImageView);
             ((MainPageViewItemHolder) holder).scaledImageView.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +71,25 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
             ((MainPageViewItemHolder) holder).authorConstellation.setText(result.authorConstellation);
             ((MainPageViewItemHolder) holder).issuesCommentNum.setText(result.commentNum);
+            ((MainPageViewItemHolder) holder).issuesCommentNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onViewClickedListener!=null){
+                        onViewClickedListener.onCommentClicked(result);
+                    }
+                }
+            });
             ((MainPageViewItemHolder) holder).issuesContent.setText(result.content);
             ((MainPageViewItemHolder) holder).issuesContentTime.setText(result.gmtCreated);
             ((MainPageViewItemHolder) holder).issuesLikeNum.setText(result.starNum);
+            ((MainPageViewItemHolder) holder).issuesLikeNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(onViewClickedListener!=null){
+                        onViewClickedListener.onStarClicked(result);
+                    }
+                }
+            });
             ((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType("1".equals(result.hasStared)?R.drawable.button_like_pre:R.drawable.button_like),null,null,null);
             ((MainPageViewItemHolder) holder).issuesLikeNum.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,6 +112,7 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public static class MainPageViewItemHolder extends RecyclerView.ViewHolder{
+        final View rootView;
 
         final ScaledImageView scaledImageView;
         final ImageView imgActionBth;
@@ -100,6 +125,7 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public MainPageViewItemHolder(View itemView) {
             super(itemView);
+            rootView = itemView;
             scaledImageView = (ScaledImageView) itemView.findViewById(R.id.main_page_item_img);
             imgActionBth = (ImageView) itemView.findViewById(R.id.main_page_item_img_btn);
             authorName = (TextView) itemView.findViewById(R.id.issues_author_name);
@@ -129,4 +155,5 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setOnViewClickedListener(ViewClickedListener listener){
         this.onViewClickedListener = listener;
     }
+
 }

@@ -92,4 +92,6 @@
     <string name="input_new_pwd">请填写新密码</string>
     <string name="confirm_update">确认修改</string>
     <string name="complete_profile">完善资料</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
 </resources>

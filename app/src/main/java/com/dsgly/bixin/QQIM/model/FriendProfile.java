@@ -25,7 +25,7 @@ public class FriendProfile implements ProfileSummary {
      */
     @Override
     public int getAvatarRes() {
-        return R.drawable.head_other;
+        return R.drawable.head_me;
     }
 
     /**

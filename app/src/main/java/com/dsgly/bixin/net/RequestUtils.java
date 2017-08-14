@@ -57,6 +57,24 @@ public class RequestUtils {
         }
     }
 
+    public static void startGetRequestExt(NetworkParam networkParam,String oneParameter){
+        if(networkParam == null || networkParam.key == null){
+            throw new IllegalArgumentException("request url must not be empty");
+        }
+        String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi();
+        if(requestUrl.endsWith("/")){
+            requestUrl = requestUrl + oneParameter;
+        }else {
+            requestUrl = requestUrl + "/" + oneParameter;
+        }
+        if(!TextUtils.isEmpty(requestUrl)) {
+            if(networkParam.block){
+                networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
+            }
+            startRequest(requestUrl,null,networkParam.callback,networkParam.headers);
+        }
+    }
+
     /*public static void startRequest(String url, RequestBody body, Callback callback){
         *//*initOkhttp();
         Request request;

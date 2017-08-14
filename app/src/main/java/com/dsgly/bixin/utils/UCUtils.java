@@ -71,7 +71,7 @@ public class UCUtils {
         LoginBusiness.loginIm(userid, Config.QQ_SDK_SIG, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
-                Log.i("dx",s);
+                Log.i("dx","login error:"+s);
             }
             @Override
             public void onSuccess() {

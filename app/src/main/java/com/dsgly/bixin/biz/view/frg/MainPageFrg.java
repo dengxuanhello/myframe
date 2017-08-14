@@ -8,9 +8,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
+import com.dsgly.bixin.biz.view.CommentDetailActivity;
+import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
 import com.dsgly.bixin.biz.view.VideoPlayActivity;
 import com.dsgly.bixin.biz.view.adapter.MainPageAdapter;
 import com.dsgly.bixin.net.NetServiceMap;
@@ -28,11 +31,12 @@ import java.util.List;
  * Created by dengxuan on 2017/7/2.
  */
 
-public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewClickedListener {
+public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewClickedListener, View.OnClickListener {
 
     private RecyclerView mListview;
     private List<MainPageDataResult.MomentData> mMainPageDataList;
     private MainPageAdapter mMainPageAdapter;
+    private ImageView mPublishVideoView;
 
     public static MainPageFrg newInstance(Bundle bundle){
         MainPageFrg frg = new MainPageFrg();
@@ -48,9 +52,10 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
         View mainPage = inflater.inflate(R.layout.main_page_frg_layout,container,false);
         mListview = (RecyclerView) mainPage.findViewById(R.id.main_page_list_view);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        manager.setStackFromEnd(true);
+        manager.setStackFromEnd(false);
         mListview.setLayoutManager(manager);
-
+        mPublishVideoView = (ImageView) mainPage.findViewById(R.id.publish_video_iv);
+        mPublishVideoView.setOnClickListener(this);
         return mainPage;
     }
 
@@ -119,6 +124,15 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
 
     @Override
     public void onWholeItemClicked(MainPageDataResult.MomentData result) {
+        if(result != null){
+            CommentDetailActivity.startCommentDetailActivity(getActivity(),result);
+        }
+    }
 
+    @Override
+    public void onClick(View v) {
+        if(v.equals(mPublishVideoView)){
+            CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(getActivity());
+        }
     }
 }

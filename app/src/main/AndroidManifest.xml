@@ -60,7 +60,19 @@
         <activity android:name="com.dsgly.bixin.biz.view.LoginActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.dsgly.bixin.biz.view.SelfMainPageActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name="com.dsgly.bixin.biz.view.SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.dsgly.bixin.biz.view.ClipPictureActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
+        <activity android:name="com.dsgly.bixin.biz.view.CommentDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.dsgly.bixin.biz.view.MyVideoMomentsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.dsgly.bixin.biz.view.BindPhoneActivity"
             android:screenOrientation="portrait">
@@ -69,6 +81,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.CompleteProfileActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.dsgly.bixin.biz.view.VideoEditActivity"

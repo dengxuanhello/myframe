@@ -2,6 +2,7 @@ package com.dsgly.bixin.net.responseResult;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +18,8 @@ public class MainPageDataResult extends BaseResult {
     public String totalCount;
     public String totalPages;
     public String traceId;
-    public static class MomentData{
+    public static class MomentData implements Serializable{
+        private static final long serialVersionUID = 1L;
         public String previewPic; //url
         public String authorName;     // 作者姓名
         public String authorConstellation;// 作者星座
