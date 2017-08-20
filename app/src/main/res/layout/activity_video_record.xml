@@ -2,37 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <SurfaceView
         android:id="@+id/main_surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
     <RelativeLayout
+        android:id="@+id/buttom_area_rl"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:layout_alignParentBottom="true">
-
-        <!--<TextView
-            android:id="@+id/tv_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:textSize="12dp"
-            android:textColor="#ffffff"
-            android:text="双击放大"/>-->
-
-        <com.dsgly.bixin.wigets.SendView
-            android:id="@+id/view_send"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+        android:layout_alignParentBottom="true"
+        android:background="@color/black">
         <RelativeLayout
             android:id="@+id/record_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
             <RelativeLayout
                 android:id="@+id/btn_import"
                 android:layout_width="wrap_content"
@@ -61,6 +44,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="50dp"
+                android:gravity="center_horizontal"
                 android:visibility="gone">
                 <ImageView
                     android:id="@+id/delete_iv"
@@ -74,14 +58,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/delete_iv"
                     android:layout_marginTop="15dp"
+                    android:layout_centerHorizontal="true"
                     android:text="删除"/>
             </RelativeLayout>
-            <!--<com.dsgly.bixin.wigets.VideoProgressBar
-                android:id="@+id/main_progress_bar"
-                android:layout_width="85dp"
-                android:layout_height="85dp"
-                android:layout_centerInParent="true" />-->
-
             <ImageView
                 android:id="@+id/main_press_control"
                 android:layout_width="68dp"
@@ -142,7 +121,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="50dp"
-                android:gravity="center_vertical"
+                android:gravity="center_horizontal"
                 android:visibility="gone">
                 <ImageView
                     android:id="@+id/complete_record_iv"
@@ -157,29 +136,34 @@
                     android:layout_below="@+id/complete_record_iv"
                     android:layout_marginTop="15dp"
                     android:gravity="center"
+                    android:layout_centerHorizontal="true"
                     android:text="完成"/>
             </RelativeLayout>
         </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"/>
-
     </RelativeLayout>
-
-    <ImageView
+    <RelativeLayout
+        android:id="@+id/top_action_area"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:background="@color/black">
+        <ImageView
         android:id="@+id/btn_close"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/ic_close_white_24dp" />
-    <ImageView
-        android:id="@+id/btn_switch_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/button_flip_the_lens"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        android:padding="5dp" />
+        <ImageView
+            android:id="@+id/btn_switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/button_flip_the_lens"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:padding="5dp" />
+    </RelativeLayout>
 </RelativeLayout>

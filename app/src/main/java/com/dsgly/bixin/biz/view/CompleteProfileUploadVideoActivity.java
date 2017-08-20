@@ -160,8 +160,18 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
             return;
         }
         if("add".equals(data.pic)){
-            MultiImageSelector.create(this)
-                    .start(this, REQUEST_CODE_FOR_PIC);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                // Permission was added in API Level 16
+                 if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                     MultiImageSelector.create(this)
+                             .start(this, REQUEST_CODE_FOR_PIC);
+                 }else {
+                     requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},123);
+                 }
+            }else {
+                MultiImageSelector.create(this)
+                        .start(this, REQUEST_CODE_FOR_PIC);
+            }
         }
     }
 }

@@ -30,6 +30,13 @@
             android:padding="8dp"
             android:src="@drawable/nav_more" />
     </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +45,7 @@
         <com.dsgly.bixin.wigets.UploadVideoPlayerView
             android:id="@+id/player_video_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:background="@drawable/show_video_shape"
             android:padding="5dp">
@@ -56,13 +63,7 @@
             android:scaleType="centerInside"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
     <Button
         android:id="@+id/user_upload_video"
         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.icu.util.Freezable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.wigets.ScaledImageView;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by dengxuan on 2017/7/2.
@@ -53,7 +56,8 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
             //((MainPageViewItemHolder) holder).scaledImageView.setBackgroundResource(R.drawable.test);
-            Glide.with(mContext).load(result.previewPic).into(((MainPageViewItemHolder) holder).scaledImageView);
+            Glide.with(mContext).load(result.previewPic).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.mipmap.ic_launcher).into(((MainPageViewItemHolder) holder).scaledImageView);
+            Log.i("dxp",result.previewPic);
             ((MainPageViewItemHolder) holder).scaledImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

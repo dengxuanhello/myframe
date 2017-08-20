@@ -39,6 +39,9 @@ public class VideoRecorderActivity extends BaseActivity {
     private RelativeLayout deleteVideo;
     private RelativeLayout completeRecord;
     private TextView editVideo;
+    private RelativeLayout buttomAreaRl;
+    private ImageView fullScreenIv;
+    private RelativeLayout topActionRl;
 
     public static void startVideoRecordActivity(Context context,int requestCode){
         if(context != null) {
@@ -68,6 +71,10 @@ public class VideoRecorderActivity extends BaseActivity {
         completeRecord.setOnClickListener(this);
         editVideo = (TextView) findViewById(R.id.edit_video);
         editVideo.setOnClickListener(this);
+        buttomAreaRl = (RelativeLayout) findViewById(R.id.buttom_area_rl);
+        fullScreenIv = (ImageView) findViewById(R.id.full_screen_record_iv);
+        topActionRl = (RelativeLayout) findViewById(R.id.top_action_area);
+        fullScreenIv.setOnClickListener(this);
         mediaUtils = new MediaUtils(this);
         mediaUtils.setRecorderType(MediaUtils.MEDIA_VIDEO);
         mediaUtils.setTargetDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES));
@@ -143,6 +150,9 @@ public class VideoRecorderActivity extends BaseActivity {
 
         }else if(v.equals(editVideo)){
             VideoEditActivity.startVideoEditActivity(this,mediaUtils.getTargetFilePath(),EDIT_VIDEO_REQUEST_CODE);
+        } else if(v.equals(fullScreenIv)){
+            buttomAreaRl.setBackground(getDrawable(R.color.transparent));
+            topActionRl.setBackground(getDrawable(R.color.transparent));
         }
     }
 
