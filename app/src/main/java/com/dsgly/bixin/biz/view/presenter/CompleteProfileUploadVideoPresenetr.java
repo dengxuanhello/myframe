@@ -9,20 +9,14 @@ import com.dsgly.bixin.biz.base.BasePresenter;
 import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
 import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.RequestUtils;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -74,7 +68,7 @@ public class CompleteProfileUploadVideoPresenetr extends BasePresenter<CompleteP
     }
 
     public void uploadVideo(String videoPath){
-        RequestUtils.uploadFile(NetServiceMap.UploadVideo.getHostPath() + NetServiceMap.UploadVideo.getApi(),
+        /*RequestUtils.uploadFile(NetServiceMap.UploadVideo.getHostPath() + NetServiceMap.SendMoment.getApi(),
                 videoPath, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -89,7 +83,7 @@ public class CompleteProfileUploadVideoPresenetr extends BasePresenter<CompleteP
                             Log.i("dxvideo", "shibai");
                         }
                     }
-                });
+                });*/
     }
 
     public void choosePic(){

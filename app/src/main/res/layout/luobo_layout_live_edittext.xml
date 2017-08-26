@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_edittext"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
+        android:background="#F4f4f4"
+        android:paddingLeft="15dp"
+        android:paddingRight="60dp">
+
+        <TextView
+            android:id="@+id/tv_edit_reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#666666"
+            android:textSize="14sp" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/et_chat"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:gravity="center_vertical"
+        android:hint="请输入评论内容"
+        android:imeOptions="actionSend"
+        android:inputType="text"
+        android:maxLength="60"
+        android:textColor="#333333"
+        android:textColorHint="#b7b7b7"
+        android:textSize="14sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#cccccc"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="50dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#2eb2e2"
+        android:layout_weight="1"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+    <TextView
+        android:id="@+id/luobo_live_edit_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送"
+        android:layout_marginRight="15dp"
+        android:textColor="@drawable/luobo_edit_send_bg"/>
+    </LinearLayout>
+</FrameLayout>

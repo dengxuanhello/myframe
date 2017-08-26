@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.CompleteProfileActivity;
+import com.dsgly.bixin.biz.view.MyVideoMomentActivity;
 import com.dsgly.bixin.biz.view.MyVideoMomentsActivity;
 import com.dsgly.bixin.biz.view.SelfMainPageActivity;
 import com.dsgly.bixin.biz.view.SettingActivity;
@@ -88,7 +89,8 @@ public class MyselfFrg extends BaseFragment implements View.OnClickListener {
         }else if(v.equals(avatar)){
             SelfMainPageActivity.startSelfMainPageActivity(getActivity());
         }else if(v.equals(myVideoMoments)){
-            MyVideoMomentsActivity.startMyVideoMomentsActivity(getActivity());
+            //MyVideoMomentsActivity.startMyVideoMomentsActivity(getActivity());
+            MyVideoMomentActivity.startMyVideoMomentActivity(getActivity());
         }
     }
     public void showShare() {

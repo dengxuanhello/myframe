@@ -86,19 +86,14 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ((MainPageViewItemHolder) holder).issuesContent.setText(result.content);
             ((MainPageViewItemHolder) holder).issuesContentTime.setText(result.gmtCreated);
             ((MainPageViewItemHolder) holder).issuesLikeNum.setText(result.starNum);
+            ((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType("1".equals(result.hasStared)?R.drawable.button_like_pre:R.drawable.button_like),null,null,null);
             ((MainPageViewItemHolder) holder).issuesLikeNum.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(onViewClickedListener!=null){
                         onViewClickedListener.onStarClicked(result);
                     }
-                }
-            });
-            ((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType("1".equals(result.hasStared)?R.drawable.button_like_pre:R.drawable.button_like),null,null,null);
-            ((MainPageViewItemHolder) holder).issuesLikeNum.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType("0".equals(result.hasStared)?R.drawable.button_like_pre:R.drawable.button_like),null,null,null);
+                    //((MainPageViewItemHolder) holder).issuesLikeNum.setCompoundDrawables(getDrawableByType("0".equals(result.hasStared)?R.drawable.button_like_pre:R.drawable.button_like),null,null,null);
                 }
             });
         }

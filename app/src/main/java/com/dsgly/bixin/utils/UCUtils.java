@@ -19,10 +19,11 @@ import com.tencent.qcloud.presentation.event.MessageEvent;
 
 public class UCUtils {
     private static final String USER_DATA = "user_login_data";
+    private static final String USER_MEID = "user_meid";
     private static UCUtils instance;
     private CacheUtils cacheUtils;
 
-    public static String mid = "";
+    public static String meId = "";
 
     public static UCUtils getInstance() {
         if(instance == null){
@@ -79,5 +80,17 @@ public class UCUtils {
                 MessageEvent.getInstance();
             }
         });
+    }
+
+    public void saveMeId(String meid){
+        meId = meid;
+        createCacheUtils();
+        cacheUtils.saveCacheToDisk(USER_MEID,meid);
+    }
+
+    public String getMeId(){
+        createCacheUtils();
+        meId = cacheUtils.readCacheFromDisk(USER_MEID);
+        return meId;
     }
 }

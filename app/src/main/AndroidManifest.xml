@@ -64,9 +64,14 @@
         <activity android:name="com.dsgly.bixin.biz.view.SelfMainPageActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.dsgly.bixin.biz.view.MyVideoMomentActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name="com.dsgly.bixin.biz.view.SettingActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.dsgly.bixin.biz.view.ClipPictureActivity"
+            android:screenOrientation="portrait"/>PublishMomentActivity
+        <activity android:name="com.dsgly.bixin.biz.view.PublishMomentActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:configChanges="orientation|screenSize"
@@ -77,7 +82,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name="com.dsgly.bixin.biz.view.BindPhoneActivity"
             android:screenOrientation="portrait">
-        </activity>UpdatePwdActivity
+        </activity>
+        <activity android:name="com.dsgly.bixin.biz.view.ImportVideoActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name="com.dsgly.bixin.biz.view.UpdatePwdActivity"
             android:screenOrientation="portrait">
         </activity>

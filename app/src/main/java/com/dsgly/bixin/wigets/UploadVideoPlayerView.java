@@ -2,6 +2,7 @@ package com.dsgly.bixin.wigets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -12,7 +13,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
  * Created by dengxuan on 2017/8/6.
  */
 
-public class UploadVideoPlayerView extends LinearLayout {
+public class UploadVideoPlayerView extends SurfaceView {
     public UploadVideoPlayerView(Context context) {
         super(context);
     }

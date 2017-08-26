@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkListener;
 import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.wigets.ProgressHUD;
 /*import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
@@ -142,8 +144,9 @@ public class BaseActivity extends FragmentActivity implements
     @Override
     public void goBackWithResult(Bundle bundle) {
         Intent intent = new Intent();
-        if (bundle != null) ;
-        intent.putExtras(bundle);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -183,4 +186,10 @@ public class BaseActivity extends FragmentActivity implements
     public boolean onNewMessages(List<TIMMessage> list) {
         return false;
     }*/
+
+    protected void starMoment(String momentId){
+        NetworkParam networkParam = new NetworkParam(this);
+        networkParam.key = NetServiceMap.STARMOMENT;
+        RequestUtils.startGetRequestExt(networkParam,momentId);
+    }
 }

@@ -7,7 +7,10 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,13 +35,13 @@ import me.nereo.multi_image_selector.MultiImageSelectorActivity;
  * Created by dengxuan on 2017/8/6.
  */
 
-public class CompleteProfileUploadVideoActivity extends BaseActivity implements PicGridViewAdapter.OnItemChooseListener {
+public class CompleteProfileUploadVideoActivity extends BaseActivity implements PicGridViewAdapter.OnItemChooseListener, SurfaceHolder.Callback {
     public static int REQUEST_CODE_FOR_VIDEO = 0x10;
     public static int REQUEST_CODE_FOR_PIC = 0x11;
     private CompleteProfileUploadVideoPresenetr presenter;
     public SimpleExoPlayer simpleExoPlayer;
     public Button mUploadBtn;
-    public SimpleExoPlayerView simpleExoPlayerView;
+    public SurfaceView simpleExoPlayerView;
     public ImageView moreBtn;
     public ImageView backBtn;
     public ImageView playBtn;
@@ -61,14 +64,29 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
     }
 
     @Override
+    protected void onPause() {
+        simpleExoPlayer.stop();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!TextUtils.isEmpty(videoUrl) && simpleExoPlayer != null){
+            presenter.prepareDataSource(videoUrl);
+        }
+    }
+
+    @Override
     public void initViews() {
         super.initViews();
         setContentView(R.layout.complete_profile_upload_video_activity);
         mUploadBtn = (Button) findViewById(R.id.user_upload_video);
         mUploadBtn.setOnClickListener(this);
-        simpleExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.player_video);
+        simpleExoPlayerView = (SurfaceView) findViewById(R.id.player_video);
+        simpleExoPlayerView.getHolder().addCallback(this);
         presenter.setUpExoPlayer(this);
-        simpleExoPlayerView.setPlayer(simpleExoPlayer);
+        //simpleExoPlayerView.setPlayer(simpleExoPlayer);
         moreBtn = (ImageView) findViewById(R.id.more_icon);
         moreBtn.setOnClickListener(this);
         playBtn = (ImageView) findViewById(R.id.main_page_item_img_btn);
@@ -173,5 +191,20 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
                         .start(this, REQUEST_CODE_FOR_PIC);
             }
         }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        simpleExoPlayer.setVideoSurface(holder.getSurface());
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
     }
 }

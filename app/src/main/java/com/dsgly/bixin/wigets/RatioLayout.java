@@ -15,7 +15,7 @@ public class RatioLayout extends RelativeLayout {
     public static final int RATIO_MODE_Y = 2;
 
     private int mRatioX=4;
-    private int mRatioY=3;
+    private int mRatioY=4;
     private int mRatioMode=RATIO_MODE_X;
 
     public RatioLayout(Context context) {

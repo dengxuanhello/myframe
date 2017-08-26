@@ -224,7 +224,7 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
 
     private void uploadPic(String imagePath){
         String api = NetServiceMap.UploadUserGallery.getHostPath()+NetServiceMap.UploadUserGallery.getApi();
-        RequestUtils.uploadFile(api, imagePath, new Callback() {
+        /*RequestUtils.uploadFile(api, imagePath, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.i("dxup",e.getMessage());
@@ -234,7 +234,7 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
             public void onResponse(Call call, Response response) throws IOException {
                 Log.i("dxup",response.body().string());
             }
-        });
+        });*/
     }
 
 }

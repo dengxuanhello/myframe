@@ -97,7 +97,8 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
             }
             if("200".equals(result.code)) {
                 //TODO save userdata
-                UCUtils.mid = result.data.meId;
+                //UCUtils.meId = result.data.meId;
+                UCUtils.getInstance().saveMeId(result.data.meId);
                 //mvpView.showToast();
                 //goMainPage();
                 getUserInfo();

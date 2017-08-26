@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.CommentDetailActivity;
 import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
-import com.dsgly.bixin.biz.view.VideoPlayActivity;
+import com.dsgly.bixin.biz.view.VideoRecorderActivity;
 import com.dsgly.bixin.biz.view.adapter.MainPageAdapter;
 import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
@@ -23,7 +22,9 @@ import com.dsgly.bixin.net.requestParam.MainPageDataParam;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.utils.ArrayUtils;
 import com.dsgly.bixin.utils.UCUtils;
+import com.netease.svsdk.constants.RequestCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMainPageDataList = MainPageDataResult.getTestData();
+        mMainPageDataList = new ArrayList<MainPageDataResult.MomentData>();
         mMainPageAdapter = new MainPageAdapter(mMainPageDataList,getContext());
         mMainPageAdapter.setOnViewClickedListener(this);
         mListview.setAdapter(mMainPageAdapter);
@@ -91,7 +92,7 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
         MainPageDataParam mainPageDataParam = new MainPageDataParam();
         mainPageDataParam.cursor = "1";
         mainPageDataParam.pageSize = "20";
-        mainPageDataParam.meId = UCUtils.mid;
+        mainPageDataParam.meId = UCUtils.meId;
         NetworkParam networkParam = new NetworkParam(this);
         //networkParam.param = mainPageDataParam;
         networkParam.key = NetServiceMap.MonentList;
@@ -102,24 +103,34 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
 
     @Override
     public void onImageViewClicked(MainPageDataResult.MomentData result) {
-        if(result!=null && !TextUtils.isEmpty(result.videoPathOrigin)){
+        /*if(result!=null && !TextUtils.isEmpty(result.videoPathOrigin)){
             VideoPlayActivity.startVideoPlay(getActivity(),result.videoPathOrigin);
+        }*/
+        if(result != null){
+            CommentDetailActivity.startCommentDetailActivity(getActivity(),result);
         }
     }
 
     @Override
     public void onNameClicked(MainPageDataResult.MomentData result) {
-
+        if(result != null){
+            CommentDetailActivity.startCommentDetailActivity(getActivity(),result);
+        }
     }
 
     @Override
     public void onStarClicked(MainPageDataResult.MomentData result) {
-
+        if(result != null){
+            //CommentDetailActivity.startCommentDetailActivity(getActivity(),result);
+            starMoment(result.id);
+        }
     }
 
     @Override
     public void onCommentClicked(MainPageDataResult.MomentData result) {
-
+        if(result != null){
+            CommentDetailActivity.startCommentDetailActivity(getActivity(),result);
+        }
     }
 
     @Override
@@ -132,7 +143,8 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
     @Override
     public void onClick(View v) {
         if(v.equals(mPublishVideoView)){
-            CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(getActivity());
+            VideoRecorderActivity.startVideoRecordActivity(getActivity(), 777);
+            //CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(getActivity());
         }
     }
 }

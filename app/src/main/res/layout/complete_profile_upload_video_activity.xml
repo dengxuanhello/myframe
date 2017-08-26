@@ -43,17 +43,20 @@
         android:layout_margin="8dp"
         android:background="@drawable/show_video_shape">
         <com.dsgly.bixin.wigets.UploadVideoPlayerView
-            android:id="@+id/player_video_container"
+            android:id="@+id/player_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:background="@drawable/show_video_shape"
             android:padding="5dp">
-            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            <!--<com.google.android.exoplayer2.ui.SimpleExoPlayerView
                 android:id="@+id/player_video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
+            </com.google.android.exoplayer2.ui.SimpleExoPlayerView>-->
+            <!--<SurfaceView
+                android:id="@+id/player_video"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />-->
         </com.dsgly.bixin.wigets.UploadVideoPlayerView>
         <ImageView
             android:id="@+id/main_page_item_img_btn"

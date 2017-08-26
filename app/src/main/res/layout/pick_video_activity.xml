@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/black"
+        android:padding="8dp">
+        <ImageView
+            android:id="@+id/svsdk_ic_back"
+            android:src="@drawable/nav_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"/>
+        <TextView
+            android:id="@+id/svsdk_activity_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="下一步" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <SurfaceView
+            android:id="@+id/player_surface"
+            android:layout_width="360dp"
+            android:layout_height="360dp" />
+    </LinearLayout>
+    <GridView
+        android:id="@+id/svsdk_select_video_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="3dp"
+        android:verticalSpacing="3dp"
+        android:scrollbars="none"
+        android:numColumns="4"
+        android:paddingTop="3dp"
+        android:paddingLeft="0.5dp"
+        android:stretchMode="columnWidth"/>
+</LinearLayout>

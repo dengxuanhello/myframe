@@ -1,17 +1,14 @@
 package com.dsgly.bixin.biz.view;
-
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +18,8 @@ import android.widget.TextView;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseActivity;
 import com.dsgly.bixin.utils.MediaUtils;
+import com.netease.svsdk.biz.*;
+import com.netease.svsdk.constants.RequestCode;
 
 /**
  * Created by dengxuan on 2017/8/6.
@@ -42,6 +41,8 @@ public class VideoRecorderActivity extends BaseActivity {
     private RelativeLayout buttomAreaRl;
     private ImageView fullScreenIv;
     private RelativeLayout topActionRl;
+    private RecordProgressView recordProgressView;
+    private Boolean isFullScreenRecord = false;
 
     public static void startVideoRecordActivity(Context context,int requestCode){
         if(context != null) {
@@ -74,6 +75,7 @@ public class VideoRecorderActivity extends BaseActivity {
         buttomAreaRl = (RelativeLayout) findViewById(R.id.buttom_area_rl);
         fullScreenIv = (ImageView) findViewById(R.id.full_screen_record_iv);
         topActionRl = (RelativeLayout) findViewById(R.id.top_action_area);
+        recordProgressView = (RecordProgressView) findViewById(R.id.record_progress_view);
         fullScreenIv.setOnClickListener(this);
         mediaUtils = new MediaUtils(this);
         mediaUtils.setRecorderType(MediaUtils.MEDIA_VIDEO);
@@ -145,14 +147,25 @@ public class VideoRecorderActivity extends BaseActivity {
                 backForResult(mediaUtils.getTargetFilePath());
             }
         }else if(v.equals(importVideo)){
-
+            ImportVideoActivity.startPickVideosActivity(this,RequestCode.REQ_FOR_PIC_VIDEO);
         }else if(v.equals(fullScreenRecord)){
 
         }else if(v.equals(editVideo)){
-            VideoEditActivity.startVideoEditActivity(this,mediaUtils.getTargetFilePath(),EDIT_VIDEO_REQUEST_CODE);
+            //VideoEditActivity.startVideoEditActivity(this,mediaUtils.getTargetFilePath(),EDIT_VIDEO_REQUEST_CODE);
+            Bundle bundle = new Bundle();
+            bundle.putString("cut_video_source_path",mediaUtils.getTargetFilePath());
+            VideoCutActivity.startVideoCutActivity(this,bundle,RequestCode.REQ_FOR_CUT_VIDEO);
         } else if(v.equals(fullScreenIv)){
-            buttomAreaRl.setBackground(getDrawable(R.color.transparent));
-            topActionRl.setBackground(getDrawable(R.color.transparent));
+            if(isFullScreenRecord) {
+                buttomAreaRl.setBackground(getDrawable(R.color.black));
+                topActionRl.setBackground(getDrawable(R.color.black));
+                fullScreenIv.setImageDrawable(getDrawable(R.drawable.button_full_screen));
+            }else {
+                buttomAreaRl.setBackground(getDrawable(R.color.transparent));
+                topActionRl.setBackground(getDrawable(R.color.transparent));
+                fullScreenIv.setImageDrawable(getDrawable(R.drawable.screen_switch_to_small));
+            }
+            isFullScreenRecord = !isFullScreenRecord;
         }
     }
 
@@ -165,6 +178,7 @@ public class VideoRecorderActivity extends BaseActivity {
                         mProgress = mProgress + 1;
                         timeTv.setText("00:"+parseTimeToString(mProgress*1000));
                         sendMessageDelayed(handler.obtainMessage(0), 1000);
+                        recordProgressView.setCurrentProgress(mProgress);
                     }
                     break;
             }
@@ -232,6 +246,12 @@ public class VideoRecorderActivity extends BaseActivity {
         if(requestCode == EDIT_VIDEO_REQUEST_CODE){
             setResult(resultCode,data);
             finish();
+        }else if(requestCode == RequestCode.REQ_FOR_CUT_VIDEO){
+            if(resultCode == RESULT_OK){
+                String videoPath = data.getStringExtra("cutVideo");
+                Log.i("dx",videoPath);
+                PublishMomentActivity.startPublishMomentActivity(this,videoPath);
+            }
         }else {
             super.onActivityResult(requestCode,resultCode,data);
         }

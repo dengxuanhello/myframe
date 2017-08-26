@@ -34,6 +34,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.data = data;
     }
 
+    public void setMomentData(MainPageDataResult.MomentData momentData) {
+        this.momentData = momentData;
+    }
+
     public void setData(List<CommentsResult.UserComment> data) {
         this.data = data;
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.dsgly.bixin.R;
@@ -104,8 +105,9 @@ public class SplashActivity extends BaseActivity{
 
     private void disPatchLogic(){
         Intent intent = new Intent();
+        String meid = UCUtils.getInstance().getMeId();
         UserInfo userInfo = UCUtils.getInstance().getUserInfo();
-        if(userInfo != null){
+        if(userInfo != null && !TextUtils.isEmpty(meid)){
             intent.setClass(this, HomeActivity.class);
             UCUtils.getInstance().loginQqIM(userInfo.userId);
         }else {

@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkListener;
 import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.wigets.ProgressHUD;
 /*import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
@@ -66,6 +68,12 @@ public class BaseFragment extends Fragment implements NetworkListener/*, TIMMess
                 progressDialog.dismiss();
             }
         }
+    }
+
+    protected void starMoment(String momentId){
+        NetworkParam networkParam = new NetworkParam(this);
+        networkParam.key = NetServiceMap.STARMOMENT;
+        RequestUtils.startGetRequestExt(networkParam,momentId);
     }
 
    /* @Override
