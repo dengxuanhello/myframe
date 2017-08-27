@@ -74,7 +74,7 @@
         <activity android:name="com.dsgly.bixin.biz.view.SettingActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.dsgly.bixin.biz.view.ClipPictureActivity"
-            android:screenOrientation="portrait"/>PublishMomentActivity
+            android:screenOrientation="portrait"/>
         <activity android:name="com.dsgly.bixin.biz.view.PublishMomentActivity"
             android:screenOrientation="portrait"/>
         <activity
