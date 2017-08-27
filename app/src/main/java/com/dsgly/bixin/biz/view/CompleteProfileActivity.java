@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,9 @@ import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.responseResult.BaseResult;
+import com.dsgly.bixin.net.responseResult.UserInfo;
 import com.dsgly.bixin.utils.ImageUtil;
+import com.dsgly.bixin.utils.UCUtils;
 import com.tencent.qcloud.ui.CircleImageView;
 
 import java.io.IOException;
@@ -91,6 +94,24 @@ public class CompleteProfileActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+        UserInfo userInfo = UCUtils.getInstance().getUserInfo();
+        if(userInfo != null){
+            mHeightTextView.setText(userInfo.height);
+            mSchoolView.setText(userInfo.college);
+            if(!TextUtils.isEmpty(userInfo.headImgThumbUrl)) {
+                Glide.with(this).load(userInfo.headImgThumbUrl).into(mCicleImageV);
+                mCicleImageV.setVisibility(View.VISIBLE);
+                mUserAvatar.setVisibility(View.GONE);
+            }
+            mDescView.setText(userInfo.description);
+            mIdealPartnerView.setText(userInfo.idealPartnerDescription);
+            mDateTextView.setText(userInfo.birthYear+"-"+userInfo.birthMonth+"-"+userInfo.birthDay);
+        }
     }
 
     @Override

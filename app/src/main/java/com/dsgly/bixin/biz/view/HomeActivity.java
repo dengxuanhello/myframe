@@ -129,7 +129,6 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 GetUserInfoResult result = (GetUserInfoResult) param.baseResult;
                 UCUtils.getInstance().saveUserinfo(result.data);
                 UCUtils.getInstance().loginQqIM(result.data.userId);
-                setTabSelection(TAB_SETTING);
             }
         }
     }
