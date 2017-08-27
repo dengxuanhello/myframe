@@ -205,4 +205,15 @@ public class BaseActivity extends FragmentActivity implements
         networkParam.param = param ;
         RequestUtils.startGetRequest(networkParam);
     }
+
+    protected void addFriend(String targetUserId){
+        NetworkParam networkParam = new NetworkParam(this);
+        networkParam.key = NetServiceMap.AddFriend;
+
+        String param = new StringBuilder().append("?targetUserId=")
+                .append(targetUserId)
+                .append("&meId=")
+                .append(UCUtils.meId).toString();
+        RequestUtils.startPostRequestExt(networkParam,param);
+    }
 }

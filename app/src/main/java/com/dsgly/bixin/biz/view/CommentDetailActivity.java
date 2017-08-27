@@ -126,6 +126,14 @@ public class CommentDetailActivity extends BaseActivity {
             }
         }else if(param.key == NetServiceMap.CommentMoment){
             requestForComments();
+        }else if(param.key == NetServiceMap.AddFriend){
+            if(param.baseResult!=null){
+                if("200".equals(param.baseResult.code)){
+                    showToast("搭讪成功，等待对方回复");
+                }else {
+                    showToast(param.baseResult.msg);
+                }
+            }
         }
     }
 
@@ -135,7 +143,7 @@ public class CommentDetailActivity extends BaseActivity {
         if(v.equals(commentTv)){
             showEditDialog();
         }else if(v.equals(dashanTv)){
-
+            addFriend(momentData.userId);
         }
     }
 

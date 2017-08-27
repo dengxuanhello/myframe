@@ -7,4 +7,5 @@ package com.dsgly.bixin.constant;
 
 public class RequestCode {
     public static int SCHEME_DISPATCHER_REQUEST_CODE = 0x1000;
+    public static int REQ_FOR_RECORD_VIDEO = 0x2000;
 }

@@ -1,5 +1,6 @@
 package com.dsgly.bixin.biz.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,8 +25,11 @@ import com.dsgly.bixin.utils.ImageUtil;
 import com.dsgly.bixin.utils.PathUtil;
 import com.netease.svsdk.biz.VideoCutActivity;
 import com.netease.svsdk.constants.RequestCode;
+import com.netease.svsdk.tools.ViewUtil;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -45,12 +49,14 @@ public class PublishMomentActivity extends BaseActivity {
     private String videoPath;
     private String picPath;
     private ImageView coverImg;
-    private AsyncTask<String,Void,String> task;
+    private AsyncTask<String,Void,ExtractInfo> task;
     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
     private TextView sureTv;
     private TextView editCoverTv;
     private TextView editVideoTv;
     private EditText momentTextEt;
+    private TextView mTimeTv;
+    private TextView mVideoSizeTv;
     @Override
     public void initViews() {
         super.initViews();
@@ -63,15 +69,20 @@ public class PublishMomentActivity extends BaseActivity {
         editCoverTv.setOnClickListener(this);
         editVideoTv.setOnClickListener(this);
         momentTextEt = (EditText) findViewById(R.id.monet_text_et);
+        mTimeTv = (TextView) findViewById(R.id.time_tv);
+        mVideoSizeTv = (TextView) findViewById(R.id.size_tv);
     }
 
-    public static void startPublishMomentActivity(Context context,String videoPath){
+    public static void startPublishMomentActivity(Context context,String videoPath,int requestCode){
         if(context != null) {
             Intent intent = new Intent();
             intent.setClass(context, PublishMomentActivity.class);
             intent.putExtra(VIDEO_PATH,videoPath);
-            //intent.putExtra(PIC_PATH,coverPath);
-            context.startActivity(intent);
+            if(context instanceof Activity){
+                ((Activity) context).startActivityForResult(intent,requestCode);
+            }else {
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -80,7 +91,25 @@ public class PublishMomentActivity extends BaseActivity {
         super.initData();
         videoPath = getIntent().getStringExtra(VIDEO_PATH);
         picPath = getIntent().getStringExtra(PIC_PATH);
-        //choosePic();
+        if(TextUtils.isEmpty(videoPath)){
+            finish();
+            return;
+        }
+        File file = new File(videoPath);
+        int fSize = 0;
+        if (file.exists()){
+            try {
+                FileInputStream fis = new FileInputStream(file);
+                fSize = fis.available();
+                fis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String fileSize = fSize/1024/1024+"MB";
+        mVideoSizeTv.setText(fileSize);
     }
 
     @Override
@@ -150,13 +179,19 @@ public class PublishMomentActivity extends BaseActivity {
 
 
     private void getVideoThumb(final int picWidth,final int picHeight){
-        task = new AsyncTask<String,Void,String>(){
+        task = new AsyncTask<String,Void,ExtractInfo>(){
             @Override
-            protected String doInBackground(String... params) {
-
+            protected ExtractInfo doInBackground(String... params) {
+                ExtractInfo info = new ExtractInfo();
                 mediaMetadataRetriever.setDataSource(params[0]);
                 final int thumbWidth = picWidth;
                 final int thumbHeight = picHeight;
+                String duration = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                try {
+                    info.duration = ViewUtil.parseTimeToString(Integer.parseInt(duration));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_NEXT_SYNC);
                 try {
                     bitmap = Bitmap.createScaledBitmap(bitmap, thumbWidth, thumbHeight, false);
@@ -167,16 +202,23 @@ public class PublishMomentActivity extends BaseActivity {
                 if(bitmap != null) {
                     File file = new File(PathUtil.getTemplateCachePath(), PathUtil.getNameByTime() + ".png");
                     ImageUtil.saveBitmapFile2(bitmap, file);
-                    return file.getAbsolutePath();
+                    info.path = file.getAbsolutePath();
                 }
 
-                return null;
+                return info;
             }
 
             @Override
-            protected void onPostExecute(String s) {
-                picPath = s;
-                Glide.with(PublishMomentActivity.this).load(picPath).into(coverImg);
+            protected void onPostExecute(ExtractInfo extractInfo) {
+                if(extractInfo!=null) {
+                    if(!TextUtils.isEmpty(extractInfo.path)) {
+                        picPath = extractInfo.path;
+                        Glide.with(PublishMomentActivity.this).load(picPath).into(coverImg);
+                    }
+                    if(!TextUtils.isEmpty(extractInfo.duration)) {
+                        mTimeTv.setText(extractInfo.duration);
+                    }
+                }
             }
         };
         task.execute(videoPath);
@@ -184,13 +226,15 @@ public class PublishMomentActivity extends BaseActivity {
 
 
     private void setMoment(){
-        if(TextUtils.isEmpty(momentTextEt.getText())){
+        if(TextUtils.isEmpty(momentTextEt.getText().toString())){
             showToast("请填写动态");
             return;
         }
-        RequestUtils.uploadFile(NetServiceMap.SendMoment.getHostPath() + NetServiceMap.SendMoment.getApi(), videoPath, picPath, new Callback() {
+        showProgressDialog("正在发布请稍后");
+        RequestUtils.uploadFile(NetServiceMap.SendMoment.getHostPath() + NetServiceMap.SendMoment.getApi(),momentTextEt.getText().toString(), videoPath, picPath, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                closeProgressDialog();
                 if(e != null) {
                     Log.i("dxup", "error" + e.getMessage());
                 }
@@ -198,14 +242,23 @@ public class PublishMomentActivity extends BaseActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                closeProgressDialog();
                 if (response.isSuccessful()) {
                     String str = response.body().string();
                     Log.i("dxup", response.message() + " , body " + str);
-
+                    if(str.contains("200")){
+                        setResult(RESULT_OK);
+                        finish();
+                    }
                 } else {
                     Log.i("dxup" ,response.message() + " error : body " + response.body().string());
                 }
             }
         });
+    }
+
+    private class ExtractInfo{
+        String path;
+        String duration;
     }
 }

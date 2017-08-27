@@ -166,7 +166,7 @@ public class VideoRecorderActivity extends BaseActivity {
         }else if(v.equals(importVideo)){
             Bundle bundle = new Bundle();
             bundle.putString(FROM_SOURCE,from);
-            ImportVideoActivity.startPickVideosActivity(this,bundle,RequestCode.REQ_FOR_PIC_VIDEO);
+            ImportVideoActivity.startImportVideoActivity(this,bundle,RequestCode.REQ_FOR_PIC_VIDEO);
         }/*else if(v.equals(fullScreenRecord)){
 
         }*/else if(v.equals(editVideo)){
@@ -267,15 +267,17 @@ public class VideoRecorderActivity extends BaseActivity {
             finish();
         }else if(requestCode == RequestCode.REQ_FOR_CUT_VIDEO){
             if(resultCode == RESULT_OK){
-                String videoPath = data.getStringExtra("cutVideo");
-                Log.i("dx",videoPath);
-                if(!TextUtils.isEmpty(videoPath)) {
-                    PublishMomentActivity.startPublishMomentActivity(this, videoPath);
-                }
+                setResult(RESULT_OK,data);
+                finish();
             }
         }else if(requestCode == RequestCode.REQ_FOR_PIC_VIDEO){
             setResult(RESULT_OK,data);
             finish();
+        }else if(requestCode == RequestCode.REQ_FOR_PUB_VIDEO){
+            if(resultCode == RESULT_OK){
+                setResult(RESULT_OK,data);
+                finish();
+            }
         }else {
             super.onActivityResult(requestCode,resultCode,data);
         }

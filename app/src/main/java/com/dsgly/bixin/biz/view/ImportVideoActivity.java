@@ -68,7 +68,7 @@ public class ImportVideoActivity extends BaseActivity implements VideoPickListen
         }
     }
 
-    public static void startPickVideosActivity(Context context,Bundle bundle,int requestCode){
+    public static void startImportVideoActivity(Context context,Bundle bundle,int requestCode){
         if(context != null) {
             Intent intent = new Intent();
             intent.setClass(context, ImportVideoActivity.class);
@@ -348,11 +348,18 @@ public class ImportVideoActivity extends BaseActivity implements VideoPickListen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == RequestCode.REQ_FOR_CUT_VIDEO){
             if(resultCode == RESULT_OK){
-                String videoPath = data.getStringExtra("cutVideo");
+                /*String videoPath = data.getStringExtra("cutVideo");
                 Log.i("dx",videoPath);
                 if(!TextUtils.isEmpty(videoPath)) {
-                    PublishMomentActivity.startPublishMomentActivity(this, videoPath);
-                }
+                    PublishMomentActivity.startPublishMomentActivity(this, videoPath,RequestCode.REQ_FOR_PUB_VIDEO);
+                }*/
+                setResult(RESULT_OK,data);
+                finish();
+            }
+        }else if(requestCode == RequestCode.REQ_FOR_PUB_VIDEO){
+            if(resultCode == RESULT_OK){
+                setResult(RESULT_OK,data);
+                finish();
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);

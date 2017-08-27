@@ -1,5 +1,6 @@
 package com.dsgly.bixin.biz.view.frg;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,9 +26,14 @@ import com.dsgly.bixin.net.requestParam.MainPageDataParam;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.utils.ArrayUtils;
 import com.dsgly.bixin.utils.UCUtils;
+import com.netease.svsdk.biz.VideoCutActivity;
+import com.netease.svsdk.constants.RequestCode;
+import com.netease.svsdk.tools.Permissions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dsgly.bixin.constant.RequestCode.REQ_FOR_RECORD_VIDEO;
 
 /**
  * 首页，包含有各种动态
@@ -180,8 +186,11 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
     @Override
     public void onClick(View v) {
         if(v.equals(mPublishVideoView)){
-            VideoRecorderActivity.startVideoRecordActivity(getActivity(), 777);
-            //CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(getActivity());
+            if(Permissions.hasPermissions(getActivity(),Manifest.permission.RECORD_AUDIO,Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                VideoRecorderActivity.startVideoRecordActivity(getActivity(), REQ_FOR_RECORD_VIDEO);
+            }else {
+                Permissions.requestPermissions(getActivity(), "", RequestCode.REQ_FOR_WRITE_EXT_STORAGE,Manifest.permission.RECORD_AUDIO,Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
         }
     }
 

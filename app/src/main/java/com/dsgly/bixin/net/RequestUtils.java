@@ -172,7 +172,7 @@ public class RequestUtils {
         initOkhttp();
     }
 
-    public static void uploadFile(String url, String fileName,String pic, Callback callback) {
+    public static void uploadFile(String url,String moment, String fileName,String pic, Callback callback) {
         initOkhttp();
 
         //判断文件类型
@@ -200,7 +200,7 @@ public class RequestUtils {
             requestBody.addFormDataPart("ttt.png", file2.getName(), body);
         }
         requestBody.addFormDataPart("meId", UCUtils.meId);
-        requestBody.addFormDataPart("content","dengxuan1 test");
+        requestBody.addFormDataPart("content",moment);
         Request request = new Request.Builder().url(url).post(requestBody.build()).build();
         httpClient.newBuilder().writeTimeout(50, TimeUnit.SECONDS).build().newCall(request).enqueue(callback);
         //httpClient.newBuilder().readTimeout(5000, TimeUnit.MILLISECONDS).build().newCall(request).enqueue(callback);

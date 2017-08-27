@@ -39,6 +39,7 @@ public enum NetServiceMap{
     UploadUserGallery("user/gallery/uploadPic",BaseResult.class),
     GetMomentComments("moment/commentList",CommentsResult.class),
     FeedBack("feedback",BaseResult.class),
+    AddFriend("im/addFriend",BaseResult.class),
     MonentList("moment/list", MainPageDataResult.class);
 
 
