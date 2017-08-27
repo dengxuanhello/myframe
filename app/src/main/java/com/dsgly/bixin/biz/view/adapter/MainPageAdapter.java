@@ -67,7 +67,9 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             });
             //((MainPageViewItemHolder) holder).authorName.setText(result.authorName);
-            ((MainPageViewItemHolder) holder).authorName.setText(result.userId);
+            if(result.userModel!=null) {
+                ((MainPageViewItemHolder) holder).authorName.setText(result.userModel.nickName);
+            }
             if(!TextUtils.isEmpty(result.gender)&&!"0".equals(result.gender)) {
                 ((MainPageViewItemHolder) holder).authorName.setCompoundDrawables(null, null, getDrawableByType("1".equals(result.gender) ? R.drawable.icon_boy : R.drawable.icon_girl), null);
             }else {

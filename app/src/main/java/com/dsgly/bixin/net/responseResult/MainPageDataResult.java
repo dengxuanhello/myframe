@@ -21,7 +21,6 @@ public class MainPageDataResult extends BaseResult {
     public static class MomentData implements Serializable{
         private static final long serialVersionUID = 1L;
         public String previewPic; //url
-        public String authorName;     // 作者姓名
         public String authorConstellation;// 作者星座
         public String content;// 发布内容
         public String gmtCreated;// 发布时间
@@ -34,22 +33,6 @@ public class MainPageDataResult extends BaseResult {
         public String userId;
         public String videoPath;
         public String videoPathOrigin;
-    }
-
-    public static ArrayList<MomentData> getTestData(){
-        ArrayList<MomentData> list = new ArrayList<MomentData>();
-        for (int i=0;i<10;i++){
-            MomentData result = new MomentData();
-            result.previewPic=("");
-            result.authorName = ("邓选"+i);
-            result.gender = (String.valueOf(i%2+1));
-            result.authorConstellation = ("双子座");
-            result.content = ("今天的天气真好");
-            result.gmtCreated = ("2017-06-15 17:20");
-            result.starNum = ("66");
-            result.commentNum = ("16");
-            list.add(result);
-        }
-        return list;
+        public UserInfo userModel;
     }
 }

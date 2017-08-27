@@ -68,6 +68,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((CommentListViewItemHolder) holder).commentContent.setText(comment.content);
         }else if(holder instanceof CommentListInfoHolder){
             Glide.with(mContext).load(momentData.previewPic).into(((CommentListInfoHolder) holder).scaledImageView);
+            if(momentData.userModel != null) {
+                Glide.with(mContext).load(momentData.userModel.headImgThumbUrl).into(((CommentListInfoHolder) holder).avatar);
+            }
             ((CommentListInfoHolder) holder).scaledImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

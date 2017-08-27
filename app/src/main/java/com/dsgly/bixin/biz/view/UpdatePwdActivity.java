@@ -17,9 +17,11 @@ import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.requestParam.ChangePwdParam;
+import com.dsgly.bixin.net.requestParam.GetPhoneParam;
 import com.dsgly.bixin.net.requestParam.SendVcodeParam;
 import com.dsgly.bixin.net.responseResult.GetPhoneResult;
 import com.dsgly.bixin.utils.CommonUtils;
+import com.dsgly.bixin.utils.UCUtils;
 
 import java.util.HashMap;
 
@@ -113,6 +115,9 @@ public class UpdatePwdActivity extends BaseActivity {
     private void getPhone(){
         NetworkParam networkParam = new NetworkParam(this);
         networkParam.key = NetServiceMap.PHONE;
+        GetPhoneParam getPhoneParam = new GetPhoneParam();
+        getPhoneParam.meId = UCUtils.meId;
+        networkParam.param = getPhoneParam;
         RequestUtils.startGetRequest(networkParam);
     }
 

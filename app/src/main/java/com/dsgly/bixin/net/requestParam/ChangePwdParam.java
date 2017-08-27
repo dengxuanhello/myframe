@@ -1,5 +1,7 @@
 package com.dsgly.bixin.net.requestParam;
 
+import com.dsgly.bixin.utils.UCUtils;
+
 /**
  * Created by dengxuan on 2017/8/5.
  */
@@ -9,4 +11,5 @@ public class ChangePwdParam extends BaseParam {
     public String code;
     public String appVersion;
     public String phoneModel;
+    public String meId = UCUtils.meId;
 }

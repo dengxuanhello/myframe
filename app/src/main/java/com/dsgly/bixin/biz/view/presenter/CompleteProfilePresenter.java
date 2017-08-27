@@ -100,7 +100,7 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String paramStr = "?meId=100920&targetUserId=&userStr="+strUTF8;
+        String paramStr = "?meId=" + UCUtils.meId + "&targetUserId=&userStr=" + strUTF8;
         RequestUtils.startGetRequestExt(param,paramStr);
     }
 }
