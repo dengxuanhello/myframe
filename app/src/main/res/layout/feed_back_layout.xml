@@ -49,7 +49,9 @@
         android:background="@color/white"
         android:textColor="#FF949494"
         android:textColorHint="#FFe3e3e3"
-        android:hint="点击填写反馈内容"/>
+        android:hint="点击填写反馈内容"
+        android:textSize="12sp"
+        android:gravity="top"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,7 +72,9 @@
         android:background="@color/white"
         android:textColor="#FF949494"
         android:textColorHint="#FFe3e3e3"
-        android:hint="电话/邮箱/微信号"/>
+        android:hint="电话/邮箱/微信号"
+        android:textSize="12sp"
+        android:gravity="top"/>
     <Button
         android:id="@+id/commit"
         android:layout_width="match_parent"
