@@ -19,6 +19,8 @@ import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.responseResult.GetUserInfoResult;
 import com.dsgly.bixin.utils.UCUtils;
 
+import static com.dsgly.bixin.constant.RequestCode.REQ_FOR_RECORD_VIDEO;
+
 /**
  * Created by dengxuan on 2017/7/2.
  */
@@ -113,6 +115,10 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQ_FOR_COMPLETE_INFO){
+            if(resultCode == RESULT_OK){
+                getUserInfo();
+            }
+        }else if(requestCode == REQ_FOR_RECORD_VIDEO){
             if(resultCode == RESULT_OK){
                 getUserInfo();
             }
