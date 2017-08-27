@@ -2,6 +2,7 @@ package com.dsgly.bixin.QQIM.ui;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.dsgly.bixin.QQIM.adapter.ConversationAdapter;
 import com.dsgly.bixin.QQIM.model.Conversation;
@@ -22,6 +24,7 @@ import com.dsgly.bixin.QQIM.utils.PushUtil;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.HomeActivity;
+import com.dsgly.bixin.utils.UCUtils;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMMessage;
@@ -96,7 +99,15 @@ public class ConversationFragment extends BaseFragment implements ConversationVi
         }
         adapter.notifyDataSetChanged();
         return view;
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(!UCUtils.isIMLogined){
+            Toast.makeText(getContext(),"聊天服务器登陆失败,正尝试重新登陆...",Toast.LENGTH_SHORT).show();
+            UCUtils.getInstance().loginQqIM();
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ public class UCUtils {
     private CacheUtils cacheUtils;
 
     public static String meId = "";
+    public static boolean isIMLogined = false;
 
     public static UCUtils getInstance() {
         if(instance == null){
@@ -68,16 +69,38 @@ public class UCUtils {
         cacheUtils.saveCacheToDisk(USER_DATA,"");
     }
 
+    public void loginQqIM(){
+        UserInfo userInfo = getUserInfo();
+        if(userInfo != null) {
+            String userid = userInfo.userId;
+            LoginBusiness.loginIm(userid, Config.QQ_SDK_SIG, new TIMCallBack() {
+                @Override
+                public void onError(int i, String s) {
+                    Log.i("dx","login error:"+s);
+                    UCUtils.isIMLogined = false;
+                }
+                @Override
+                public void onSuccess() {
+                    Log.i("dx","login success");
+                    MessageEvent.getInstance();
+                    UCUtils.isIMLogined = true;
+                }
+            });
+        }
+    }
+
     public void loginQqIM(String userid){
         LoginBusiness.loginIm(userid, Config.QQ_SDK_SIG, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
                 Log.i("dx","login error:"+s);
+                UCUtils.isIMLogined = false;
             }
             @Override
             public void onSuccess() {
                 Log.i("dx","login success");
                 MessageEvent.getInstance();
+                UCUtils.isIMLogined = true;
             }
         });
     }

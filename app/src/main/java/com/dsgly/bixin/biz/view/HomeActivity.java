@@ -34,6 +34,10 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private RadioButton mSettingsPageBtn;
     private RadioGroup radioGroup;
 
+    private MainPageFrg mainPageFrg;
+    private ConversationFragment conversationFragment;
+    private MyselfFrg myselfFrg;
+
     public static void startHomeActivity(Context context){
         if(context != null) {
             Intent intent = new Intent();
@@ -77,16 +81,28 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private void setTabSelection(int type){
         switch (type){
             case TAB_HOME:
-                mCurrentFrg = MainPageFrg.newInstance(null);
+                if(mainPageFrg == null){
+                    mainPageFrg = MainPageFrg.newInstance(null);
+                }
+                mCurrentFrg = mainPageFrg;
                 break;
             case TAB_CHAT:
-                mCurrentFrg =  ConversationFragment.newInstance(null);
+                if(conversationFragment == null){
+                    conversationFragment = ConversationFragment.newInstance(null);
+                }
+                mCurrentFrg =  conversationFragment;
                 break;
             case TAB_SETTING:
-                mCurrentFrg = MyselfFrg.newInstance(null);
+                if(myselfFrg == null){
+                    myselfFrg = MyselfFrg.newInstance(null);
+                }
+                mCurrentFrg = myselfFrg;
                 break;
             default:
-                mCurrentFrg = MainPageFrg.newInstance(null);
+                if(mainPageFrg == null){
+                    mainPageFrg = MainPageFrg.newInstance(null);
+                }
+                mCurrentFrg = mainPageFrg;
                 break;
         }
         if(mCurrentFrg != null) {

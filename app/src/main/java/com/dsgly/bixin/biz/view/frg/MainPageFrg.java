@@ -38,7 +38,7 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
 
     private final int SIZE_PER_PAGE = 20;
     private RecyclerView mListview;
-    private List<MainPageDataResult.MomentData> mMainPageDataList;
+    private List<MainPageDataResult.MomentData> mMainPageDataList = new ArrayList<MainPageDataResult.MomentData>();;
     private MainPageAdapter mMainPageAdapter;
     private ImageView mPublishVideoView;
     private SwipeRefreshLayout mRefreshLayout;
@@ -74,7 +74,6 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mMainPageDataList = new ArrayList<MainPageDataResult.MomentData>();
         mMainPageAdapter = new MainPageAdapter(mMainPageDataList,getContext());
         mMainPageAdapter.setOnViewClickedListener(this);
         mListview.setAdapter(mMainPageAdapter);
@@ -99,7 +98,9 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
             }
         });
-        requestMainPageData();
+        if(ArrayUtils.isEmpty(mMainPageDataList)) {
+            requestMainPageData();
+        }
     }
 
     @Override
