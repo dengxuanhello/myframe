@@ -1,5 +1,6 @@
 package com.dsgly.bixin.biz.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,13 +12,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjsonex.JSON;
 import com.bumptech.glide.Glide;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseActivity;
 import com.dsgly.bixin.biz.view.presenter.CompleteProfilePresenter;
+import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.net.RequestUtils;
+import com.dsgly.bixin.net.responseResult.BaseResult;
 import com.dsgly.bixin.utils.ImageUtil;
 import com.tencent.qcloud.ui.CircleImageView;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 /**
  * Created by dengxuan on 2017/8/5.
@@ -26,6 +37,7 @@ import com.tencent.qcloud.ui.CircleImageView;
 public class CompleteProfileActivity extends BaseActivity {
     public static int REQUEST_ALBUM_CODE = 0x1000;
     public static int REQUEST_CODE_FOR_ClIP_PIC = 0x1001;
+    public static int REQUEST_CODE_FOR_COMPLETE_VIDEO_AND_PHOTO = 0x1002;
     private CompleteProfilePresenter presenter;
 
     public TextView mDateTextView;
@@ -38,11 +50,15 @@ public class CompleteProfileActivity extends BaseActivity {
     public ImageView mUserAvatar;
     public CircleImageView mCicleImageV;
 
-    public static void startCompleteProfileActivity(Context context){
+    public static void startCompleteProfileActivity(Context context,int requestCode){
         if(context != null) {
             Intent intent = new Intent();
             intent.setClass(context, CompleteProfileActivity.class);
-            context.startActivity(intent);
+            if(context instanceof Activity) {
+                ((Activity) context).startActivityForResult(intent,requestCode);
+            }else {
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -85,8 +101,7 @@ public class CompleteProfileActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         if(requestCode == REQUEST_ALBUM_CODE){
             if(RESULT_OK == resultCode){
                 Uri selectedVideo = data.getData();
@@ -100,7 +115,33 @@ public class CompleteProfileActivity extends BaseActivity {
                 Glide.with(this).load(picPath).into(mCicleImageV);
                 mCicleImageV.setVisibility(View.VISIBLE);
                 mUserAvatar.setVisibility(View.GONE);
+                String hostPath = NetServiceMap.UploadUserAvatar.getHostPath() + NetServiceMap.UploadUserAvatar.getApi();
+                RequestUtils.uploadUserAvatar(hostPath, picPath, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.i("dxavatar","failed");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        if(response != null && response.body()!=null) {
+                            String body = response.body().string();
+                            Log.i("dxavatar", body);
+                            BaseResult result = JSON.parseObject(body,BaseResult.class);
+                            if(result != null && "200".equals(result.code)){
+                                showToast("头像上传成功");
+                            }
+                        }
+                    }
+                });
+
+
             }
+        }else if(requestCode == REQUEST_CODE_FOR_COMPLETE_VIDEO_AND_PHOTO){
+            setResult(RESULT_OK);
+            finish();
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

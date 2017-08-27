@@ -5,16 +5,25 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.DatePicker;
 
+import com.alibaba.fastjsonex.JSON;
+import com.alibaba.fastjsonex.JSONObject;
+import com.alibaba.fastjsonex.serializer.SerializerFeature;
 import com.dsgly.bixin.biz.base.BasePresenter;
 import com.dsgly.bixin.biz.view.CompleteProfileActivity;
 import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
 import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
+import com.dsgly.bixin.net.requestParam.UpdateUserParam;
 import com.dsgly.bixin.net.responseResult.UserInfo;
 import com.dsgly.bixin.utils.UCUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 
 /**
@@ -58,7 +67,7 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
         }
         if(param.key == NetServiceMap.UpdateUSER){
             if(param.baseResult!=null && "200".equals(param.baseResult.code)){
-                CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(mvpView);
+                CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(mvpView,CompleteProfileActivity.REQUEST_CODE_FOR_COMPLETE_VIDEO_AND_PHOTO);
             }else {
                 mvpView.showToast(param.baseResult == null?"更新失败":param.baseResult.msg);
             }
@@ -78,9 +87,20 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
         userInfo.description = mvpView.mDescView.getText().toString();
         userInfo.idealPartnerDescription = mvpView.mIdealPartnerView.getText().toString();
 
+        UpdateUserParam updateUserParam = new UpdateUserParam(userInfo);
+
+        //SerializerFeature[] featureArr = { SerializerFeature.WriteClassName };
+        String userInfoStr = JSON.toJSONString(updateUserParam);
+        Log.i("dx",userInfoStr);
         NetworkParam param = new NetworkParam(mvpView);
         param.key = NetServiceMap.UpdateUSER;
-        param.param = userInfo;
-        RequestUtils.startRequest(param);
+        String strUTF8 = null;
+        try {
+            strUTF8 = URLEncoder.encode(userInfoStr, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String paramStr = "?meId=100920&targetUserId=&userStr="+strUTF8;
+        RequestUtils.startGetRequestExt(param,paramStr);
     }
 }

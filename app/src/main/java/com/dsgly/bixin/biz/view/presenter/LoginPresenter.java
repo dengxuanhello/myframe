@@ -11,6 +11,7 @@ import com.dsgly.bixin.biz.view.RegisterActivity;
 import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
+import com.dsgly.bixin.net.requestParam.GetUserinfoParam;
 import com.dsgly.bixin.net.requestParam.LoginParam;
 import com.dsgly.bixin.net.responseResult.GetUserInfoResult;
 import com.dsgly.bixin.net.responseResult.LoginResult;
@@ -79,7 +80,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
         if(param.key == NetServiceMap.GetPKeyServiceMap){
             String pkey = param.originResponseBody;
             LoginParam loginParam = new LoginParam();
-            loginParam.phone = "13521763794";
+            loginParam.phone = mvpView.mAccountEt.getText().toString();
             pkey = pkey.replace("\r","").replace("\n","").replace("\t","");
             loginParam.password = RSAUtils.encrypt(pkey,System.currentTimeMillis() + mvpView.mPwdEt.getText().toString());
             loginParam.appVersion = "1.0.0";
@@ -101,7 +102,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
                 UCUtils.getInstance().saveMeId(result.data.meId);
                 //mvpView.showToast();
                 //goMainPage();
-                getUserInfo();
+                mvpView.getUserInfo();
                 //HomeActivity.startHomeActivity(mvpView);
             }else {
                 mvpView.showToast(result.msg);
@@ -114,13 +115,6 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
                 goMainPage();
             }
         }
-    }
-
-    private void getUserInfo(){
-        NetworkParam networkParam = new NetworkParam(mvpView);
-        networkParam.key = NetServiceMap.GetUSER;
-        networkParam.progressMessage = "登陆成功,正在获取用户信息";
-        RequestUtils.startGetRequest(networkParam);
     }
 
     private void goMainPage(){

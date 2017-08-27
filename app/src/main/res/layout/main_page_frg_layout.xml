@@ -29,9 +29,14 @@
             android:padding="8dp"
             android:src="@drawable/nav_upload_video" />
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_page_list_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/layout_swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/common_bg"/>
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_page_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/common_bg"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

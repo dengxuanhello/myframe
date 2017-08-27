@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +51,7 @@ public class ImportVideoActivity extends BaseActivity implements VideoPickListen
     private SurfaceView surfaceView;
     private MediaPlayer mediaPlayer;
     private String videoPlayUrl;
+    private String from;
     private static final String[] STORE_IMAGES = {
             MediaStore.Video.Media.DISPLAY_NAME, MediaStore.Video.Media._ID, MediaStore.Video.Media.DATA, MediaStore.Video.Media.DURATION
     };
@@ -58,6 +60,19 @@ public class ImportVideoActivity extends BaseActivity implements VideoPickListen
         if(context != null) {
             Intent intent = new Intent();
             intent.setClass(context, ImportVideoActivity.class);
+            if(context instanceof Activity){
+                ((Activity)context).startActivityForResult(intent,requestCode);
+            }else {
+                context.startActivity(intent);
+            }
+        }
+    }
+
+    public static void startPickVideosActivity(Context context,Bundle bundle,int requestCode){
+        if(context != null) {
+            Intent intent = new Intent();
+            intent.setClass(context, ImportVideoActivity.class);
+            intent.putExtras(bundle);
             if(context instanceof Activity){
                 ((Activity)context).startActivityForResult(intent,requestCode);
             }else {
@@ -88,9 +103,19 @@ public class ImportVideoActivity extends BaseActivity implements VideoPickListen
                 if(TextUtils.isEmpty(videoPlayUrl)){
                     showToast("请选择视频");
                 }else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("cut_video_source_path",videoPlayUrl);
-                    VideoCutActivity.startVideoCutActivity(ImportVideoActivity.this,bundle,RequestCode.REQ_FOR_CUT_VIDEO);
+                    if(VideoRecorderActivity.FROM_CompleteProfileUploadVideoActivity.equals(from)){
+                        if(!TextUtils.isEmpty(videoPlayUrl)){
+                            //backForResult(mediaUtils.getTargetFilePath());
+                            Intent intent = new Intent();
+                            intent.putExtra(VideoRecorderActivity.CHOOSED_VIDEO_PATH,videoPlayUrl);
+                            setResult(RESULT_OK,intent);
+                            finish();
+                        }
+                    }else {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("cut_video_source_path", videoPlayUrl);
+                        VideoCutActivity.startVideoCutActivity(ImportVideoActivity.this, bundle, PublishMomentActivity.class, RequestCode.REQ_FOR_CUT_VIDEO);
+                    }
                 }
             }
         });
@@ -98,6 +123,14 @@ public class ImportVideoActivity extends BaseActivity implements VideoPickListen
             startCursorLoader(CURSOR_LOADER, null);
         }else {
             Permissions.requestPermissions(this, "", RequestCode.REQ_FOR_READ_EXT_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getIntent() != null) {
+            from = getIntent().getStringExtra(VideoRecorderActivity.FROM_SOURCE);
         }
     }
 
@@ -317,7 +350,9 @@ public class ImportVideoActivity extends BaseActivity implements VideoPickListen
             if(resultCode == RESULT_OK){
                 String videoPath = data.getStringExtra("cutVideo");
                 Log.i("dx",videoPath);
-                PublishMomentActivity.startPublishMomentActivity(this,videoPath);
+                if(!TextUtils.isEmpty(videoPath)) {
+                    PublishMomentActivity.startPublishMomentActivity(this, videoPath);
+                }
             }
         }else {
             super.onActivityResult(requestCode, resultCode, data);

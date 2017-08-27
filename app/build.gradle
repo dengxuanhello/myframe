@@ -49,5 +49,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
-    compile (name:'svsdk-release',ext:'aar')
+    compile (name:'svsdk',ext:'aar')
 }

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.CompleteProfileActivity;
+import com.dsgly.bixin.biz.view.HomeActivity;
 import com.dsgly.bixin.biz.view.MyVideoMomentActivity;
 import com.dsgly.bixin.biz.view.MyVideoMomentsActivity;
 import com.dsgly.bixin.biz.view.SelfMainPageActivity;
@@ -85,7 +86,7 @@ public class MyselfFrg extends BaseFragment implements View.OnClickListener {
         }else if(v.equals(shareToMyFrends)){
             showShare();
         }else if(v.equals(editSelfMainPage)){
-            CompleteProfileActivity.startCompleteProfileActivity(getActivity());
+            CompleteProfileActivity.startCompleteProfileActivity(getActivity(), HomeActivity.REQ_FOR_COMPLETE_INFO);
         }else if(v.equals(avatar)){
             SelfMainPageActivity.startSelfMainPageActivity(getActivity());
         }else if(v.equals(myVideoMoments)){

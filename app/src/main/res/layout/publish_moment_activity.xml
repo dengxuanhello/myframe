@@ -30,40 +30,63 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
         <EditText
+            android:id="@+id/monet_text_et"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:hint="编辑这一刻的想法" />
+            android:layout_height="100dp"
+            android:hint="编辑这一刻的想法"
+            android:background="@null" />
         <com.dsgly.bixin.wigets.RatioLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/common_bg">
             <ImageView
-                android:id="@+id/cover_img"
+                android:id="@+id/cover_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
             <LinearLayout
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
                     android:id="@+id/time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="00:18"/>
+                    android:text="00:18"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:background="@color/transparent"/>
                 <TextView
                     android:id="@+id/size_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3.7M"/>
+                    android:padding="10dp"
+                    android:text="3.7M"
+                    android:textColor="@color/white"
+                    android:background="@color/transparent"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="4dp"
+                    android:layout_weight="1"/>
                 <TextView
                     android:id="@+id/edit_video_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="编辑"/>
+                    android:text="编辑"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    android:textColor="@color/text_color"
+                    android:layout_marginRight="15dp"/>
                 <TextView
                     android:id="@+id/edit_cover_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="编辑封面"/>
+                    android:text="编辑封面"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    android:textColor="@color/text_color"
+                    android:layout_marginRight="15dp"/>
             </LinearLayout>
             <ImageView
                 android:id="@+id/player_video"

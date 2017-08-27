@@ -26,6 +26,7 @@ public enum NetServiceMap{
     ThirdPartyLogin("thirdPartyLogin",BaseResult.class),
     GetUSER("user", GetUserInfoResult.class),
     UpdateUSER("user", BaseResult.class),
+    UploadUserAvatar("user/uploadHeadImg",BaseResult.class),
     SendMoment("moment", BaseResult.class),
     USERBINDPHONE("user/bindPhone",BaseResult.class),
     PHONE("user/phone",GetPhoneResult.class),

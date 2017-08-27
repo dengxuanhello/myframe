@@ -2,8 +2,11 @@ package com.dsgly.bixin.biz.view.frg;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +25,6 @@ import com.dsgly.bixin.net.requestParam.MainPageDataParam;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.utils.ArrayUtils;
 import com.dsgly.bixin.utils.UCUtils;
-import com.netease.svsdk.constants.RequestCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +34,19 @@ import java.util.List;
  * Created by dengxuan on 2017/7/2.
  */
 
-public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewClickedListener, View.OnClickListener {
+public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewClickedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+    private final int SIZE_PER_PAGE = 20;
     private RecyclerView mListview;
     private List<MainPageDataResult.MomentData> mMainPageDataList;
     private MainPageAdapter mMainPageAdapter;
     private ImageView mPublishVideoView;
+    private SwipeRefreshLayout mRefreshLayout;
+    private String cusor = null;
+    private LinearLayoutManager linearLayoutManager;
+    private boolean loading = false;
+    private int lastVisibleItem;
+
 
     public static MainPageFrg newInstance(Bundle bundle){
         MainPageFrg frg = new MainPageFrg();
@@ -52,11 +61,13 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mainPage = inflater.inflate(R.layout.main_page_frg_layout,container,false);
         mListview = (RecyclerView) mainPage.findViewById(R.id.main_page_list_view);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        manager.setStackFromEnd(false);
-        mListview.setLayoutManager(manager);
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager.setStackFromEnd(false);
+        mListview.setLayoutManager(linearLayoutManager);
         mPublishVideoView = (ImageView) mainPage.findViewById(R.id.publish_video_iv);
         mPublishVideoView.setOnClickListener(this);
+        mRefreshLayout = (SwipeRefreshLayout)mainPage.findViewById(R.id.layout_swipe_refresh);
+        mRefreshLayout.setOnRefreshListener(this);
         return mainPage;
     }
 
@@ -68,7 +79,26 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
         mMainPageAdapter.setOnViewClickedListener(this);
         mListview.setAdapter(mMainPageAdapter);
         mMainPageAdapter.notifyDataSetChanged();
+        lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+        mListview.setOnScrollListener(new RecyclerView.OnScrollListener() {
 
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView,
+                                             int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItem + 1 == mMainPageAdapter.getItemCount()) {
+                    if(!loading) {
+                        requestMainPageData();
+                    }
+                }
+            }
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+            }
+        });
         requestMainPageData();
     }
 
@@ -79,24 +109,30 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
             return;
         }
         if(param.key == NetServiceMap.MonentList){
+            loading = false;
+            mRefreshLayout.setRefreshing(false);
             MainPageDataResult result = (MainPageDataResult) param.baseResult;
             if(result != null && !ArrayUtils.isEmpty(result.data)){
-                mMainPageDataList = result.data;
+                mMainPageDataList.addAll(result.data);
                 mMainPageAdapter.setMainPageDataList(mMainPageDataList);
                 mMainPageAdapter.notifyDataSetChanged();
+                cusor = result.cursor;
             }
         }
     }
 
     private void requestMainPageData(){
+        Log.i("dxcusor"," "+cusor);
         MainPageDataParam mainPageDataParam = new MainPageDataParam();
-        mainPageDataParam.cursor = "1";
-        mainPageDataParam.pageSize = "20";
+        if(!TextUtils.isEmpty(cusor)) {
+            mainPageDataParam.cursor = cusor;
+        }
+        mainPageDataParam.pageSize = String.valueOf(SIZE_PER_PAGE);
         mainPageDataParam.meId = UCUtils.meId;
         NetworkParam networkParam = new NetworkParam(this);
         //networkParam.param = mainPageDataParam;
         networkParam.key = NetServiceMap.MonentList;
-
+        loading = true;
         RequestUtils.startGetRequest(networkParam);
     }
 
@@ -145,6 +181,15 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
         if(v.equals(mPublishVideoView)){
             VideoRecorderActivity.startVideoRecordActivity(getActivity(), 777);
             //CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(getActivity());
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        if(!loading) {
+            mMainPageDataList.clear();
+            cusor = null;
+            requestMainPageData();
         }
     }
 }

@@ -14,12 +14,17 @@ import com.dsgly.bixin.biz.base.BaseActivity;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.frg.MainPageFrg;
 import com.dsgly.bixin.biz.view.frg.MyselfFrg;
+import com.dsgly.bixin.net.NetServiceMap;
+import com.dsgly.bixin.net.NetworkParam;
+import com.dsgly.bixin.net.responseResult.GetUserInfoResult;
+import com.dsgly.bixin.utils.UCUtils;
 
 /**
  * Created by dengxuan on 2017/7/2.
  */
 
 public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+    public static final int REQ_FOR_COMPLETE_INFO = 0x111;
     private final int TAB_HOME = 1;
     private final int TAB_CHAT = 2;
     private final int TAB_SETTING = 3;
@@ -89,6 +94,27 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQ_FOR_COMPLETE_INFO){
+            if(resultCode == RESULT_OK){
+                getUserInfo();
+            }
+        }else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
-
+    @Override
+    public void onMsgSearchComplete(NetworkParam param) {
+        super.onMsgSearchComplete(param);
+        if(param.key == NetServiceMap.GetUSER){
+            if(param.baseResult!= null && param.baseResult instanceof GetUserInfoResult) {
+                GetUserInfoResult result = (GetUserInfoResult) param.baseResult;
+                UCUtils.getInstance().saveUserinfo(result.data);
+                UCUtils.getInstance().loginQqIM(result.data.userId);
+                setTabSelection(TAB_SETTING);
+            }
+        }
+    }
 }

@@ -11,6 +11,8 @@ import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkListener;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
+import com.dsgly.bixin.net.requestParam.GetUserinfoParam;
+import com.dsgly.bixin.utils.UCUtils;
 import com.dsgly.bixin.wigets.ProgressHUD;
 /*import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
@@ -191,5 +193,15 @@ public class BaseActivity extends FragmentActivity implements
         NetworkParam networkParam = new NetworkParam(this);
         networkParam.key = NetServiceMap.STARMOMENT;
         RequestUtils.startGetRequestExt(networkParam,momentId);
+    }
+
+    public void getUserInfo(){
+        NetworkParam networkParam = new NetworkParam(this);
+        networkParam.key = NetServiceMap.GetUSER;
+        networkParam.progressMessage = "登陆成功,正在获取用户信息";
+        GetUserinfoParam param = new GetUserinfoParam();
+        param.targetUserId = UCUtils.meId;
+        networkParam.param = param ;
+        RequestUtils.startGetRequest(networkParam);
     }
 }

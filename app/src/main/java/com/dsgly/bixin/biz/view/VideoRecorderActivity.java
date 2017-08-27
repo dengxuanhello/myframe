@@ -27,6 +27,8 @@ import com.netease.svsdk.constants.RequestCode;
 
 public class VideoRecorderActivity extends BaseActivity {
     public static final String CHOOSED_VIDEO_PATH = "choosed_video_path";
+    public static final String FROM_SOURCE = "FROM_SOURCE";
+    public static final String FROM_CompleteProfileUploadVideoActivity = "FROM_CompleteProfileUploadVideoActivity";
     public static final int EDIT_VIDEO_REQUEST_CODE = 0x100;
     private MediaUtils mediaUtils;
     private int mProgress = 0;
@@ -43,6 +45,7 @@ public class VideoRecorderActivity extends BaseActivity {
     private RelativeLayout topActionRl;
     private RecordProgressView recordProgressView;
     private Boolean isFullScreenRecord = false;
+    private String from;
 
     public static void startVideoRecordActivity(Context context,int requestCode){
         if(context != null) {
@@ -56,11 +59,27 @@ public class VideoRecorderActivity extends BaseActivity {
         }
     }
 
+    public static void startVideoRecordActivity(Context context,Bundle bundle,int requestCode){
+        if(context != null) {
+            Intent intent = new Intent();
+            intent.setClass(context, VideoRecorderActivity.class);
+            intent.putExtras(bundle);
+            if(context instanceof Activity){
+                ((Activity)context).startActivityForResult(intent,requestCode);
+            }else {
+                context.startActivity(intent);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_record);
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.main_surface_view);
+        if(getIntent() != null) {
+            from = getIntent().getStringExtra(FROM_SOURCE);
+        }
         timeTv = (TextView) findViewById(R.id.time_tv);
         importVideo = (RelativeLayout) findViewById(R.id.btn_import);
         importVideo.setOnClickListener(this);
@@ -143,18 +162,18 @@ public class VideoRecorderActivity extends BaseActivity {
         if(v.equals(deleteVideo)){
 
         }else if(v.equals(completeRecord)){
-            if(!TextUtils.isEmpty(mediaUtils.getTargetFilePath())){
-                backForResult(mediaUtils.getTargetFilePath());
-            }
+            goNext();
         }else if(v.equals(importVideo)){
-            ImportVideoActivity.startPickVideosActivity(this,RequestCode.REQ_FOR_PIC_VIDEO);
-        }else if(v.equals(fullScreenRecord)){
+            Bundle bundle = new Bundle();
+            bundle.putString(FROM_SOURCE,from);
+            ImportVideoActivity.startPickVideosActivity(this,bundle,RequestCode.REQ_FOR_PIC_VIDEO);
+        }/*else if(v.equals(fullScreenRecord)){
 
-        }else if(v.equals(editVideo)){
+        }*/else if(v.equals(editVideo)){
             //VideoEditActivity.startVideoEditActivity(this,mediaUtils.getTargetFilePath(),EDIT_VIDEO_REQUEST_CODE);
             Bundle bundle = new Bundle();
             bundle.putString("cut_video_source_path",mediaUtils.getTargetFilePath());
-            VideoCutActivity.startVideoCutActivity(this,bundle,RequestCode.REQ_FOR_CUT_VIDEO);
+            VideoCutActivity.startVideoCutActivity(this,bundle,PublishMomentActivity.class,RequestCode.REQ_FOR_CUT_VIDEO);
         } else if(v.equals(fullScreenIv)){
             if(isFullScreenRecord) {
                 buttomAreaRl.setBackground(getDrawable(R.color.black));
@@ -236,7 +255,7 @@ public class VideoRecorderActivity extends BaseActivity {
     private void stopRecord(){
         mediaUtils.stopRecordSave();
         startRecordbtn.setTag("record");
-        editVideo.setVisibility(View.VISIBLE);
+        //editVideo.setVisibility(View.VISIBLE);
         deleteVideo.setVisibility(View.VISIBLE);
         completeRecord.setVisibility(View.VISIBLE);
     }
@@ -250,10 +269,27 @@ public class VideoRecorderActivity extends BaseActivity {
             if(resultCode == RESULT_OK){
                 String videoPath = data.getStringExtra("cutVideo");
                 Log.i("dx",videoPath);
-                PublishMomentActivity.startPublishMomentActivity(this,videoPath);
+                if(!TextUtils.isEmpty(videoPath)) {
+                    PublishMomentActivity.startPublishMomentActivity(this, videoPath);
+                }
             }
+        }else if(requestCode == RequestCode.REQ_FOR_PIC_VIDEO){
+            setResult(RESULT_OK,data);
+            finish();
         }else {
             super.onActivityResult(requestCode,resultCode,data);
+        }
+    }
+
+    private void goNext(){
+        if(FROM_CompleteProfileUploadVideoActivity.equals(from)){
+            if(!TextUtils.isEmpty(mediaUtils.getTargetFilePath())){
+                backForResult(mediaUtils.getTargetFilePath());
+            }
+        }else {
+            Bundle bundle = new Bundle();
+            bundle.putString("cut_video_source_path", mediaUtils.getTargetFilePath());
+            VideoCutActivity.startVideoCutActivity(this, bundle, PublishMomentActivity.class, RequestCode.REQ_FOR_CUT_VIDEO);
         }
     }
 }

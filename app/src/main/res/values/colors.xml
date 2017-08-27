@@ -7,4 +7,5 @@
     <color name="common_bg">#f2efef</color>
     <color name="white">#ffffff</color>
     <color name="lignt_red">#df4040</color>
+    <color name="text_color">#ff5e5958</color>
 </resources>

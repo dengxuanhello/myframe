@@ -1,10 +1,12 @@
 package com.dsgly.bixin.biz.view;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
@@ -41,6 +43,7 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
     private CompleteProfileUploadVideoPresenetr presenter;
     public SimpleExoPlayer simpleExoPlayer;
     public Button mUploadBtn;
+    public Button mDoneBtn;
     public SurfaceView simpleExoPlayerView;
     public ImageView moreBtn;
     public ImageView backBtn;
@@ -49,11 +52,15 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
     public PicGridView photosView;
     public PicGridViewAdapter mPicGridViewAdapter;
     public List<GalleryResult.GalleryInfo> galleryInfoList;
-    public static void startCompleteProfileUploadVideoActivity(Context context){
+    public static void startCompleteProfileUploadVideoActivity(Context context,int requestCode){
         if(context != null) {
             Intent intent = new Intent();
             intent.setClass(context, CompleteProfileUploadVideoActivity.class);
-            context.startActivity(intent);
+            if(context instanceof Activity){
+                ((Activity) context).startActivityForResult(intent,requestCode);
+            }else {
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -85,6 +92,8 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
         mUploadBtn.setOnClickListener(this);
         simpleExoPlayerView = (SurfaceView) findViewById(R.id.player_video);
         simpleExoPlayerView.getHolder().addCallback(this);
+        mDoneBtn = (Button) findViewById(R.id.complete_btn);
+        mDoneBtn.setOnClickListener(this);
         presenter.setUpExoPlayer(this);
         //simpleExoPlayerView.setPlayer(simpleExoPlayer);
         moreBtn = (ImageView) findViewById(R.id.more_icon);
@@ -118,16 +127,23 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
                         ||ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
                     requestPermissions(new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE},123);
                 }else {
-                    VideoRecorderActivity.startVideoRecordActivity(this,REQUEST_CODE_FOR_VIDEO);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(VideoRecorderActivity.FROM_SOURCE,VideoRecorderActivity.FROM_CompleteProfileUploadVideoActivity);
+                    VideoRecorderActivity.startVideoRecordActivity(this,bundle,REQUEST_CODE_FOR_VIDEO);
                 }
             }else {
-                VideoRecorderActivity.startVideoRecordActivity(this,REQUEST_CODE_FOR_VIDEO);
+                Bundle bundle = new Bundle();
+                bundle.putString(VideoRecorderActivity.FROM_SOURCE,VideoRecorderActivity.FROM_CompleteProfileUploadVideoActivity);
+                VideoRecorderActivity.startVideoRecordActivity(this,bundle,REQUEST_CODE_FOR_VIDEO);
             }
         }else if(v.equals(playBtn)){
             if(simpleExoPlayer != null){
                 simpleExoPlayer.seekTo(0);
                 simpleExoPlayer.setPlayWhenReady(true);
             }
+        }else if(v.equals(mDoneBtn)){
+            setResult(RESULT_OK);
+            finish();
         }
     }
 

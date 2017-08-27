@@ -111,20 +111,6 @@ public class RequestUtils {
         }
     }
 
-    /*public static void startRequest(String url, RequestBody body, Callback callback){
-        *//*initOkhttp();
-        Request request;
-        if(body != null){
-            request = new Request.Builder().url(url).post(body).addHeader("token-param",createRandom(false,16)).build();
-            Log.i("network",url+body.toString());
-        }else {
-            request = new Request.Builder().url(url).build();
-            Log.i("network",url);
-        }
-        httpClient.newCall(request).enqueue(callback);*//*
-        startRequest(url,body,callback,null);
-    }*/
-
     public static void startRequest(String url, RequestBody body, Callback callback,Map<String,String> headers){
         initOkhttp();
         Request request;
@@ -326,96 +312,21 @@ public class RequestUtils {
         return builder.toString();
     }
 
-    /**
-     *上传文件
-     * @param actionUrl 接口地址
-     * @param paramsMap 参数
-     * @param callBack 回调
-     * @param <T>
-     */
-//    public <T> void upLoadFile(String actionUrl, HashMap<String, Object> paramsMap, final ReqProgressCallBack<T> callBack) {
-//        try {
-//            //补全请求地址
-//            String requestUrl = String.format("%s/%s", upload_head, actionUrl);
-//            MultipartBody.Builder builder = new MultipartBody.Builder();
-//            //设置类型
-//            builder.setType(MultipartBody.FORM);
-//            //追加参数
-//            for (String key : paramsMap.keySet()) {
-//                Object object = paramsMap.get(key);
-//                if (!(object instanceof File)) {
-//                    builder.addFormDataPart(key, object.toString());
-//                } else {
-//                    File file = (File) object;
-//                    builder.addFormDataPart(key, file.getName(), createProgressRequestBody(MEDIA_OBJECT_STREAM, file));
-//                }
-//            }
-//            //创建RequestBody
-//            RequestBody body = builder.build();
-//            //创建Request
-//            final Request request = new Request.Builder().url(requestUrl).post(body).build();
-//            final Call call = mOkHttpClient.newBuilder().writeTimeout(50, TimeUnit.SECONDS).build().newCall(request);
-//            call.enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    Log.e(TAG, e.toString());
-//                    failedCallBack("上传失败", callBack);
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    if (response.isSuccessful()) {
-//                        String string = response.body().string();
-//                        Log.e(TAG, "response ----->" + string);
-//                        successCallBack((T) string, callBack);
-//                    } else {
-//                        failedCallBack("上传失败", callBack);
-//                    }
-//                }
-//            });
-//        } catch (Exception e) {
-//            //Log.e(TAG, e.toString());
-//        }
-//    }
-//
-    /**
-     * 创建带进度的RequestBody
-     * @param contentType MediaType
-     * @param file  准备上传的文件
-     *
-     * @param <T>
-     * @return
-     */
-    public static <T> RequestBody createProgressRequestBody(final MediaType contentType, final File file) {
-        return new RequestBody() {
-            @Override
-            public MediaType contentType() {
-                return contentType;
-            }
-
-            @Override
-            public long contentLength() {
-                return file.length();
-            }
-
-            @Override
-            public void writeTo(BufferedSink sink) throws IOException {
-                Source source;
-                try {
-                    source = Okio.source(file);
-                    Buffer buf = new Buffer();
-                    long remaining = contentLength();
-                    long current = 0;
-                    for (long readCount; (readCount = source.read(buf, 2048)) != -1; ) {
-                        sink.write(buf, readCount);
-                        current += readCount;
-                        //Log.e(TAG, "current------>" + current);
-                        //progressCallBack(remaining, current, callBack);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+    public static void uploadUserAvatar(String hostPath,String filePath,Callback callback){
+        initOkhttp();
+        //判断文件类型
+        MediaType MEDIA_TYPE1 = MediaType.parse(judgeType(filePath));
+        MultipartBody.Builder requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        File file1 = new File(filePath);
+        if(file1.exists()){
+            // MediaType.parse() 里面是上传的文件类型。
+            RequestBody body = RequestBody.create(MEDIA_TYPE1, file1);
+            String filename = file1.getName();
+            // 参数分别为， 请求key ，文件名称 ， RequestBody
+            requestBody.addFormDataPart("avatar", filename, body);
+            requestBody.addFormDataPart("meId", UCUtils.meId);
+            Request request = new Request.Builder().url(hostPath).post(requestBody.build()).build();
+            httpClient.newBuilder().writeTimeout(50, TimeUnit.SECONDS).build().newCall(request).enqueue(callback);
+        }
     }
 }

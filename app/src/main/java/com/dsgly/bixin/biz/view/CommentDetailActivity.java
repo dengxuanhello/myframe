@@ -20,6 +20,7 @@ import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.responseResult.CommentsResult;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
+import com.dsgly.bixin.utils.UCUtils;
 import com.dsgly.bixin.wigets.EditTextDialog;
 import com.dsgly.bixin.wigets.FullyLinearLayoutManager;
 import com.dsgly.bixin.wigets.ScaledImageView;
@@ -172,7 +173,9 @@ public class CommentDetailActivity extends BaseActivity {
         requestUrl.append("/")
                 .append(momentData.id)
                 .append("?content=")
-                .append(msg);
+                .append(msg)
+                .append("&meId=")
+                .append(UCUtils.meId);
         NetworkParam param = new NetworkParam(this);
         param.key = NetServiceMap.CommentMoment;
         RequestUtils.startPostRequestExt(param,requestUrl.toString());
