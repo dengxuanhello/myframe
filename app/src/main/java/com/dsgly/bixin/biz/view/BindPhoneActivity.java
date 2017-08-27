@@ -44,6 +44,12 @@ public class BindPhoneActivity extends BaseActivity {
         mGetVcodeTv = (TextView) findViewById(R.id.get_verify_code);
         mConfirmBtn.setOnClickListener(this);
         mGetVcodeTv.setOnClickListener(this);
+        findViewById(R.id.back_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

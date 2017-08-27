@@ -88,6 +88,12 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
         LinearLayoutManager manager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         videosView.setLayoutManager(manager1);
         photosView.setLayoutManager(new WrapHeightLayoutManager(this, 3));
+        findViewById(R.id.back_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

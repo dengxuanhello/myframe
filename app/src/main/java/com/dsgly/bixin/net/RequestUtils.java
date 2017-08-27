@@ -75,6 +75,23 @@ public class RequestUtils {
         }
     }
 
+    public static void startPostRequest(NetworkParam networkParam){
+        if(networkParam == null || networkParam.key == null){
+            throw new IllegalArgumentException("request url must not be empty");
+        }
+        String getParams="";
+        if(networkParam.param != null) {
+            getParams = assembleGetParam(networkParam.param);
+        }
+        String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi()+getParams;
+        if(!TextUtils.isEmpty(requestUrl)) {
+            if(networkParam.block){
+                networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
+            }
+            startRequest(requestUrl,new FormBody.Builder().build(),networkParam.callback,networkParam.headers);
+        }
+    }
+
     public static void startGetRequestExt(NetworkParam networkParam,String oneParameter){
         if(networkParam == null || networkParam.key == null){
             throw new IllegalArgumentException("request url must not be empty");

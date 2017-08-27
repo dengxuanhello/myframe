@@ -85,6 +85,12 @@ public class CompleteProfileActivity extends BaseActivity {
         mDescView = (EditText) findViewById(R.id.self_introduce);
         mIdealPartnerView = (EditText) findViewById(R.id.idealPartnerDescription);
         mNextBtn.setOnClickListener(this);
+        findViewById(R.id.back_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

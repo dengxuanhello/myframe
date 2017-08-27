@@ -44,6 +44,12 @@ public class SettingActivity extends BaseActivity {
         mHelpAndFeedbackLl.setOnClickListener(this);
         mExitBtn = (Button) findViewById(R.id.user_exit);
         mExitBtn.setOnClickListener(this);
+        findViewById(R.id.back_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -55,7 +61,7 @@ public class SettingActivity extends BaseActivity {
         }else if(v.equals(mRemoveChcheLl)){
             showToast("清除成功");
         }else if(v.equals(mHelpAndFeedbackLl)){
-
+            FeedBackActivity.startFeedBackActivity(this);
         }else if(v.equals(mExitBtn)){
             UCUtils.getInstance().removeUserInfo();
             goLoginPage();

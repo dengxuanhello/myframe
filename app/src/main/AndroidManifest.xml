@@ -64,6 +64,10 @@
         <activity android:name="com.dsgly.bixin.biz.view.SelfMainPageActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".biz.view.FeedBackActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity android:name="com.dsgly.bixin.biz.view.MyVideoMomentActivity"
             android:screenOrientation="portrait">
         </activity>
