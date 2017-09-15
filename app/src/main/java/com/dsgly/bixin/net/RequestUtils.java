@@ -120,11 +120,51 @@ public class RequestUtils {
         }else {
             requestUrl = requestUrl + "/" + oneParameter;
         }
+
+        Map<String,String> params = getRequestBodyFromBaseParam(networkParam.param);
+        FormBody.Builder builder = new FormBody.Builder();
+        for (String key : params.keySet()) {
+            builder.add(key, params.get(key));
+        }
         if(!TextUtils.isEmpty(requestUrl)) {
             if(networkParam.block){
                 networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
             }
-            startRequest(requestUrl,new FormBody.Builder().build(),networkParam.callback,networkParam.headers);
+            startRequest(requestUrl,builder.build(),networkParam.callback,networkParam.headers);
+        }
+    }
+
+    public static void startDeleteRequest(NetworkParam networkParam, String oneParameter) {
+        initOkhttp();
+        if(networkParam == null || networkParam.key == null){
+            throw new IllegalArgumentException("request url must not be empty");
+        }
+        String requestUrl = networkParam.key.getHostPath()+networkParam.key.getApi();
+        if(requestUrl.endsWith("/")){
+            requestUrl = requestUrl + oneParameter;
+        }else {
+            requestUrl = requestUrl + "/" + oneParameter;
+        }
+
+        Log.i("network", requestUrl);
+        Map<String,String> params = getRequestBodyFromBaseParam(networkParam.param);
+        FormBody.Builder builder = new FormBody.Builder();
+        for (String key : params.keySet()) {
+            builder.add(key, params.get(key));
+        }
+        if(!TextUtils.isEmpty(requestUrl)) {
+            if(networkParam.block){
+                networkParam.handler.sendEmptyMessage(NetworkParam.NET_SHOW_PROGRESS);
+            }
+            Request.Builder requestBuilder = new Request.Builder().url(requestUrl).delete(builder.build());
+            Map<String, String> headers = networkParam.headers;
+            if(headers != null){
+                Set<String> keyset = headers.keySet();
+                for(String key : keyset){
+                    requestBuilder.addHeader(key,headers.get(key));
+                }
+            }
+            httpClient.newCall(requestBuilder.build()).enqueue(networkParam.callback);
         }
     }
 
@@ -134,7 +174,14 @@ public class RequestUtils {
         Request.Builder builder;
         if(body != null){
             builder = new Request.Builder().url(url).post(body);
-            Log.i("network",url+body.toString());
+            Log.i("network",url);
+            if (body instanceof FormBody) {
+                FormBody formBody = (FormBody) body;
+                for (int i = 0; i < formBody.size(); i++) {
+                    Log.i("body", formBody.name(i) + " : " + formBody.value(i));
+                }
+            }
+
         }else {
             builder = new Request.Builder().url(url);
             Log.i("network",url);

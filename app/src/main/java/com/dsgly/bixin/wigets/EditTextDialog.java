@@ -155,6 +155,17 @@ public class EditTextDialog extends AppCompatDialog implements KeyboardWatcher.O
         }
     }
 
+    public void setAtName(String atName) {
+        if (editText != null) {
+            String content = TextUtils.isEmpty(atName) ? null : ("@" + atName + " ");
+            editText.setText(content);
+            if (content != null) {
+                editText.setSelection(content.length());
+
+            }
+        }
+    }
+
     public interface OnEditTextListener {
 
         boolean onSend(CharSequence message);

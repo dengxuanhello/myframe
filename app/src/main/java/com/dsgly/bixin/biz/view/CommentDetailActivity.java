@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.dsgly.bixin.QQIM.ui.ChatActivity;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseActivity;
 import com.dsgly.bixin.biz.view.adapter.CommentListAdapter;
@@ -23,7 +24,9 @@ import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.utils.UCUtils;
 import com.dsgly.bixin.wigets.EditTextDialog;
 import com.dsgly.bixin.wigets.FullyLinearLayoutManager;
+import com.dsgly.bixin.wigets.PersonalPagePopup;
 import com.dsgly.bixin.wigets.ScaledImageView;
+import com.tencent.imsdk.TIMConversationType;
 import com.tencent.qcloud.ui.CircleImageView;
 
 import java.util.ArrayList;
@@ -46,6 +49,8 @@ public class CommentDetailActivity extends BaseActivity {
     public List<CommentsResult.UserComment> data;
     //聊天输入
     private EditTextDialog mEditDialog;
+    private PersonalPagePopup mPopup;
+    private View rootView;
 
     public static void startCommentDetailActivity(Context context, MainPageDataResult.MomentData data){
         if(context != null) {
@@ -66,6 +71,8 @@ public class CommentDetailActivity extends BaseActivity {
         commentTv = (TextView) findViewById(R.id.comment);
         dashanTv.setOnClickListener(this);
         commentTv.setOnClickListener(this);
+        rootView = findViewById(R.id.root_view);
+        findViewById(R.id.bt_more).setOnClickListener(this);
         commentListView = (RecyclerView) findViewById(R.id.comment_list);
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         commentListView.setLayoutManager(manager);
@@ -93,6 +100,25 @@ public class CommentDetailActivity extends BaseActivity {
         //TODO  加载这条动态的用户头像   Glide.with(this).load( ).into(scaledImageView);
         data = new ArrayList<CommentsResult.UserComment>();
         commentListAdapter = new CommentListAdapter(this,data,momentData);
+        commentListAdapter.setOnCommentClickListener(new CommentListAdapter.OnCommentClickListener() {
+            @Override
+            public void onCommentDelete(CommentsResult.UserComment userComment) {
+
+                StringBuilder requestUrl = new StringBuilder();
+                requestUrl.append(userComment.id)
+                        .append("?meId=")
+                        .append(UCUtils.meId);
+                NetworkParam param = new NetworkParam(CommentDetailActivity.this);
+                param.key = NetServiceMap.CommentMoment;
+                RequestUtils.startDeleteRequest(param, requestUrl.toString());
+            }
+
+            @Override
+            public void onReplyClick(CommentsResult.UserComment userComment) {
+
+                showEditDialog(userComment.userModel.nickName);
+            }
+        });
         commentListView.setAdapter(commentListAdapter);
         requestForComments();
     }
@@ -126,14 +152,6 @@ public class CommentDetailActivity extends BaseActivity {
             }
         }else if(param.key == NetServiceMap.CommentMoment){
             requestForComments();
-        }else if(param.key == NetServiceMap.AddFriend){
-            if(param.baseResult!=null){
-                if("200".equals(param.baseResult.code)){
-                    showToast("搭讪成功，等待对方回复");
-                }else {
-                    showToast(param.baseResult.msg);
-                }
-            }
         }
     }
 
@@ -141,13 +159,35 @@ public class CommentDetailActivity extends BaseActivity {
     public void onClick(View v) {
         super.onClick(v);
         if(v.equals(commentTv)){
-            showEditDialog();
+            showEditDialog(null);
         }else if(v.equals(dashanTv)){
-            addFriend(momentData.userId);
+            // 跳转发消息页面
+            ChatActivity.navToChat(this, momentData.userModel.nickName, TIMConversationType.C2C);
+        } else if (v.getId() == R.id.bt_more) {
+            if (mPopup == null) {
+                mPopup = new PersonalPagePopup(rootView);
+                mPopup.setOnPopupClickListener(new PersonalPagePopup.OnPopupClickListener() {
+                    @Override
+                    public void onForwardClick() {
+
+                    }
+
+                    @Override
+                    public void onPingbiClick() {
+
+                    }
+
+                    @Override
+                    public void onReportClick() {
+
+                    }
+                });
+            }
+            mPopup.show();
         }
     }
 
-    void showEditDialog() {
+    void showEditDialog(String atName) {
         if (mEditDialog == null) {
             mEditDialog = new EditTextDialog(this);
             mEditDialog.setOnEditTextListener(new EditTextDialog.OnEditTextListener() {
@@ -162,10 +202,8 @@ public class CommentDetailActivity extends BaseActivity {
                 }
             });
         }
+        mEditDialog.setAtName(atName);
         mEditDialog.show();
-
-//        keyboardWatcher = new KeyboardWatcher(mEditDialog);
-//        keyboardWatcher.setListener(this);
     }
 
     @Override

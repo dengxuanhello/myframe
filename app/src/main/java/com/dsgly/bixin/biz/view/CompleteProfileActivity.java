@@ -43,6 +43,8 @@ public class CompleteProfileActivity extends BaseActivity {
     public static int REQUEST_CODE_FOR_COMPLETE_VIDEO_AND_PHOTO = 0x1002;
     private CompleteProfilePresenter presenter;
 
+    public EditText mNicknameEt;
+    public TextView mGenderTv;
     public TextView mDateTextView;
     public TextView mHeightTextView;
     public EditText mSchoolView;
@@ -75,6 +77,9 @@ public class CompleteProfileActivity extends BaseActivity {
     public void initViews() {
         super.initViews();
         setContentView(R.layout.complete_profile_activity);
+        mNicknameEt = (EditText) findViewById(R.id.et_nickname);
+        mGenderTv = (TextView) findViewById(R.id.et_gender);
+        mGenderTv.setOnClickListener(this);
         mDateTextView = (TextView) findViewById(R.id.date_info_tv);
         mDateTextView.setOnClickListener(this);
         mHeightTextView = (TextView) findViewById(R.id.height_choose_tv);
@@ -101,7 +106,9 @@ public class CompleteProfileActivity extends BaseActivity {
         super.initData();
         UserInfo userInfo = UCUtils.getInstance().getUserInfo();
         if(userInfo != null){
-            mHeightTextView.setText(userInfo.height);
+            mNicknameEt.setText(userInfo.nickName);
+            mGenderTv.setText(userInfo.gender == 1 ? "男" : (userInfo.gender == 2 ? "女" : null));
+            mHeightTextView.setText(String.valueOf(userInfo.height));
             mSchoolView.setText(userInfo.college);
             if(!TextUtils.isEmpty(userInfo.headImgThumbUrl)) {
                 Glide.with(this).load(userInfo.headImgThumbUrl).into(mCicleImageV);
@@ -124,6 +131,8 @@ public class CompleteProfileActivity extends BaseActivity {
             presenter.choosePic();
         }else if(v.equals(mNextBtn)){
             presenter.updateUserInfo();
+        } else if (v.equals(mGenderTv)) {
+            presenter.showGenderPicker();
         }
     }
 

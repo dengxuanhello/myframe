@@ -10,25 +10,26 @@ import java.io.Serializable;
 
 public class UserInfo extends BaseParam {
     //private static final long serialVersionUID = 1L;
-    public String birthDay;
-    public String birthMonth;
-    public String birthYear;
+    public int birthDay;
+    public int birthMonth;
+    public int birthYear;
     public String college;
     public String collegeId;
     public String constellation;
     public String description;
-    public String gender;
+    public int gender;
     public String gmtCreate;
     public String gmtModified;
     public String headImgOriginUrl;
     public String headImgThumbUrl;
     public String headImgUrl;
-    public String height;
+    public int height;
     public String idealPartnerDescription;
     public String imId;
     public String nickName;
     public String showVideo;
+    public String showVideoLogo;
     public String showVideoOrigin;
     public String userId;
-    public String weight;
+    public int weight;
 }

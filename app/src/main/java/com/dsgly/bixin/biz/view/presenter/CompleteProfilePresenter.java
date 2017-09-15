@@ -24,6 +24,11 @@ import com.dsgly.bixin.utils.UCUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.R.attr.description;
+import static com.dsgly.bixin.R.id.idealPartnerDescription;
 
 
 /**
@@ -31,14 +36,23 @@ import java.net.URLEncoder;
  */
 
 public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActivity> {
+
+    private int mYear;
+    private int mMonth;
+    private int mDayOfMonth;
+
     public void showDatePicker(){
         DatePickerDialog dialog = new DatePickerDialog(mvpView, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String dateFormat = "%s-%s-%s";
-                mvpView.mDateTextView.setText(String.format(dateFormat,String.valueOf(year),String.valueOf(month),String.valueOf(dayOfMonth)));
+                mYear = year;
+                mMonth = month + 1;
+                mDayOfMonth = dayOfMonth;
+
+                mvpView.mDateTextView.setText(String.format(dateFormat,String.valueOf(year),String.valueOf(month + 1),String.valueOf(dayOfMonth)));
             }
-        }, 2011, 1, 1);
+        }, 1990, 1, 1);
         dialog.show();
     }
 
@@ -80,27 +94,121 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
         mvpView.startActivityForResult(albumIntent, CompleteProfileActivity.REQUEST_ALBUM_CODE);
     }
 
+    public void updateNickName(String nickName) {
+
+    }
+
+    public void updateGender(int gender) {
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("gender", gender);
+        updateUserInfo(JSON.toJSONString(map));
+    }
+
+    public void updateHeight(int height) {
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("height", height);
+        updateUserInfo(JSON.toJSONString(map));
+    }
+
+    public void updateBirth(int year, int month, int dayOfMonth) {
+
+        Map<String, Integer> map = new HashMap<>();
+        map.put("birthYear", year);
+        map.put("birthMonth", month);
+        map.put("birthDay", dayOfMonth);
+        updateUserInfo(JSON.toJSONString(map));
+    }
+
+    public void updateCollege(String college) {
+
+    }
+
+    public void updateAvatar(String avatar) {
+
+    }
+
+    public void updateOther(String nickName, String college, String description, String idealPartnerDescription) {
+        Map<String, String> map = new HashMap<>();
+        map.put("nickName", nickName);
+        map.put("college", college);
+        map.put("description", description);
+        map.put("idealPartnerDescription", idealPartnerDescription);
+        updateUserInfo(JSON.toJSONString(map));
+    }
+
+    private void updateUserInfo(String userInfoStr) {
+        UpdateUserParam updateUserParam = new UpdateUserParam();
+
+        //SerializerFeature[] featureArr = { SerializerFeature.WriteClassName };
+        Log.i("updateUserInfo", userInfoStr);
+        updateUserParam.userStr = userInfoStr;
+
+        NetworkParam param = new NetworkParam(mvpView);
+        param.key = NetServiceMap.UpdateUSER;
+        param.param = updateUserParam;
+//        String strUTF8 = null;
+//        try {
+//            strUTF8 = URLEncoder.encode(userInfoStr, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+        String paramStr = "?meId=" + UCUtils.meId + "&targetUserId="+UCUtils.meId;
+        RequestUtils.startPostRequestExt(param,paramStr);
+    }
+
     public void updateUserInfo(){
+
         UserInfo userInfo = UCUtils.getInstance().getUserInfo();
-        userInfo.height = mvpView.mHeightTextView.getText().toString();
+        Object genderTag = mvpView.mGenderTv.getTag();
+        if (genderTag != null) {
+            userInfo.gender = (int)genderTag;
+        }
+        userInfo.userId = UCUtils.meId;
+        userInfo.nickName = mvpView.mNicknameEt.getText().toString();
+        userInfo.height = Integer.parseInt(mvpView.mHeightTextView.getText().toString());
         userInfo.college = mvpView.mSchoolView.getText().toString();
         userInfo.description = mvpView.mDescView.getText().toString();
         userInfo.idealPartnerDescription = mvpView.mIdealPartnerView.getText().toString();
+        if (mYear != 0) {
+            userInfo.birthYear = mYear;
+            userInfo.birthMonth = mMonth;
+            userInfo.birthDay = mDayOfMonth;
+        }
 
-        UpdateUserParam updateUserParam = new UpdateUserParam(userInfo);
+        UpdateUserParam updateUserParam = new UpdateUserParam();
 
         //SerializerFeature[] featureArr = { SerializerFeature.WriteClassName };
-        String userInfoStr = JSON.toJSONString(updateUserParam);
+        String userInfoStr = JSON.toJSONString(userInfo);
         Log.i("dx",userInfoStr);
         NetworkParam param = new NetworkParam(mvpView);
         param.key = NetServiceMap.UpdateUSER;
-        String strUTF8 = null;
-        try {
-            strUTF8 = URLEncoder.encode(userInfoStr, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String paramStr = "?meId=" + UCUtils.meId + "&targetUserId="+UCUtils.meId+"&userStr=" + strUTF8;
-        RequestUtils.startGetRequestExt(param,paramStr);
+//        String strUTF8 = null;
+//        try {
+//            strUTF8 = URLEncoder.encode(userInfoStr, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+        updateUserParam.userStr = userInfoStr;
+        param.param = updateUserParam;
+        String paramStr = "?meId=" + UCUtils.meId + "&targetUserId="+UCUtils.meId;
+        RequestUtils.startPostRequestExt(param,paramStr);
+    }
+
+    public void showGenderPicker() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mvpView);
+        //设置标题
+        builder.setTitle("请选择");
+        final String[] genders = new String[]{"男", "女"};
+        builder.setItems(genders, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mvpView.mGenderTv.setText(genders[i]);
+                mvpView.mGenderTv.setTag(i + 1);
+            }
+        });
+        builder.create();
+        builder.show();
     }
 }

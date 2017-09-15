@@ -17,6 +17,7 @@ import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.CommentDetailActivity;
 import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
+import com.dsgly.bixin.biz.view.SelfMainPageActivity;
 import com.dsgly.bixin.biz.view.VideoRecorderActivity;
 import com.dsgly.bixin.biz.view.adapter.MainPageAdapter;
 import com.dsgly.bixin.net.NetServiceMap;
@@ -85,7 +86,7 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
         mListview.setAdapter(mMainPageAdapter);
         mMainPageAdapter.notifyDataSetChanged();
         lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-        mListview.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mListview.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView,
@@ -157,7 +158,7 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
     @Override
     public void onNameClicked(MainPageDataResult.MomentData result) {
         if(result != null){
-            CommentDetailActivity.startCommentDetailActivity(getActivity(),result);
+            SelfMainPageActivity.startSelfMainPageActivity(getActivity());
         }
     }
 

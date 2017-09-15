@@ -105,7 +105,7 @@ public class ConversationFragment extends BaseFragment implements ConversationVi
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(!UCUtils.isIMLogined){
-            Toast.makeText(getContext(),"聊天服务器登陆失败,正尝试重新登陆...",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),"聊天服务器登录失败,正尝试重新登录...",Toast.LENGTH_SHORT).show();
             UCUtils.getInstance().loginQqIM();
         }
     }

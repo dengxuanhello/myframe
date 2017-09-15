@@ -69,13 +69,26 @@ public class MainPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //((MainPageViewItemHolder) holder).authorName.setText(result.authorName);
             if(result.userModel!=null) {
                 ((MainPageViewItemHolder) holder).authorName.setText(result.userModel.nickName);
+                ((MainPageViewItemHolder) holder).authorName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(onViewClickedListener!=null){
+                            onViewClickedListener.onNameClicked(result);
+                        }
+                    }
+                });
+                StringBuilder builder = new StringBuilder();
+                builder.append(String.valueOf(result.userModel.birthYear % 100));
+                builder.append("年");
+                builder.append(result.userModel.constellation);
+                ((MainPageViewItemHolder) holder).authorConstellation.setText(builder.toString());
             }
             if(!TextUtils.isEmpty(result.gender)&&!"0".equals(result.gender)) {
                 ((MainPageViewItemHolder) holder).authorName.setCompoundDrawables(null, null, getDrawableByType("1".equals(result.gender) ? R.drawable.icon_boy : R.drawable.icon_girl), null);
             }else {
                 ((MainPageViewItemHolder) holder).authorName.setCompoundDrawables(null, null, null, null);
             }
-            ((MainPageViewItemHolder) holder).authorConstellation.setText(result.authorConstellation);
+//            ((MainPageViewItemHolder) holder).authorConstellation.setText(result.authorConstellation);
             ((MainPageViewItemHolder) holder).issuesCommentNum.setText(result.commentNum);
             ((MainPageViewItemHolder) holder).issuesCommentNum.setOnClickListener(new View.OnClickListener() {
                 @Override

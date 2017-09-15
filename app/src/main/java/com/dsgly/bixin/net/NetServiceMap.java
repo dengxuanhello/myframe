@@ -35,11 +35,10 @@ public enum NetServiceMap{
     UploadVideo("user/uploadVideo",BaseResult.class),
     GetUserMoments("moment/userId",MainPageDataResult.class),
     GetUserGallery("user/gallery",GalleryResult.class),
-    CommentMoment("moment/comment",GalleryResult.class),
+    CommentMoment("moment/comment",BaseResult.class),
     UploadUserGallery("user/gallery/uploadPic",BaseResult.class),
     GetMomentComments("moment/commentList",CommentsResult.class),
     FeedBack("feedback",BaseResult.class),
-    AddFriend("im/addFriend",BaseResult.class),
     MonentList("moment/list", MainPageDataResult.class);
 
 

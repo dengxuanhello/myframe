@@ -25,8 +25,8 @@ public class LoginActivity extends BaseActivity {
     private Button mRegistBtn;
     private TextView mForgetPwdTv;
     private ImageView mWXThirdLogin;
-    private ImageView mWBThirdLogin;
-    private ImageView mQQThirdLogin;
+//    private ImageView mWBThirdLogin;
+//    private ImageView mQQThirdLogin;
 
     private LoginPresenter presenter;
 
@@ -40,15 +40,16 @@ public class LoginActivity extends BaseActivity {
         mRegistBtn = (Button) findViewById(R.id.user_regist);
         mForgetPwdTv = (TextView) findViewById(R.id.forget_pwd_textview);
         mWXThirdLogin = (ImageView) findViewById(R.id.weixin_login_img);
-        mWBThirdLogin = (ImageView) findViewById(R.id.weibo_login_img);
-        mQQThirdLogin = (ImageView) findViewById(R.id.qq_login_img);
+//        mWBThirdLogin = (ImageView) findViewById(R.id.weibo_login_img);
+//        mQQThirdLogin = (ImageView) findViewById(R.id.qq_login_img);
         mLoginBtn.setOnClickListener(this);
         mRegistBtn.setOnClickListener(this);
         mForgetPwdTv.setOnClickListener(this);
         mWXThirdLogin.setOnClickListener(this);
-        mWBThirdLogin.setOnClickListener(this);
-        mQQThirdLogin.setOnClickListener(this);
-        mAccountEt.setText("13521763794");
+//        mWBThirdLogin.setOnClickListener(this);
+//        mQQThirdLogin.setOnClickListener(this);
+        mAccountEt.setText("18611598314");
+        mPwdEt.setText("123456");
     }
 
     @Override
@@ -79,11 +80,11 @@ public class LoginActivity extends BaseActivity {
             //VideoPlayActivity.startVideoPlay(this,VideoPlayActivity.TEST_RUL);
         }else if(v.equals(mWXThirdLogin)){
             presenter.authorizeThirdParty(Wechat.NAME);
-        }else if(v.equals(mWBThirdLogin)){
+//        }else if(v.equals(mWBThirdLogin)){
             //VideoRecorderActivity.startVideoRecordActivity(this);
-            presenter.authorizeThirdParty(SinaWeibo.NAME);
-        }else if(v.equals(mQQThirdLogin)){
-            presenter.authorizeThirdParty(QQ.NAME);
+//            presenter.authorizeThirdParty(SinaWeibo.NAME);
+//        }else if(v.equals(mQQThirdLogin)){
+//            presenter.authorizeThirdParty(QQ.NAME);
         }
     }
 }

@@ -21,7 +21,7 @@ public class MainPageDataResult extends BaseResult {
     public static class MomentData implements Serializable{
         private static final long serialVersionUID = 1L;
         public String previewPic; //url
-        public String authorConstellation;// 作者星座
+//        public String authorConstellation;// 作者星座
         public String content;// 发布内容
         public String gmtCreated;// 发布时间
         public String gmtModified;//"2017-07-26T11:38:09.324Z",

@@ -230,7 +230,7 @@ public class PublishMomentActivity extends BaseActivity {
             showToast("请填写动态");
             return;
         }
-        showProgressDialog("正在发布请稍后");
+        showProgressDialog("正在发布请稍候");
         RequestUtils.uploadFile(NetServiceMap.SendMoment.getHostPath() + NetServiceMap.SendMoment.getApi(),momentTextEt.getText().toString(), videoPath, picPath, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

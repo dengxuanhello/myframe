@@ -23,10 +23,10 @@
 
     <string name="input_user_account">请输入账号</string>
     <string name="input_user_pwd">请输入密码</string>
-    <string name="user_login">登陆</string>
+    <string name="user_login">登录</string>
     <string name="user_register">注册</string>
     <string name="user_forget_pwd">忘记密码？</string>
-    <string name="third_login">第三方账号登陆</string>
+    <string name="third_login">第三方账号登录</string>
     <string name="input_user_phone">请输入手机号</string>
     <string name="input_user_verify_code">请输入验证码</string>
     <string name="get_verify_code">获取验证码</string>

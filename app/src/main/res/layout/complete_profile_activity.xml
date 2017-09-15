@@ -42,6 +42,35 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:gravity="center"
+                android:text="昵称"/>
+            <EditText
+                android:id="@+id/et_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:hint="请填写"
+                android:background="@color/white"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center"
+                android:text="性别"/>
+            <TextView
+                android:id="@+id/et_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/white"
+                android:hint="请选择"
+                android:padding="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:gravity="center"
                 android:text="选择出生年月"/>
             <TextView
                 android:id="@+id/date_info_tv"

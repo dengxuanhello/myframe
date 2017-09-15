@@ -22,6 +22,7 @@ import com.dsgly.bixin.net.responseResult.GetPhoneResult;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.net.responseResult.UserInfo;
 import com.dsgly.bixin.utils.UCUtils;
+import com.dsgly.bixin.wigets.PersonalPagePopup;
 import com.dsgly.bixin.wigets.PicGridView;
 import com.dsgly.bixin.wigets.PicGridViewAdapter;
 import com.dsgly.bixin.wigets.ScaledImageView;
@@ -62,11 +63,20 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
     public List<GalleryResult.GalleryInfo> galleryInfoList;
     private MainPageAdapter mMainPageAdapter;
     private PicGridViewAdapter mPicGridViewAdapter;
+    private PersonalPagePopup mPopup;
+    private View rootView;
 
     public static void startSelfMainPageActivity(Context context){
+        startSelfMainPageActivity(context, null);
+    }
+
+    public static void startSelfMainPageActivity(Context context, UserInfo userInfo){
         if(context != null) {
             Intent intent = new Intent();
             intent.setClass(context, SelfMainPageActivity.class);
+            if (userInfo != null) {
+                intent.putExtra("userInfo", userInfo);
+            }
             context.startActivity(intent);
         }
     }
@@ -74,6 +84,8 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
     @Override
     public void initViews() {
         setContentView(R.layout.self_main_page_activity);
+        rootView = findViewById(R.id.root_view);
+        findViewById(R.id.bt_more).setOnClickListener(this);
         videoPicIv = (ScaledImageView) findViewById(R.id.main_page_video_pic);
         startVideoIv = (ImageView) findViewById(R.id.start_video);
         startVideoIv.setOnClickListener(this);
@@ -102,13 +114,38 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
             if(localUserInfo!=null){
                 VideoPlayActivity.startVideoPlay(this,localUserInfo.showVideo);
             }
+        } else if (v.getId() == R.id.bt_more) {
+            if (mPopup == null) {
+                mPopup = new PersonalPagePopup(rootView);
+                mPopup.setOnPopupClickListener(new PersonalPagePopup.OnPopupClickListener() {
+                    @Override
+                    public void onForwardClick() {
+
+                    }
+
+                    @Override
+                    public void onPingbiClick() {
+
+                    }
+
+                    @Override
+                    public void onReportClick() {
+
+                    }
+                });
+            }
+            mPopup.show();
         }
     }
 
     @Override
     public void initData() {
-        localUserInfo = UCUtils.getInstance().getUserInfo();
-        if(localUserInfo == null){
+        if(getIntent().hasExtra("userInfo")){
+            localUserInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
+        } else {
+            localUserInfo = UCUtils.getInstance().getUserInfo();
+        }
+        if (localUserInfo == null) {
             return;
         }
         Glide.with(this).load(localUserInfo.headImgUrl).into(avatarIv);

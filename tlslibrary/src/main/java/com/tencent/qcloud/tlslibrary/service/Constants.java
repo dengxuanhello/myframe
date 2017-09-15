@@ -94,7 +94,7 @@ public class Constants {
     public final static int PHONEPWD_LOGIN_SUCCESS = 1;
     public final static int PHONEPWD_LOGIN_NON = 2;
 
-    // 定义登陆成功或失败时跳转的界面（PackageName + ActivityClassName）
+    // 定义登录成功或失败时跳转的界面（PackageName + ActivityClassName）
     public final static String EXTRA_THIRDAPP_PACKAGE_NAME_SUCC = "com.tencent.tls.THIRDAPP_PACKAGE_NAME_SUCC";
 //    public final static String EXTRA_THIRDAPP_CLASS_NAME_SUCC = "com.tencent.tls.THIRDAPP_CLASS_NAME_SUCC";
     public final static String EXTRA_THIRDAPP_CLASS_NAME_SUCC = null;

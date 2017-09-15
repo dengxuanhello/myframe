@@ -1,6 +1,7 @@
 package com.dsgly.bixin.biz.view.presenter;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
 import com.dsgly.bixin.R;
@@ -83,7 +84,12 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
             loginParam.phone = mvpView.mAccountEt.getText().toString();
             pkey = pkey.replace("\r","").replace("\n","").replace("\t","");
             loginParam.password = RSAUtils.encrypt(pkey,System.currentTimeMillis() + mvpView.mPwdEt.getText().toString());
-            loginParam.appVersion = "1.0.0";
+//            loginParam.appVersion = "1.0.0";
+            try {
+                loginParam.appVersion = mvpView.getPackageManager().getPackageInfo(mvpView.getPackageName(), 0).versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
             loginParam.phoneModel = Build.MODEL;
             NetworkParam networkParam = new NetworkParam(mvpView);
             networkParam.key = NetServiceMap.LoginServiceMap;
@@ -101,8 +107,8 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
                 //UCUtils.meId = result.data.meId;
                 UCUtils.getInstance().saveMeId(result.data.meId);
                 //mvpView.showToast();
-                //goMainPage();
-                mvpView.getUserInfo();
+                goMainPage();
+//                mvpView.getUserInfo();
                 //HomeActivity.startHomeActivity(mvpView);
             }else {
                 mvpView.showToast(result.msg);
@@ -112,7 +118,7 @@ public class LoginPresenter extends BasePresenter<LoginActivity>{
                 GetUserInfoResult result = (GetUserInfoResult) param.baseResult;
                 UCUtils.getInstance().saveUserinfo(result.data);
                 UCUtils.getInstance().loginQqIM(result.data.userId);
-                goMainPage();
+//                goMainPage();
             }
         }
     }

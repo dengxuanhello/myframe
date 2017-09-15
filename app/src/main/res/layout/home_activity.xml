@@ -26,8 +26,9 @@
             android:gravity="center"
             android:checked="true"
             android:button="@null"
-            android:textSize="0sp"
-            android:drawableBottom="@drawable/tab_home_selecter"/>
+            android:textSize="14dp"
+            android:text="首页"
+            android:drawableTop="@drawable/tab_home_selecter"/>
         <RadioButton
             android:id="@+id/chat_page"
             android:layout_width="0dp"
@@ -36,8 +37,9 @@
             android:padding="10dp"
             android:gravity="center"
             android:button="@null"
-            android:textSize="0sp"
-            android:drawableBottom="@drawable/tab_msg_selecter"/>
+            android:textSize="14dp"
+            android:text="消息"
+            android:drawableTop="@drawable/tab_msg_selecter"/>
         <RadioButton
             android:id="@+id/settings_page"
             android:layout_width="0dp"
@@ -46,7 +48,8 @@
             android:padding="10dp"
             android:gravity="center"
             android:button="@null"
-            android:textSize="0sp"
-            android:drawableBottom="@drawable/tab_mine_selecter"/>
+            android:textSize="14dp"
+            android:text="我"
+            android:drawableTop="@drawable/tab_mine_selecter"/>
     </RadioGroup>
 </LinearLayout>

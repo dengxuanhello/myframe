@@ -74,6 +74,8 @@
                         android:id="@+id/issues_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         android:text="这位小兄弟请留步，我有个恋爱想跟你谈谈"/>
                 </LinearLayout>
                 <LinearLayout

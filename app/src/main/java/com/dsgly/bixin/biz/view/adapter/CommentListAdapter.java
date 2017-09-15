@@ -15,6 +15,7 @@ import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.view.VideoPlayActivity;
 import com.dsgly.bixin.net.responseResult.CommentsResult;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
+import com.dsgly.bixin.utils.UCUtils;
 import com.dsgly.bixin.wigets.ScaledImageView;
 import com.tencent.qcloud.ui.CircleImageView;
 
@@ -28,6 +29,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public List<CommentsResult.UserComment> data;
     public MainPageDataResult.MomentData momentData;
     public Context mContext;
+
+    private OnCommentClickListener mOnCommentClickListener;
+
     public CommentListAdapter(Context context,List<CommentsResult.UserComment> data,MainPageDataResult.MomentData momentData){
         this.mContext = context;
         this.momentData = momentData;
@@ -40,6 +44,10 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void setData(List<CommentsResult.UserComment> data) {
         this.data = data;
+    }
+
+    public void setOnCommentClickListener(OnCommentClickListener onCommentClickListener) {
+        this.mOnCommentClickListener = onCommentClickListener;
     }
 
     @Override
@@ -66,6 +74,19 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             ((CommentListViewItemHolder) holder).commentTime.setText(comment.gmtCreated);
             ((CommentListViewItemHolder) holder).commentContent.setText(comment.content);
+            holder.itemView.setOnClickListener(onClickListener);
+            holder.itemView.setTag(comment);
+
+            if (TextUtils.equals(comment.userId, UCUtils.meId)) {
+                ((CommentListViewItemHolder) holder).deleteBt.setTag(null);
+                ((CommentListViewItemHolder) holder).deleteBt.setVisibility(View.GONE);
+
+            } else {
+                ((CommentListViewItemHolder) holder).deleteBt.setVisibility(View.VISIBLE);
+                ((CommentListViewItemHolder) holder).deleteBt.setOnClickListener(onClickListener);
+                ((CommentListViewItemHolder) holder).deleteBt.setTag(comment);
+            }
+
         }else if(holder instanceof CommentListInfoHolder){
             Glide.with(mContext).load(momentData.previewPic).into(((CommentListInfoHolder) holder).scaledImageView);
             if(momentData.userModel != null) {
@@ -85,7 +106,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }else {
                 ((CommentListInfoHolder) holder).authorName.setCompoundDrawables(null, null, null, null);
             }
-            ((CommentListInfoHolder) holder).authorConstellation.setText(momentData.authorConstellation);
+//            ((CommentListInfoHolder) holder).authorConstellation.setText(momentData.authorConstellation);
             ((CommentListInfoHolder) holder).issuesContent.setText(momentData.content);
             ((CommentListInfoHolder) holder).issuesContentTime.setText(momentData.gmtCreated);
             ((CommentListInfoHolder) holder).issuesLikeNum.setText(momentData.starNum);
@@ -126,12 +147,14 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public TextView username;
         public TextView commentTime;
         public TextView commentContent;
+        View deleteBt;
         public CommentListViewItemHolder(View itemView) {
             super(itemView);
             avatar = (CircleImageView) itemView.findViewById(R.id.user_avatar);
             username = (TextView) itemView.findViewById(R.id.username);
             commentTime = (TextView) itemView.findViewById(R.id.comment_time);
             commentContent = (TextView) itemView.findViewById(R.id.user_comment);
+            deleteBt = itemView.findViewById(R.id.bt_comment_delete);
         }
     }
 
@@ -157,5 +180,28 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             commnetNumTv = (TextView) itemView.findViewById(R.id.comment_num_tv);
             avatar = (CircleImageView) itemView.findViewById(R.id.user_avatar);
         }
+    }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.view_comment_item) {
+
+                if (mOnCommentClickListener != null) {
+                    mOnCommentClickListener.onReplyClick((CommentsResult.UserComment) v.getTag());
+                }
+            } else if (v.getId() == R.id.bt_comment_delete) {
+
+                if (mOnCommentClickListener != null) {
+                    mOnCommentClickListener.onCommentDelete((CommentsResult.UserComment) v.getTag());
+                }
+            }
+        }
+    };
+
+    public static interface OnCommentClickListener {
+        void onCommentDelete(CommentsResult.UserComment userComment);
+
+        void onReplyClick(CommentsResult.UserComment userComment);
     }
 }

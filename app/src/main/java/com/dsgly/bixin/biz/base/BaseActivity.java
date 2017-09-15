@@ -183,6 +183,7 @@ public class BaseActivity extends FragmentActivity implements
 
             }
         });
+        progressDialog.setCancelable(false);
     }
 
     /*@Override
@@ -199,21 +200,11 @@ public class BaseActivity extends FragmentActivity implements
     public void getUserInfo(){
         NetworkParam networkParam = new NetworkParam(this);
         networkParam.key = NetServiceMap.GetUSER;
-        networkParam.progressMessage = "登陆成功,正在获取用户信息";
+        networkParam.progressMessage = "登录成功,正在获取用户信息";
         GetUserinfoParam param = new GetUserinfoParam();
         param.targetUserId = UCUtils.meId;
         networkParam.param = param ;
         RequestUtils.startGetRequest(networkParam);
     }
 
-    protected void addFriend(String targetUserId){
-        NetworkParam networkParam = new NetworkParam(this);
-        networkParam.key = NetServiceMap.AddFriend;
-
-        String param = new StringBuilder().append("?targetUserId=")
-                .append(targetUserId)
-                .append("&meId=")
-                .append(UCUtils.meId).toString();
-        RequestUtils.startPostRequestExt(networkParam,param);
-    }
 }

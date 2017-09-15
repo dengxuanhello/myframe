@@ -63,6 +63,8 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
         radioGroup.setOnCheckedChangeListener(this);
         setTabSelection(TAB_HOME);
+
+        getUserInfo();
     }
 
     @Override
@@ -133,8 +135,10 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         if(param.key == NetServiceMap.GetUSER){
             if(param.baseResult!= null && param.baseResult instanceof GetUserInfoResult) {
                 GetUserInfoResult result = (GetUserInfoResult) param.baseResult;
-                UCUtils.getInstance().saveUserinfo(result.data);
-                UCUtils.getInstance().loginQqIM(result.data.userId);
+                if (result.data != null) {
+                    UCUtils.getInstance().saveUserinfo(result.data);
+                    UCUtils.getInstance().loginQqIM(result.data.userId);
+                }
             }
         }
     }
