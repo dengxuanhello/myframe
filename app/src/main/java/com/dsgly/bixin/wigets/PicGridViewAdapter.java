@@ -50,7 +50,7 @@ public class PicGridViewAdapter extends RecyclerView.Adapter<PicGridViewAdapter.
             @Override
             public void onClick(View v) {
                 if(itemChooseListener != null){
-                    itemChooseListener.onItemChoosed(dataList.get(position));
+                    itemChooseListener.onItemChoosed(position, dataList);
                 }
             }
         });
@@ -70,7 +70,7 @@ public class PicGridViewAdapter extends RecyclerView.Adapter<PicGridViewAdapter.
     }
 
     public interface OnItemChooseListener{
-        void onItemChoosed(GalleryResult.GalleryInfo data);
+        void onItemChoosed(int position, List<GalleryResult.GalleryInfo> dataList);
     }
 
     public void setItemChooseListener(OnItemChooseListener itemChooseListener) {

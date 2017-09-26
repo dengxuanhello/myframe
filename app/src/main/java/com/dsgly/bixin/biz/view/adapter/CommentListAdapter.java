@@ -77,7 +77,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             holder.itemView.setOnClickListener(onClickListener);
             holder.itemView.setTag(comment);
 
-            if (TextUtils.equals(comment.userId, UCUtils.meId)) {
+            if (!TextUtils.equals(comment.userId, UCUtils.meId)) {
                 ((CommentListViewItemHolder) holder).deleteBt.setTag(null);
                 ((CommentListViewItemHolder) holder).deleteBt.setVisibility(View.GONE);
 

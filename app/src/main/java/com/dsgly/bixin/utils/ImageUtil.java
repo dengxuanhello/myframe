@@ -13,11 +13,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.BufferedOutputStream;
@@ -64,16 +62,25 @@ public class ImageUtil {
         return inSampleSize;
     }
 
-    public static void saveBitmapFile(Bitmap bitmap, String fileName) {
-        File file = new File(fileName);
+    public static boolean saveBitmapFile(Bitmap bitmap, File file) {
+        if (bitmap == null || file == null) {
+            return false;
+        }
+        boolean result;
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.PNG, 80, bos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
             bos.flush();
             bos.close();
+            result = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            result = false;
+        } finally {
+            if (bitmap != null) {
+                bitmap.recycle();
+            }
         }
+        return result;
     }
 
     public static void saveBitmapFile2(Bitmap bitmap, File file) {

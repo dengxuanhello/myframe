@@ -18,7 +18,6 @@ import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.responseResult.GalleryResult;
-import com.dsgly.bixin.net.responseResult.GetPhoneResult;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.net.responseResult.UserInfo;
 import com.dsgly.bixin.utils.UCUtils;
@@ -28,15 +27,13 @@ import com.dsgly.bixin.wigets.PicGridViewAdapter;
 import com.dsgly.bixin.wigets.ScaledImageView;
 import com.dsgly.bixin.wigets.WrapHeightLayoutManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
+
+import static com.dsgly.bixin.net.RequestUtils.startGetRequestExt;
 
 /**
  * 个人主页
@@ -175,7 +172,7 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
         }
         NetworkParam param = new NetworkParam(this);
         param.key = NetServiceMap.GetUserMoments;
-        RequestUtils.startGetRequestExt(param,localUserInfo.userId);
+        startGetRequestExt(param,localUserInfo.userId);
     }
 
     private void getGalleryList(){
@@ -185,8 +182,7 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
         NetworkParam param = new NetworkParam(this);
         param.key = NetServiceMap.GetUserGallery;
         param.block = false;
-        //TODO  RequestUtils.startGetRequestExt(param,localUserInfo.userId);
-        RequestUtils.startGetRequestExt(param,"1");// mock api
+        RequestUtils.startGetRequestExt(param,localUserInfo.userId);
     }
 
     @Override
@@ -206,7 +202,9 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
             if(param.baseResult != null && param.baseResult instanceof GalleryResult){
                 GalleryResult result = (GalleryResult) param.baseResult;
                 galleryInfoList = result.data;
-                galleryInfoList.add(new GalleryResult.GalleryInfo("add"));
+                if(!getIntent().hasExtra("userInfo")) {
+                    galleryInfoList.add(new GalleryResult.GalleryInfo("add"));
+                }
                 mPicGridViewAdapter.setDataList(galleryInfoList);
                 mPicGridViewAdapter.notifyDataSetChanged();
             }
@@ -241,13 +239,24 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
     }
 
     @Override
-    public void onItemChoosed(GalleryResult.GalleryInfo data) {
-        if(data == null){
+    public void onItemChoosed(int position, List<GalleryResult.GalleryInfo> dataList) {
+        if(dataList == null || position < 0 || position >= dataList.size()){
             return;
         }
-        if("add".equals(data.pic)){
+        if("add".equals(dataList.get(position).pic)){
             MultiImageSelector.create(this)
                     .start(this, REQUEST_CODE_FOR_SELECT_PIC);
+        } else {
+
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < dataList.size(); i++) {
+                if (i > 0) {
+                    builder.append(",");
+                }
+                builder.append(dataList.get(i).pic);
+            }
+
+            ImagePreviewActivity.startActivity(this, position, builder.toString());
         }
     }
 

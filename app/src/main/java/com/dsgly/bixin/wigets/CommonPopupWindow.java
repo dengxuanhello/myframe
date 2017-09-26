@@ -1,6 +1,5 @@
 package com.dsgly.bixin.wigets;
 
-import android.app.AlertDialog;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.View;
@@ -43,8 +42,24 @@ public class CommonPopupWindow {
             popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
             popupWindow.update();
             popupWindow.setAnimationStyle(R.style.PopupBottomShow);
+
+            View view = mView.findViewById(R.id.bt_popup_cancel);
+            if (view != null) {
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupWindow.dismiss();
+                    }
+                });
+            }
         }
         popupWindow.showAtLocation(mRootView, Gravity.BOTTOM, 0, 0);
     }
+
+    public void dismiss() {
+        if (popupWindow != null) {
+            popupWindow.dismiss();
+        }
+    };
 
 }

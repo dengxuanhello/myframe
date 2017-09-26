@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import com.dsgly.bixin.R;
 import com.dsgly.bixin.biz.base.BaseFragment;
 import com.dsgly.bixin.biz.view.CommentDetailActivity;
-import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
 import com.dsgly.bixin.biz.view.SelfMainPageActivity;
 import com.dsgly.bixin.biz.view.VideoRecorderActivity;
 import com.dsgly.bixin.biz.view.adapter.MainPageAdapter;
@@ -27,7 +26,6 @@ import com.dsgly.bixin.net.requestParam.MainPageDataParam;
 import com.dsgly.bixin.net.responseResult.MainPageDataResult;
 import com.dsgly.bixin.utils.ArrayUtils;
 import com.dsgly.bixin.utils.UCUtils;
-import com.netease.svsdk.biz.VideoCutActivity;
 import com.netease.svsdk.constants.RequestCode;
 import com.netease.svsdk.tools.Permissions;
 
@@ -158,7 +156,7 @@ public class MainPageFrg extends BaseFragment implements MainPageAdapter.ViewCli
     @Override
     public void onNameClicked(MainPageDataResult.MomentData result) {
         if(result != null){
-            SelfMainPageActivity.startSelfMainPageActivity(getActivity());
+            SelfMainPageActivity.startSelfMainPageActivity(getActivity(), result.userModel);
         }
     }
 

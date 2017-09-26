@@ -23,9 +23,7 @@ import com.dsgly.bixin.biz.view.presenter.CompleteProfileUploadVideoPresenetr;
 import com.dsgly.bixin.net.responseResult.GalleryResult;
 import com.dsgly.bixin.wigets.PicGridView;
 import com.dsgly.bixin.wigets.PicGridViewAdapter;
-import com.dsgly.bixin.wigets.WrapHeightLayoutManager;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -189,11 +187,11 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
     }
 
     @Override
-    public void onItemChoosed(GalleryResult.GalleryInfo data) {
-        if(data == null){
+    public void onItemChoosed(int position, List<GalleryResult.GalleryInfo> dataList) {
+        if(dataList == null){
             return;
         }
-        if("add".equals(data.pic)){
+        if("add".equals(dataList.get(position).pic)){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 // Permission was added in API Level 16
                  if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
