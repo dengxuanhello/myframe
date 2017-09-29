@@ -9,8 +9,6 @@ import android.util.Log;
 import android.widget.DatePicker;
 
 import com.alibaba.fastjsonex.JSON;
-import com.alibaba.fastjsonex.JSONObject;
-import com.alibaba.fastjsonex.serializer.SerializerFeature;
 import com.dsgly.bixin.biz.base.BasePresenter;
 import com.dsgly.bixin.biz.view.CompleteProfileActivity;
 import com.dsgly.bixin.biz.view.CompleteProfileUploadVideoActivity;
@@ -18,17 +16,10 @@ import com.dsgly.bixin.net.NetServiceMap;
 import com.dsgly.bixin.net.NetworkParam;
 import com.dsgly.bixin.net.RequestUtils;
 import com.dsgly.bixin.net.requestParam.UpdateUserParam;
-import com.dsgly.bixin.net.responseResult.UserInfo;
 import com.dsgly.bixin.utils.UCUtils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.R.attr.description;
-import static com.dsgly.bixin.R.id.idealPartnerDescription;
 
 
 /**
@@ -37,29 +28,27 @@ import static com.dsgly.bixin.R.id.idealPartnerDescription;
 
 public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActivity> {
 
-    private int mYear;
-    private int mMonth;
-    private int mDayOfMonth;
+    private boolean isNext;
 
     public void showDatePicker(){
         DatePickerDialog dialog = new DatePickerDialog(mvpView, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String dateFormat = "%s-%s-%s";
-                mYear = year;
-                mMonth = month + 1;
-                mDayOfMonth = dayOfMonth;
 
+                String dateFormat = "%s-%s-%s";
                 mvpView.mDateTextView.setText(String.format(dateFormat,String.valueOf(year),String.valueOf(month + 1),String.valueOf(dayOfMonth)));
+
+                updateBirth(year, month + 1, dayOfMonth);
+
             }
-        }, 1990, 1, 1);
+        }, 1990, 0, 1);
         dialog.show();
     }
 
     public void showHeightPicker(){
         String heightChoice[] = new String[40];
         for(int i=0;i<40;i++){
-            heightChoice[i] = String.valueOf(150+i) + " cm";
+            heightChoice[i] = String.valueOf(150+i);
         }
         final String heights[] = heightChoice;
         AlertDialog.Builder builder = new AlertDialog.Builder(mvpView);
@@ -69,6 +58,7 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mvpView.mHeightTextView.setText(heights[i]);
+                updateHeight(Integer.parseInt(heights[i]));
             }
         });
         builder.create();
@@ -81,6 +71,7 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
         }
         if(param.key == NetServiceMap.UpdateUSER){
             if(param.baseResult!=null && "200".equals(param.baseResult.code)){
+                if (isNext)
                 CompleteProfileUploadVideoActivity.startCompleteProfileUploadVideoActivity(mvpView,CompleteProfileActivity.REQUEST_CODE_FOR_COMPLETE_VIDEO_AND_PHOTO);
             }else {
                 mvpView.showToast(param.baseResult == null?"更新失败":param.baseResult.msg);
@@ -139,6 +130,7 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
     }
 
     private void updateUserInfo(String userInfoStr) {
+        isNext = userInfoStr.contains("nickName");
         UpdateUserParam updateUserParam = new UpdateUserParam();
 
         //SerializerFeature[] featureArr = { SerializerFeature.WriteClassName };
@@ -160,40 +152,16 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
 
     public void updateUserInfo(){
 
-        UserInfo userInfo = UCUtils.getInstance().getUserInfo();
-        Object genderTag = mvpView.mGenderTv.getTag();
-        if (genderTag != null) {
-            userInfo.gender = (int)genderTag;
-        }
-        userInfo.userId = UCUtils.meId;
+        UpdateUserParam.UserInfo userInfo = new UpdateUserParam.UserInfo();
         userInfo.nickName = mvpView.mNicknameEt.getText().toString();
-        userInfo.height = Integer.parseInt(mvpView.mHeightTextView.getText().toString());
         userInfo.college = mvpView.mSchoolView.getText().toString();
+        if (mvpView.mSchoolView.getTag() != null) {
+            userInfo.collegeId = mvpView.mSchoolView.getTag().toString();
+        }
         userInfo.description = mvpView.mDescView.getText().toString();
         userInfo.idealPartnerDescription = mvpView.mIdealPartnerView.getText().toString();
-        if (mYear != 0) {
-            userInfo.birthYear = mYear;
-            userInfo.birthMonth = mMonth;
-            userInfo.birthDay = mDayOfMonth;
-        }
 
-        UpdateUserParam updateUserParam = new UpdateUserParam();
-
-        //SerializerFeature[] featureArr = { SerializerFeature.WriteClassName };
-        String userInfoStr = JSON.toJSONString(userInfo);
-        Log.i("dx",userInfoStr);
-        NetworkParam param = new NetworkParam(mvpView);
-        param.key = NetServiceMap.UpdateUSER;
-//        String strUTF8 = null;
-//        try {
-//            strUTF8 = URLEncoder.encode(userInfoStr, "UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-        updateUserParam.userStr = userInfoStr;
-        param.param = updateUserParam;
-        String paramStr = "?meId=" + UCUtils.meId + "&targetUserId="+UCUtils.meId;
-        RequestUtils.startPostRequestExt(param,paramStr);
+        updateUserInfo(JSON.toJSONString(userInfo));
     }
 
     public void showGenderPicker() {
@@ -205,7 +173,7 @@ public class CompleteProfilePresenter extends BasePresenter<CompleteProfileActiv
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 mvpView.mGenderTv.setText(genders[i]);
-                mvpView.mGenderTv.setTag(i + 1);
+                updateGender(i + 1);
             }
         });
         builder.create();

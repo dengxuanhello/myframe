@@ -110,6 +110,7 @@ public class CompleteProfileActivity extends BaseActivity {
             mGenderTv.setText(userInfo.gender == 1 ? "男" : (userInfo.gender == 2 ? "女" : null));
             mHeightTextView.setText(String.valueOf(userInfo.height));
             mSchoolView.setText(userInfo.college);
+            mSchoolView.setTag(userInfo.collegeId);
             if(!TextUtils.isEmpty(userInfo.headImgThumbUrl)) {
                 Glide.with(this).load(userInfo.headImgThumbUrl).into(mCicleImageV);
                 mCicleImageV.setVisibility(View.VISIBLE);
@@ -165,7 +166,6 @@ public class CompleteProfileActivity extends BaseActivity {
                             Log.i("dxavatar", body);
                             BaseResult result = JSON.parseObject(body,BaseResult.class);
                             if(result != null && "200".equals(result.code)){
-                                showToast("头像上传成功");
                             }
                         }
                     }
