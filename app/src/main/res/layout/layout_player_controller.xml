@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/player_controller_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/iv_pause"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/luobo_ic_player_pause" />
+
+        <ImageView
+            android:id="@+id/iv_screen_switch"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/luobo_ic_player_switch_large" />
+
+        <TextView
+            android:id="@+id/tv_living_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/iv_pause"
+            android:textSize="11dp"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/layout_controller_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/iv_screen_switch"
+            android:layout_toRightOf="@id/iv_pause"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/player_controller_time_current"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="#FCFCFC"
+                android:textSize="9dp" />
+
+        <SeekBar
+            android:id="@+id/player_controller_seek_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:focusable="true"
+            android:maxHeight="11dp"
+            android:padding="10dp"
+            android:progressDrawable="@drawable/player_progressbar"
+            android:thumb="@drawable/luobo_ic_seekbar_thumb"
+            android:thumbOffset="2dp" />
+
+            <TextView
+                android:id="@+id/player_controller_time_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="#FCFCFC"
+                android:textSize="9dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>

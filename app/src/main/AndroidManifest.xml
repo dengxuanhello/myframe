@@ -42,7 +42,8 @@
             </intent-filter>-->
         </activity>
         <activity android:name="com.dsgly.bixin.biz.base.BaseActivity"/>
-        <activity android:name="com.dsgly.bixin.biz.view.VideoPlayActivity"/>
+        <activity android:name="com.dsgly.bixin.biz.view.VideoPlayActivity"
+            android:configChanges="screenSize|orientation"/>
         <activity android:name=".biz.base.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
