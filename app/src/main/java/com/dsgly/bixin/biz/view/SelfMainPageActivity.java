@@ -185,6 +185,16 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
         RequestUtils.startGetRequestExt(param,localUserInfo.userId);
     }
 
+    private void deleteImage(String picId) {
+        StringBuilder requestUrl = new StringBuilder();
+        requestUrl.append(picId)
+                .append("?meId=")
+                .append(UCUtils.meId);
+        NetworkParam param = new NetworkParam(this);
+        param.key = NetServiceMap.delUserGallery;
+        RequestUtils.startDeleteRequest(param, requestUrl.toString());
+    }
+
     @Override
     public void onMsgSearchComplete(NetworkParam param) {
         super.onMsgSearchComplete(param);
@@ -208,6 +218,8 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
                 mPicGridViewAdapter.setDataList(galleryInfoList);
                 mPicGridViewAdapter.notifyDataSetChanged();
             }
+        } else if (param.key == NetServiceMap.delUserGallery) {
+            getGalleryList();
         }
     }
 
@@ -258,6 +270,16 @@ public class SelfMainPageActivity extends BaseActivity implements MainPageAdapte
 
             ImagePreviewActivity.startActivity(this, position, builder.toString());
         }
+    }
+
+    @Override
+    public void onDelete(int position, GalleryResult.GalleryInfo picInfo) {
+        deleteImage(picInfo.picId);
+    }
+
+    @Override
+    public boolean isSelf() {
+        return !getIntent().hasExtra("userInfo");
     }
 
     @Override

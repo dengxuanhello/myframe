@@ -208,6 +208,16 @@ public class CompleteProfileUploadVideoActivity extends BaseActivity implements 
     }
 
     @Override
+    public void onDelete(int position, GalleryResult.GalleryInfo picInfo) {
+
+    }
+
+    @Override
+    public boolean isSelf() {
+        return false;
+    }
+
+    @Override
     public void surfaceCreated(SurfaceHolder holder) {
         simpleExoPlayer.setVideoSurface(holder.getSurface());
     }

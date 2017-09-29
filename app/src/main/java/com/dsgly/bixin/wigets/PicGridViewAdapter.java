@@ -42,9 +42,22 @@ public class PicGridViewAdapter extends RecyclerView.Adapter<PicGridViewAdapter.
         }
 //        holder.imageView.setTag(position);   Glide 不能设置tag  坑
         if("add".equals(dataList.get(position).pic)){//+号
+            holder.imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.imageView.setImageDrawable(mContext.getDrawable(R.drawable.button_import_video));
         }else {
             Glide.with(mContext).load(dataList.get(position).picThumb).into(holder.imageView);
+
+            if (itemChooseListener != null && itemChooseListener.isSelf()) {
+                holder.deleteBt.setVisibility(View.VISIBLE);
+                holder.deleteBt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (itemChooseListener != null) {
+                            itemChooseListener.onDelete(position, dataList.get(position));
+                        }
+                    }
+                });
+            }
         }
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,14 +76,20 @@ public class PicGridViewAdapter extends RecyclerView.Adapter<PicGridViewAdapter.
 
     class StickPicViewHolder extends RecyclerView.ViewHolder{
         public ImageView imageView;
+        View deleteBt;
         public StickPicViewHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.stick_item_image);
+            deleteBt = itemView.findViewById(R.id.iv_pic_del);
         }
     }
 
     public interface OnItemChooseListener{
         void onItemChoosed(int position, List<GalleryResult.GalleryInfo> dataList);
+
+        void onDelete(int position, GalleryResult.GalleryInfo picInfo);
+
+        boolean isSelf();
     }
 
     public void setItemChooseListener(OnItemChooseListener itemChooseListener) {
